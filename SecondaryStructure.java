@@ -33,7 +33,7 @@ public class SecondaryStructure {
 
     //Mutator fields
     public void setSSType(String arg) {
-	if(arg.toString().equals("H") || arg.toString().equals("S")) {
+	if(arg.toString().equals("H") || arg.toString().equals("S") || arg.toString().equals("T")) {
 	    sstype = arg;
 	}
 	else {
