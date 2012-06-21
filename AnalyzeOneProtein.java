@@ -50,9 +50,9 @@ public class AnalyzeOneProtein {
     	String[] helixArray = {"G","H","I"};
     	String[] turnArray = {" ","S","T"};
     	for (int i = 0; i<dsspFile.size(); ++i) {
-    		if(charsAtEqual(dsspFile, i, 16, sheetArray)) {
-    			tempArray.add("B")
-    		}
+	    	if(charsAtEqual(dsspFile, i, 16, sheetArray)) {
+	    		tempArray.get(i).setSSType("S");
+	    	}
     	}
     }
     
