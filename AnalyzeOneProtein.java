@@ -17,7 +17,7 @@ public class AnalyzeOneProtein {
 
 	/*
 	  See SecondaryStructure.java for more information and documentation on what this data structure does.
-	  See 3DCoord.java for more information and documentation on what this data structure does.
+	  See CartesianCoord.java for more information and documentation on what this data structure does.
 	*/
 	
 	ssArray = extractSS(dsspFile);
