@@ -6,9 +6,10 @@ public class AnalyzeOneProtein {
     public AnalyzeOneProtein(){
 	//All global variables
 	//Holds the dssp file in an ArrayList of type String
-	ArrayList<String> dsspFile = new ArrayList<String>();
+	ArrayList<String> dsspFile;
 	//Holds the pdb file in an ArrayList of type String
-	ArrayList<String> pdbFile = new ArrayList<String>();
+	ArrayList<String> pdbFile;
+	ArrayList<SecondaryStructure> ssArray;
 	
 	//read in single file
 	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
@@ -16,8 +17,10 @@ public class AnalyzeOneProtein {
 
 	/*
 	  See SecondaryStructure.java for more information and documentation on what this data structure does.
-	  See 3DCoord.java for more information and documentation on what this data structure does.
+	  See CartesianCoord.java for more information and documentation on what this data structure does.
 	*/
+	
+	ssArray = extractSS(dsspFile);
 
     }
 
@@ -38,6 +41,32 @@ public class AnalyzeOneProtein {
 	    fileToRead.clear();
 	}
 	return fileToRead;
+    }
+    
+    public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
+    	ArrayList<SecondaryStructure> tempArray = new ArrayList<SecondaryStructure>();
+    	
+    	String[] sheetArray = {"E","B"};
+    	String[] helixArray = {"G","H","I"};
+    	String[] turnArray = {" ","S","T"};
+    	for (int i = 0; i<dsspFile.size(); ++i) {
+	    	if(charsAtEqual(dsspFile, i, 16, sheetArray)) {
+	    		tempArray.get(i).setSSType("S");
+	    	}
+    	}
+    }
+    
+    public boolean charAtEquals(ArrayList<String> file, int index, int num, String char) {
+    	return file.get(index).charAt(num).equals(char);
+    }
+    
+    public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
+    	for (int j=0; j<chars.size(); ++j){
+    		if(!charAtEquals(file, index, num, chars.get(j))) {
+    			return false;
+    		}    	
+    	}
+    	return true;
     }
 
     public void printOut(ArrayList<String> al) {
