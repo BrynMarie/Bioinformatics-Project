@@ -43,8 +43,7 @@ public class AnalyzeOneProtein {
 	return fileToRead;
     }
     
-    //consider making this a child class of AnalyzeOneProtein (this is probably horrible coding, let me think about implications and how these two should be related for a minute)
-	public ArrayList<String> parsePDB(ArrayList<String> rawPdbFile)	{
+    public ArrayList<String> parsePDB(ArrayList<String> rawPdbFile)	{
     	//takes raw PDB file and parses 
     	//final output parsed pdb
     	/** Information in the final parsed pdb file:
