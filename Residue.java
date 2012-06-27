@@ -9,7 +9,7 @@ public class Residue {
     // other state
 
     //make as many constructors as needed
-    public Residue(double bFactor, String pdbResNum, int x, int y, int z) {
+    public Residue(double bFactor, String pdbResNum, double x, double y, double z) {
         this.bFactor = bFactor;
         this.coords = new CartesianCoord(x, y, z);
         this.pdbResNum = pdbResNum;
