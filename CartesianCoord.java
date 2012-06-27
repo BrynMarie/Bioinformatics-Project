@@ -2,50 +2,37 @@ import java.util.*;
 
 public class CartesianCoord {
 
-    public Integer x,y,z;
+    public double x,y,z;
 
-    public CartesianCoord() {
-	x = null;
-	y = null;
-	z = null;
-    }
-
-    public CartesianCoord(int newX, int newY, int newZ) {
+    public CartesianCoord(double newX, double newY, double newZ) {
 	x = newX;
 	y = newY;
 	z = newZ;
     }
 
     //accessor methods
-    public int getX() {
+    public double getX() {
 	return x;
     }
 
-    public int getY() {
+    public double getY() {
 	return y;
     }
 
-    public int getZ() {
+    public double getZ() {
 	return z;
     }
 
-    public boolean coordsHaveBeenSet() {
-	if(x == null || y == null || z == null) {
-	    return false;
-	}
-	return true;
-    }
-
     //mutator methods
-    public void setX(int newX) {
+    public void setX(double newX) {
 	x = newX;
     }
 
-    public void setY(int newY) {
+    public void setY(double newY) {
 	y = newY;
     }
     
-    public void setZ(int newZ) {
+    public void setZ(double newZ) {
 	z = newZ;
     }
 }
