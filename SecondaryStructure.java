@@ -5,7 +5,8 @@ public class SecondaryStructure {
 
     String sstype;
     boolean prevConnected, nextConnected;
-    int length, resNumBegin, resNumEnd;
+    int length;
+    ArrayList<Residue> resArray = new ArrayList<Residue>();
     CartesianCoord coords = new CartesianCoord();
     //also need principal moment of inertia, not sure which datatype is best for that -- Jennifer?
 
@@ -44,6 +45,14 @@ public class SecondaryStructure {
     public CartesianCoord getCoords() {
     	return coords;
     }
+    
+    public Residue firstResidue() {
+    	return resArray.get(0);
+    }
+    
+    public Residue lastResidue() {
+    	return resArray.get(resArray.size() - 1);
+    }
 
     //Mutator fields
     public void setSSType(String arg) {
@@ -81,6 +90,10 @@ public class SecondaryStructure {
     
     public void setCoords(int x, int y, int z) {
     	coords = new CartesianCoord(x,y,z);
+    }
+    
+    public void addResidue(Residue res){
+    	resArray.add(res);
     }
 
     //Other
