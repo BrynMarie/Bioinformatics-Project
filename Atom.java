@@ -1,22 +1,22 @@
 import java.util.*;
 
-public class BackboneAtom {
+public class Atom {
 
     CartesianCoord coords;
     String atomType;
     int bFactor;
     
-    public BackboneAtom(String atom, int x, int y, int z) {
+    public Atom(String atom, int x, int y, int z) {
 	atomType = atom;
 	coords = new CartesianCoord(x,y,z);
     }
 
-    public BackboneAtom(String atom) {
+    public Atom(String atom) {
 	atomType = atom;
 	coords = new CartesianCoord();
     }
 
-    public BackboneAtom() {
+    public Atom() {
 	atomType = "";
 	coords = new CartesianCoord();
     }
