@@ -41,9 +41,6 @@ public class AnalyzeOneProtein {
 	}
 	return fileToRead;
     }
-<<<<<<< HEAD
-    /*
-=======
     
     public ArrayList<String> parsePDB(ArrayList<String> rawPdbFile)	{
     	//takes raw PDB file and parses 
@@ -89,7 +86,6 @@ public class AnalyzeOneProtein {
     	return stdDev;
     }
     
->>>>>>> a1eb41c15ae3ca8b986ccd3bb57cf9019d3168dc
     public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
     	ArrayList<SecondaryStructure> tempArray = new ArrayList<SecondaryStructure>();
     	
