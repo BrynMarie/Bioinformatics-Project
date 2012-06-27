@@ -43,9 +43,16 @@ public class AnalyzeOneProtein {
 	return fileToRead;
     }
     
-        public ArrayList<String> parsePDB(ArrayList<String> rawPdbFile){
+    //consider making this a child class of AnalyzeOneProtein (this is probably horrible coding, let me think about implications and how these two should be related for a minute)
+	public ArrayList<String> parsePDB(ArrayList<String> rawPdbFile)	{
     	//takes raw PDB file and parses 
     	//final output parsed pdb
+    	/** Information in the final parsed pdb file:
+    	 *  x y z coord
+    	 *  crystallic b-factor
+    	 *  pdb res num
+    	 *  -- Ultimately stored as residues
+    	 * */
     	ArrayList<String> parsedPDBFile = new ArrayList<String>();
     	int countTotalAtoms=0;
     	double totalbFactor = 0;
