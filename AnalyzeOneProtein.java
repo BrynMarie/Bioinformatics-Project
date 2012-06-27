@@ -2,15 +2,14 @@ import java.util.*;
 import java.io.*;
 
 public class AnalyzeOneProtein {
-
+    //All global variables
+    //Holds the dssp file in an ArrayList of type String
+    ArrayList<String> dsspFile;
+    //Holds the pdb file in an ArrayList of type String
+    ArrayList<String> pdbFile;
+    ArrayList<SecondaryStructure> ssArray;
+    
     public AnalyzeOneProtein(){
-	//All global variables
-	//Holds the dssp file in an ArrayList of type String
-	ArrayList<String> dsspFile;
-	//Holds the pdb file in an ArrayList of type String
-	ArrayList<String> pdbFile;
-	ArrayList<SecondaryStructure> ssArray;
-	
 	//read in single file
 	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
 	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/a0/pdb1a00.ent");
@@ -20,7 +19,7 @@ public class AnalyzeOneProtein {
 	  See CartesianCoord.java for more information and documentation on what this data structure does.
 	*/
 	
-	ssArray = extractSS(dsspFile);
+	//ssArray = extractSS(dsspFile);
 
     }
 
@@ -42,7 +41,7 @@ public class AnalyzeOneProtein {
 	}
 	return fileToRead;
     }
-    
+    /*
     public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
     	ArrayList<SecondaryStructure> tempArray = new ArrayList<SecondaryStructure>();
     	
@@ -56,8 +55,8 @@ public class AnalyzeOneProtein {
     	}
     }
     
-    public boolean charAtEquals(ArrayList<String> file, int index, int num, String char) {
-    	return file.get(index).charAt(num).equals(char);
+    public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
+    	return file.get(index).charAt(num).equals(charac);
     }
     
     public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
@@ -67,7 +66,7 @@ public class AnalyzeOneProtein {
     		}    	
     	}
     	return true;
-    }
+	}*/
 
     public void printOut(ArrayList<String> al) {
 	for (int i=0; i<al.size(); ++i){

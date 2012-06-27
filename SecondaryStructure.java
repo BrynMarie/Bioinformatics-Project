@@ -6,7 +6,7 @@ public class SecondaryStructure {
     String sstype;
     boolean prevConnected, nextConnected;
     int length, resNumBegin, resNumEnd;
-    CartesianCoord coords = new CartesianCoords();
+    CartesianCoord coords = new CartesianCoord();
     //also need principal moment of inertia, not sure which datatype is best for that -- Jennifer?
 
     public SecondaryStructure() {
@@ -41,7 +41,7 @@ public class SecondaryStructure {
     	return resNumEnd;
     }
     
-    public CartersianCoord getCoords() {
+    public CartesianCoord getCoords() {
     	return coords;
     }
 
