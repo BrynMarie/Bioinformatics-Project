@@ -3,17 +3,15 @@ import java.util.*;
 
 public class ParseFiles {
     ArrayList<String> dsspFile;
+    ArrayList<String> pdbFile;
 
-    public ParseFiles () {
-        
-    }
-
-    public void parseDSSP(ArrayList<String> dsspFile) {
+    public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
         this.dsspFile = dsspFile;
+        this.pdbFile = pdbFile;
     }
     
-     	public ArrayList<String> getCoordinates(ArrayList<String> rawPdbFile) {
-    		ArrayList<String> coordinatesOfAtoms = new ArrayList<String>();
+    public ArrayList<String> getCoordinates(ArrayList<String> rawPdbFile) {
+		ArrayList<String> coordinatesOfAtoms = new ArrayList<String>();
 		for (int i = 0; i < rawPdbFile.size(); i++) {
 			String[] strs = rawPdbFile.get(i).split("\\s+");
 			String line = "";
@@ -153,9 +151,9 @@ public class ParseFiles {
     
     public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
     	for (int j=0; j<chars.size(); ++j){
-	    if(!charAtEquals(file, index, num, chars.get(j))) {
-		return false;
-	    }    	
+	   		if(!charAtEquals(file, index, num, chars.get(j))) {
+				return false;
+	    	}    	
     	}
     	return true;
     }
