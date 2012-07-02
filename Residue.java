@@ -6,6 +6,7 @@ public class Residue {
     double bFactor;
     CartesianCoord coords;
     String pdbResNum;
+    String ssType;
     // other state
 
     //make as many constructors as needed
@@ -21,9 +22,13 @@ public class Residue {
         this.coords = coords;
     }
 
+    public Residue() {
+    }
     //accessor methods
     
 
     //mutator methods
-
+    public void setSSType(String newSsType) {
+	ssType = newSsType;
+    }
 }
