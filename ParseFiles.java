@@ -1,4 +1,4 @@
-import java.io*;
+import java.io.*;
 import java.util.*;
 
 public class ParseFiles {
@@ -18,7 +18,7 @@ public class ParseFiles {
 			if (strs[0].equals("ATOM")) {
 				//collect atom name, residue, residue ID #, and X, Y, Z coordinates in a single string
 				line = strs[0] + " " + strs[2] + " " + strs[3] + " " + strs[5] + "" + 
-					   strs[6] + " " + strs[7] + " " + strs[8];
+			               strs[6] + " " + strs[7] + " " + strs[8];
 				coordinatesOfAtoms.add(line);
 			}
 			else if (strs[0].equals("TER"))
