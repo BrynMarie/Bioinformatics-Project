@@ -33,14 +33,6 @@ public class SecondaryStructure {
     public int length() {
 	return length;
     }
-
-    public int getBegin() {
-    	return resNumBegin;
-    } 	
-    
-    public int getEnd() {
-    	return resNumEnd;
-    }
     
     public CartesianCoord getCoords() {
     	return coords;
@@ -76,19 +68,11 @@ public class SecondaryStructure {
 	length = newLength;
     }
     
-    public void setBegin(int beginning){
-    	resNumBegin = beginning;
-    }
-    
-    public void setEnd(int ending){
-    	resNumEnd = ending;
-    }
-    
     public void setCoords(CartesianCoord newCoord) {
     	coords = newCoord;
     }
     
-    public void setCoords(int x, int y, int z) {
+    public void setCoords(double x, double y, double z) {
     	coords = new CartesianCoord(x,y,z);
     }
     

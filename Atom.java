@@ -6,7 +6,7 @@ public class Atom {
     String atomType;
     int bFactor;
     
-    public Atom(String atom, int x, int y, int z) {
+    public Atom(String atom, double x, double y, double z) {
 	atomType = atom;
 	coords = new CartesianCoord(x,y,z);
     }
@@ -30,40 +30,16 @@ public class Atom {
 	return coords;
     }
 
-    public int getX() {
-	return coords.x;
-    }
-
-    public int getY() {
-	return coords.y;
-    }
-
-    public int getZ() {
-	return coords.z;
-    }
-
     //mutator methods
     public void setAtomType(String newAtomType) {
 	atomType = newAtomType;
     }
 
-    public void setCoords(int x, int y, int z) {
+    public void setCoords(double x, double y, double z) {
 	coords = new CartesianCoord(x, y, z);
     }
 
     public void setCoords(CartesianCoord newCoord) {
 	coords = newCoord;
-    }
-
-    public void setX(int newX) {
-	coords.setX(newX);
-    }
-
-    public void setY(int newY) {
-	coords.setY(newY);
-    }
-
-    public void setZ(int newZ) {
-	coords.setZ(newZ);
     }
 }
