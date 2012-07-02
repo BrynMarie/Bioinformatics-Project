@@ -17,7 +17,8 @@ public class ParseFiles {
 			String line = "";
 			if (strs[0].equals("ATOM")) {
 				//collect atom name, residue, residue ID #, and X, Y, Z coordinates in a single string
-				line = strs[0] + " " + strs[2] + " " + strs[3] + " " + strs[5] + strs[6] + " " + strs[7] + " " + strs[8];
+				line = strs[0] + " " + strs[2] + " " + strs[3] + " " + strs[5] + "" + 
+					   strs[6] + " " + strs[7] + " " + strs[8];
 				coordinatesOfAtoms.add(line);
 			}
 			else if (strs[0].equals("TER"))
@@ -84,8 +85,7 @@ public class ParseFiles {
 				if (countTotalAtoms == 0) {
 					pastResidue = Integer.parseInt(strs[5]);
 					countResidues++;
-					currentResidueBfactor += Double.valueOf(strs[10].trim())
-							.doubleValue();
+					currentResidueBfactor += Double.valueOf(strs[10].trim()).doubleValue();
 				} else {
 					currentResidue = Integer.parseInt(strs[5]);
 					if (currentResidue == pastResidue) {
@@ -94,15 +94,12 @@ public class ParseFiles {
 								.valueOf(strs[10].trim()).doubleValue();
 					} else {
 						meanOfCurrentResidue = currentResidueBfactor
-								/ (countResidues); // calculate mean B-factor of
-													// a
-													// residue
+								/ (countResidues); // calculate mean B-factor of a residue
 						zScoresOfPDBFile.add(zScore(meanOfCurrentResidue, totalMean, totalStdDev));
 						countResidues = 0;
 						pastResidue = currentResidue;
 						currentResidueBfactor = 0;
-						currentResidueBfactor += Double
-								.valueOf(strs[10].trim()).doubleValue();
+						currentResidueBfactor += Double.valueOf(strs[10].trim()).doubleValue();
 					}
 				}
 			}
@@ -110,8 +107,7 @@ public class ParseFiles {
 		return zScoresOfPDBFile;
 	}
 	
-	public double zScore(double currentMean, double totalMean,
-			double totalStdDev) {
+	public double zScore(double currentMean, double totalMean, double totalStdDev) {
 		double zScore = (currentMean - totalMean) / totalStdDev;
 		return zScore;
 	}
@@ -131,17 +127,18 @@ public class ParseFiles {
     	String[] sheetArray = {"E","B"};
     	String[] helixArray = {"G","H","I"};
     	String[] turnArray = {" ","S","T"};
+    	
     	for (int i = 0; i<dsspFile.size(); ++i) {
-	    tempArray.get(i) = new Residue();
-	    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
-		tempArray.get(i).setSSType("S");
-	    }
-	    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
-		tempArray.get(i).setSSType("H");
-	    }
-	    else if(charsAtEqual(dsspfile, i, 14, turnArray)) {
-		tempArray.get(i).setSSType("T");
-	    }
+		    tempArray.get(i) = new Residue();
+		    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
+				tempArray.get(i).setSSType("S");
+		    }
+		    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
+				tempArray.get(i).setSSType("H");
+		    }
+		    else if(charsAtEqual(dsspfile, i, 14, turnArray)) {
+				tempArray.get(i).setSSType("T");
+		    }
     	}
     }
     
