@@ -12,6 +12,25 @@ public class ParseFiles {
         this.dsspFile = dsspFile;
     }
     
+     	public ArrayList<String> getCoordinates(ArrayList<String> rawPdbFile) {
+    		ArrayList<String> coordinatesOfAtoms = new ArrayList<String>();
+		for (int i = 0; i < rawPdbFile.size(); i++) {
+			String[] strs = rawPdbFile.get(i).split("\\s+");
+			String line = "";
+			if (strs[0].equals("ATOM")) {
+				//collect atom name, residue, residue ID #, and X, Y, Z coordinates in a single string
+				line = strs[0] + " " + strs[2] + " " + strs[3] + " " + strs[5] + strs[6] + " " + strs[7] + " " + strs[8];
+				coordinatesOfAtoms.add(line);
+			}
+			else if (strs[0].equals("TER"))
+				//C-terminus flag
+				line = strs[0] + " " + strs[2] + " " + strs[4];
+				coordinatesOfAtoms.add(line);
+			}
+		}
+		return coordinatesOfAtoms;
+	}
+    
 	public double getTotalMean(ArrayList<String> rawPdbFile) {
 		// calculate mean b-factor and std deviation b-factors for whole
 		// protein
