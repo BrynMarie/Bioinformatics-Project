@@ -14,13 +14,7 @@ public class AnalyzeOneProtein {
 	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
 	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/a0/pdb1a00.ent");
 
-	/*
-	  See SecondaryStructure.java for more information and documentation on what this data structure does.
-	  See CartesianCoord.java for more information and documentation on what this data structure does.
-	*/
-	
-	//ssArray = extractSS(dsspFile);
-
+	ParseFiles f2 = new ParseFiles(dsspFile, pdbFile);
     }
 
     public ArrayList<String> readFile(String arg) {
