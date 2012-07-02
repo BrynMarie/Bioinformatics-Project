@@ -8,6 +8,7 @@ public class Residue {
     String pdbResNum;
     String ssType;
     boolean missingSS;
+    ArrayList<Atom> atomList = new ArrayList<Atom>();
     // other state
 
     //make as many constructors as needed
