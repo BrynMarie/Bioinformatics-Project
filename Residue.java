@@ -29,12 +29,42 @@ public class Residue {
     }
     
     //accessor methods
+    public double getBFactor() {
+    	return bFactor;
+    }
     
+    public CartesianCoord getCoords() {
+    	return coords;
+    }
+    
+    public String pdbResNum getResNum() {
+    	return pdbResNum;
+    }
+    
+    public String ssType getSS() {
+    	return ssType;
+    }
     
 
     //mutator methods
+    public void setBF(double newBF){
+    	bFactor = newBF;
+    }
+    
+   	public void setCoords(CartesianCoord newCoord) {
+   		coords = newCoord;
+   	}
+    
+    public void setCoords(double x, double y, double z){
+    	coords = new CartesianCoord(x,y,z);
+    }
+    
+    public void setPDBResNum(String pdbResNum){
+    	this.pdbResNum = pdbResNum;
+    }
+    
     public void setSSType(String newSsType) {
-	ssType = newSsType;
+		ssType = newSsType;
     }
     
     public void setMissingSS(boolean missingSS) {
