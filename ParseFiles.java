@@ -20,6 +20,7 @@ public class ParseFiles {
     		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
     			String[] strs = customPDBSplit(pdbFile.get(i));
     			coords = getCoordinates(strs);
+    			pdbResNum = strs[3];
     		}
     	}
     }
@@ -27,15 +28,15 @@ public class ParseFiles {
     //this method splits a pdb file line into 
 	public String[] customPDBSplit(String splitMe) {
 		ArrayList<String> strArrayList = new ArrayList<String>();
-		strArrayList.add(splitMe.substring(0,6).trim()); // ATOM designation
-		strArrayList.add(splitMe.substring(11,16).trim()); // atom name type
-		strArrayList.add(splitMe.substring(17,20).trim()); //residue name
-		strArrayList.add(splitMe.substring(22,26).trim()); //residue sequence number
-		strArrayList.add(splitMe.substring(30,38).trim()); //x
-		strArrayList.add(splitMe.substring(38,46).trim()); //y
-		strArrayList.add(splitMe.substring(47,54).trim()); //z
-		strArrayList.add(splitMe.substring(54,60).trim()); //occupancy
-		strArrayList.add(splitMe.substring(60,66).trim()); //temperature factor
+		strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
+		strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
+		strArrayList.add(splitMe.substring(17,20).trim()); //  2   residue name
+		strArrayList.add(splitMe.substring(22,26).trim()); //  3   residue sequence number
+		strArrayList.add(splitMe.substring(30,38).trim()); //  4   x
+		strArrayList.add(splitMe.substring(38,46).trim()); //  5   y
+		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
+		strArrayList.add(splitMe.substring(54,60).trim()); //  7   occupancy
+		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
 		
 		return strArrayList.toArray();
 	}
