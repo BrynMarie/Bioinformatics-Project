@@ -10,6 +10,28 @@ public class ParseFiles {
         this.pdbFile = pdbFile;
     }
     
+    public ArrayList<Residue> getInfoFromPDB(ArrayList<String> pdbFile) {
+    	
+    	CartesianCoord coords;
+    	String pdbResNum;
+    	
+    	for (int i = 0; i<pdbFile.size(); ++i) {
+    		String[] strs = pdbFile.get(i).split("\\s+");
+    		String line = "";
+    		if(strs[0].equals("ATOM")) {
+    			coords = getCoordinates(strs);
+    		}
+    	}
+    }
+    
+    //At indices 8, 9, and 10 are where the xyz coordinates are stored, accounting for zero indexing.
+    public CartesianCoord getCoordinates(String[] strs){
+    	double x = Double.parseDouble(strs[8]); 
+    	double y = Double.parseDouble(strs[9]);
+    	double z = Double.parseDouble(strs[10]);
+    	return new CartesianCoord(x,y,z);
+    }
+    
     public ArrayList<String> getCoordinates(ArrayList<String> rawPdbFile) {
 		ArrayList<String> coordinatesOfAtoms = new ArrayList<String>();
 		for (int i = 0; i < rawPdbFile.size(); i++) {
