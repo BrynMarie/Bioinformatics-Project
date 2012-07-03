@@ -2,7 +2,10 @@ import java.util.*;
 
 public class Atom {
 
-    CartesianCoord coords;
+   // add setCTerm method
+   //change constructors
+   
+	CartesianCoord coords;
     String atomType;
     int resNum;
     int bFactor;
