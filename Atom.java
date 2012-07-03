@@ -2,15 +2,18 @@ import java.util.*;
 
 public class Atom {
 
-    CartesianCoord coords;
+   // add setCTerm method
+   //change constructors
+   
+	CartesianCoord coords;
     String atomType;
     int resNum;
     int bFactor;
-    boolean isBackbone;
+    boolean isBackbone, nTerm, cTerm;
     
-    public Atom(String atom, int resNum, boolean isBB, double x, double y, double z) {
+    public Atom(String atom, int resNum, boolean isBB, CartesianCoord cc) {
 		atomType = atom;
-		coords = new CartesianCoord(x,y,z);
+		coords = cc;
 		isBackbone = isBB;
     }
 
@@ -41,7 +44,7 @@ public class Atom {
     }
 
     //mutator methods
-    public void setAtomType(String newAtomType) {
+    public void setAtomType(String AtomType) {
 		atomType = newAtomType;
     }
 
