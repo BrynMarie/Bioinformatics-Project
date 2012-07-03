@@ -10,17 +10,43 @@ public class ParseFiles {
         this.pdbFile = pdbFile;
     }
     
-    public ArrayList<Residue> getInfoFromPDB(ArrayList<String> pdbFile) {
+    public ArrayList<Atom> getInfoFromPDB(ArrayList<String> pdbFile) {
     	
+    	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	CartesianCoord coords;
-    	int pdbResNum;
+    	String atomType, resName;
+    	double pdbResNum, occup, tempFact;
+    	boolean backbone = false;
+    	boolean nTerm, cTerm;
+    	boolean nextIsNTerm = false;
     	
     	for (int i = 0; i<pdbFile.size(); ++i) {		
     		// do I really need String line = "";
     		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
     			String[] strs = customPDBSplit(pdbFile.get(i));
-    			coords = getCoordinates(strs);
-    			pdbResNum = strs[3];
+    			coords = getCoordinates(strs);		
+    			atomType = strs[1].trim();
+    			nTerm = nextIsNTerm;
+    			nextIsNTerm = false;
+    			if(atomType.equals("N") || 
+    			   atomType.equals("CA") || 
+    			   atomType.equals("C") || 
+    			   atomType.equals("O") ||
+    			   atomType.equals("OXT") ||
+    			   atomType.equals("OT1") ||
+    			   atomType.equals("OT2")) {
+    				backbone = true;
+    			}
+    			resName = strs[2].trim(); //necessary?
+    			pdbResNum = Double.parseDouble(strs[3].trim());
+    			occup = Double.parseDouble(strs[7].trim());
+    			tempFact = Double.parseDouble(strs[8].trim());	
+    			
+    			atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, occup, tempFact, coords));
+    		}
+    		if(pdbFile.get(i).substring(0,6).trim().equals("TER")) {
+    			nextIsNTerm = true;
+    			atomList.get(atomList.size()-1).setCTerm(true);
     		}
     	}
     }
@@ -49,6 +75,8 @@ public class ParseFiles {
     	return new CartesianCoord(x,y,z);
     }
     
+    //I Believe that this is deprecated...before I delete I will ask you to look at it though
+    /*
     public ArrayList<String> getCoordinates(ArrayList<String> rawPdbFile) {
 		ArrayList<String> coordinatesOfAtoms = new ArrayList<String>();
 		for (int i = 0; i < rawPdbFile.size(); i++) {
@@ -67,7 +95,7 @@ public class ParseFiles {
 			}
 		}
 		return coordinatesOfAtoms;
-	}
+	} */
     
 	public double getTotalMean(ArrayList<String> rawPdbFile) {
 		// calculate mean b-factor and std deviation b-factors for whole
