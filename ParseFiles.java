@@ -13,22 +13,38 @@ public class ParseFiles {
     public ArrayList<Residue> getInfoFromPDB(ArrayList<String> pdbFile) {
     	
     	CartesianCoord coords;
-    	String pdbResNum;
+    	int pdbResNum;
     	
-    	for (int i = 0; i<pdbFile.size(); ++i) {
-    		String[] strs = pdbFile.get(i).split("\\s+");
-    		String line = "";
-    		if(strs[0].equals("ATOM")) {
+    	for (int i = 0; i<pdbFile.size(); ++i) {		
+    		// do I really need String line = "";
+    		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
+    			String[] strs = customPDBSplit(pdbFile.get(i));
     			coords = getCoordinates(strs);
     		}
     	}
     }
     
-    //At indices 8, 9, and 10 are where the xyz coordinates are stored, accounting for zero indexing.
+    //this method splits a pdb file line into 
+	public String[] customPDBSplit(String splitMe) {
+		ArrayList<String> strArrayList = new ArrayList<String>();
+		strArrayList.add(splitMe.substring(0,6).trim()); // ATOM designation
+		strArrayList.add(splitMe.substring(11,16).trim()); // atom name type
+		strArrayList.add(splitMe.substring(17,20).trim()); //residue name
+		strArrayList.add(splitMe.substring(22,26).trim()); //residue sequence number
+		strArrayList.add(splitMe.substring(30,38).trim()); //x
+		strArrayList.add(splitMe.substring(38,46).trim()); //y
+		strArrayList.add(splitMe.substring(47,54).trim()); //z
+		strArrayList.add(splitMe.substring(54,60).trim()); //occupancy
+		strArrayList.add(splitMe.substring(60,66).trim()); //temperature factor
+		
+		return strArrayList.toArray();
+	}
+   
+    //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
     public CartesianCoord getCoordinates(String[] strs){
-    	double x = Double.parseDouble(strs[8]); 
-    	double y = Double.parseDouble(strs[9]);
-    	double z = Double.parseDouble(strs[10]);
+    	double x = Double.parseDouble(strs[4]); 
+    	double y = Double.parseDouble(strs[5]);
+    	double z = Double.parseDouble(strs[6]);
     	return new CartesianCoord(x,y,z);
     }
     
