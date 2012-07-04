@@ -55,7 +55,7 @@ public class ParseFiles {
     	}// end of for
     	
     	meanBFactor = totalBFactor / (atomList.size() - 1);
-    	std = calcStdDev(totalbFactor, totalsquaredbFactor, countTotalAtoms);
+    	std = calcStdDev(totalbFactor, totalsquaredbFactor, atomList.size() - 1);
     }
     
     //this method splits a pdb file line into 
