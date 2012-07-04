@@ -15,10 +15,14 @@ public class ParseFiles {
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	CartesianCoord coords;
     	String atomType, resName;
-    	double pdbResNum, occup, tempFact;
+    	double pdbResNum, tempFact;
     	boolean backbone = false;
     	boolean nTerm, cTerm;
     	boolean nextIsNTerm = false;
+    	double totalBFactor = 0;
+    	double meanBFactor;
+    	double totalSquaredBFactor = 0;
+    	double std;
     	
     	for (int i = 0; i<pdbFile.size(); ++i) {		
     		// do I really need String line = "";
@@ -39,16 +43,19 @@ public class ParseFiles {
     			}
     			resName = strs[2].trim(); //necessary?
     			pdbResNum = Double.parseDouble(strs[3].trim());
-    			occup = Double.parseDouble(strs[7].trim());
     			tempFact = Double.parseDouble(strs[8].trim());	
-    			
-    			atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, occup, tempFact, coords));
+    			totalBFactor += tempFact;
+    			totalSquaredBFactor += Math.pow(tempFact, 2);
+    			atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, tempFact, coords));
     		}
     		if(pdbFile.get(i).substring(0,6).trim().equals("TER")) {
     			nextIsNTerm = true;
     			atomList.get(atomList.size()-1).setCTerm(true);
     		}
-    	}
+    	}// end of for
+    	
+    	meanBFactor = totalBFactor / (atomList.size() - 1);
+    	std = calcStdDev(totalbFactor, totalsquaredbFactor, countTotalAtoms);
     }
     
     //this method splits a pdb file line into 
@@ -61,7 +68,6 @@ public class ParseFiles {
 		strArrayList.add(splitMe.substring(30,38).trim()); //  4   x
 		strArrayList.add(splitMe.substring(38,46).trim()); //  5   y
 		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
-		strArrayList.add(splitMe.substring(54,60).trim()); //  7   occupancy
 		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
 		
 		return strArrayList.toArray();
@@ -97,6 +103,11 @@ public class ParseFiles {
 		return coordinatesOfAtoms;
 	} */
     
+    	//functionality of this method that my above method does not have yet:
+    	// totalbFactor
+    	// meanbFactor = totalbFactor/countTotalAtoms;
+    	// I believe I have remedied the situation and this method is no longer necessary, but I will have you check it before discarding
+    	/*
 	public double getTotalMean(ArrayList<String> rawPdbFile) {
 		// calculate mean b-factor and std deviation b-factors for whole
 		// protein
@@ -113,8 +124,12 @@ public class ParseFiles {
 		}
 		double meanbFactor = totalbFactor / countTotalAtoms;
 		return meanbFactor;
-	}
+	}*/
 
+	// functionality that this method has that the above method does not already have:
+	// totalSquaredBFactor
+	// double std = 
+	/* this method should no longer be necessary but check above
 	public double getTotalStdDev(ArrayList<String> rawPdbFile) {
 		int countTotalAtoms = 0;
 		double totalbFactor = 0;
@@ -133,7 +148,7 @@ public class ParseFiles {
 		double StdDev = calcStdDev(totalbFactor, totalsquaredbFactor,
 				countTotalAtoms);
 		return StdDev;
-	}
+	}*/
 
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
 			double totalMean, double totalStdDev) {
