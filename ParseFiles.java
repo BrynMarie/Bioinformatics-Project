@@ -25,7 +25,6 @@ public class ParseFiles {
     	double std;
     	
     	for (int i = 0; i<pdbFile.size(); ++i) {		
-    		// do I really need String line = "";
     		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
     			String[] strs = customPDBSplit(pdbFile.get(i));
     			coords = getCoordinates(strs);		
@@ -81,75 +80,6 @@ public class ParseFiles {
     	return new CartesianCoord(x,y,z);
     }
     
-    //I Believe that this is deprecated...before I delete I will ask you to look at it though
-    /*
-    public ArrayList<String> getCoordinates(ArrayList<String> rawPdbFile) {
-		ArrayList<String> coordinatesOfAtoms = new ArrayList<String>();
-		for (int i = 0; i < rawPdbFile.size(); i++) {
-			String[] strs = rawPdbFile.get(i).split("\\s+");
-			String line = "";
-			if (strs[0].equals("ATOM")) {
-				//collect atom name, residue, residue ID #, and X, Y, Z coordinates in a single string
-				line = strs[0] + " " + strs[2] + " " + strs[3] + " " + strs[5] + "" + 
-			               strs[6] + " " + strs[7] + " " + strs[8];
-				coordinatesOfAtoms.add(line);
-			}
-			else if (strs[0].equals("TER"))
-				//C-terminus flag
-				line = strs[0] + " " + strs[2] + " " + strs[4];
-				coordinatesOfAtoms.add(line);
-			}
-		}
-		return coordinatesOfAtoms;
-	} */
-    
-    	//functionality of this method that my above method does not have yet:
-    	// totalbFactor
-    	// meanbFactor = totalbFactor/countTotalAtoms;
-    	// I believe I have remedied the situation and this method is no longer necessary, but I will have you check it before discarding
-    	/*
-	public double getTotalMean(ArrayList<String> rawPdbFile) {
-		// calculate mean b-factor and std deviation b-factors for whole
-		// protein
-		int countTotalAtoms = 0;
-		double totalbFactor = 0;
-		for (int i = 0; i < rawPdbFile.size(); i++) {
-			String[] strs = rawPdbFile.get(i).split("\\s+");
-			if (strs[0].equals("ATOM")) {
-				countTotalAtoms++;
-				double strbFactortoDbl = Double.valueOf(strs[10].trim())
-						.doubleValue();
-				totalbFactor += strbFactortoDbl;
-			}
-		}
-		double meanbFactor = totalbFactor / countTotalAtoms;
-		return meanbFactor;
-	}*/
-
-	// functionality that this method has that the above method does not already have:
-	// totalSquaredBFactor
-	// double std = 
-	/* this method should no longer be necessary but check above
-	public double getTotalStdDev(ArrayList<String> rawPdbFile) {
-		int countTotalAtoms = 0;
-		double totalbFactor = 0;
-		double totalsquaredbFactor = 0;
-		for (int i = 0; i < rawPdbFile.size(); i++) {
-			String[] strs = rawPdbFile.get(i).split("\\s+");
-			if (strs[0].equals("ATOM")) {
-				countTotalAtoms++;
-				double strbFactortoDbl = Double.valueOf(strs[10].trim())
-						.doubleValue();
-				double squaredbFactor = Math.pow(strbFactortoDbl, 2);
-				totalbFactor += strbFactortoDbl;
-				totalsquaredbFactor += squaredbFactor;
-			}
-		}
-		double StdDev = calcStdDev(totalbFactor, totalsquaredbFactor,
-				countTotalAtoms);
-		return StdDev;
-	}*/
-
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
 			double totalMean, double totalStdDev) {
 		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>();
@@ -162,7 +92,7 @@ public class ParseFiles {
 		for (int i = 0; i < rawPdbFile.size(); i++) {
 			String[] strs = rawPdbFile.get(i).split("\\s+");
 			if (strs[0].equals("ATOM")) { // only want lines from PDB that are
-											// from ATOM section
+						      // from ATOM section
 				// calculate total B-factor of a residue
 				if (countTotalAtoms == 0) {
 					pastResidue = Integer.parseInt(strs[5]);
