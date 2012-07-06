@@ -60,7 +60,7 @@ public class Residue {
     	coords = new CartesianCoord(x,y,z);
     }
     
-    public void setPDBResNum(String pdbResNum){
+    public void setResNum(String pdbResNum){
     	this.pdbResNum = pdbResNum;
     }
     
