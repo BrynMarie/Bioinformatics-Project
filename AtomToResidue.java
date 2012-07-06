@@ -3,11 +3,10 @@ import java.util.*;
 
 public class AtomToResidue {
 
-    ArrayList<Atom> sortedAtomList;
-
     //takes as input an unsorted arraylist of atoms
     public AtomToResidue(ArrayList<Atom> atomList) {
-		sortedAtomList = sortAtoms(atomList);
+		ArrayList<Atom> sortedAtomList = sortAtoms(atomList);
+		ArrayList<Residue> resArray = turnIntoResidueArray(sortedAtomList);
     }
     
     public sortAtoms(ArrayList<Atom> atomList) {
@@ -15,6 +14,12 @@ public class AtomToResidue {
     	//this will *certainly* need to be checked for accuracy but according to the link below it works
     	//http://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
     	Collections.sort(atomList, new AtomComparator);
+    }
+    
+    public turnIntoResidueArray(ArrayList<Atom> atomList) {
+    	for (int i = 0; i<atomList.size(); ++i) {
+    		
+    	}
     }
 
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
