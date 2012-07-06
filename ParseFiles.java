@@ -56,7 +56,9 @@ public class ParseFiles {
     	std = calcStdDev(totalbFactor, totalsquaredbFactor, atomList.size() - 1);
     }
     
-	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
+/*
+Commented out as this will be calculated in residue array, but will keep here momentarily for reference
+public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
 			double totalMean, double totalStdDev) {
 		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>();
 		int countTotalAtoms = 0;
@@ -99,7 +101,7 @@ public class ParseFiles {
 		double zScore = (currentMean - totalMean) / totalStdDev;
 		return zScore;
 	}
-
+*/
     
     public double calcStdDev(double total, double squaredTotal, int counter) {
     	double firstTerm = squaredTotal/(counter-1);
