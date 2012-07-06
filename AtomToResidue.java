@@ -9,6 +9,13 @@ public class AtomToResidue {
     public AtomToResidue(ArrayList<Atom> atomList) {
 		sortedAtomList = sortAtoms(atomList);
     }
+    
+    public sortAtoms(ArrayList<Atom> atomList) {
+    	//write a sort here, oh gosh...
+    	//this will *certainly* need to be checked for accuracy but according to the link below it works
+    	//http://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
+    	Collections.sort(atomList, new AtomComparator);
+    }
 
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
 		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>();
