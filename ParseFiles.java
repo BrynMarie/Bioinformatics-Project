@@ -111,6 +111,7 @@ public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
     	return stdDev;
     }
     
+    /* Should be in AtomToResidue.java
     public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
     	ArrayList<Residue> tempArray = new ArrayList<Residue>();
     	
@@ -130,7 +131,7 @@ public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
 				tempArray.get(i).setSSType("T");
 		    }
     	}
-    }
+    }*/
     
         //this method splits a pdb file line into 
 	public String[] customPDBSplit(String splitMe) {
