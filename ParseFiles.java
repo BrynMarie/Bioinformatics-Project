@@ -56,29 +56,6 @@ public class ParseFiles {
     	std = calcStdDev(totalbFactor, totalsquaredbFactor, atomList.size() - 1);
     }
     
-    //this method splits a pdb file line into 
-	public String[] customPDBSplit(String splitMe) {
-		ArrayList<String> strArrayList = new ArrayList<String>();
-		strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
-		strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
-		strArrayList.add(splitMe.substring(17,20).trim()); //  2   residue name
-		strArrayList.add(splitMe.substring(22,26).trim()); //  3   residue sequence number
-		strArrayList.add(splitMe.substring(30,38).trim()); //  4   x
-		strArrayList.add(splitMe.substring(38,46).trim()); //  5   y
-		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
-		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
-		
-		return strArrayList.toArray();
-	}
-   
-    //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
-    public CartesianCoord getCoordinates(String[] strs){
-    	double x = Double.parseDouble(strs[4]); 
-    	double y = Double.parseDouble(strs[5]);
-    	double z = Double.parseDouble(strs[6]);
-    	return new CartesianCoord(x,y,z);
-    }
-    
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
 			double totalMean, double totalStdDev) {
 		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>();
@@ -151,6 +128,29 @@ public class ParseFiles {
 				tempArray.get(i).setSSType("T");
 		    }
     	}
+    }
+    
+        //this method splits a pdb file line into 
+	public String[] customPDBSplit(String splitMe) {
+		ArrayList<String> strArrayList = new ArrayList<String>();
+		strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
+		strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
+		strArrayList.add(splitMe.substring(17,20).trim()); //  2   residue name
+		strArrayList.add(splitMe.substring(22,26).trim()); //  3   residue sequence number
+		strArrayList.add(splitMe.substring(30,38).trim()); //  4   x
+		strArrayList.add(splitMe.substring(38,46).trim()); //  5   y
+		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
+		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
+		
+		return strArrayList.toArray();
+	}
+   
+    //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
+    public CartesianCoord getCoordinates(String[] strs){
+    	double x = Double.parseDouble(strs[4]); 
+    	double y = Double.parseDouble(strs[5]);
+    	double z = Double.parseDouble(strs[6]);
+    	return new CartesianCoord(x,y,z);
     }
     
     public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
