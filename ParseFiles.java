@@ -56,53 +56,6 @@ public class ParseFiles {
     	std = calcStdDev(totalbFactor, totalsquaredbFactor, atomList.size() - 1);
     }
     
-/*
-Commented out as this will be calculated in residue array, but will keep here momentarily for reference
-public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
-			double totalMean, double totalStdDev) {
-		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>();
-		int countTotalAtoms = 0;
-		int currentResidue = 0;
-		int pastResidue = 0;
-		double currentResidueBfactor = 0;
-		long countResidues = 0;
-		double meanOfCurrentResidue = 0;
-		for (int i = 0; i < rawPdbFile.size(); i++) {
-			String[] strs = rawPdbFile.get(i).split("\\s+");
-			if (strs[0].equals("ATOM")) { // only want lines from PDB that are
-						      // from ATOM section
-				// calculate total B-factor of a residue
-				if (countTotalAtoms == 0) {
-					pastResidue = Integer.parseInt(strs[5]);
-					countResidues++;
-					currentResidueBfactor += Double.valueOf(strs[10].trim()).doubleValue();
-				} else {
-					currentResidue = Integer.parseInt(strs[5]);
-					if (currentResidue == pastResidue) {
-						countResidues++;
-						currentResidueBfactor += Double
-								.valueOf(strs[10].trim()).doubleValue();
-					} else {
-						meanOfCurrentResidue = currentResidueBfactor
-								/ (countResidues); // calculate mean B-factor of a residue
-						zScoresOfPDBFile.add(zScore(meanOfCurrentResidue, totalMean, totalStdDev));
-						countResidues = 0;
-						pastResidue = currentResidue;
-						currentResidueBfactor = 0;
-						currentResidueBfactor += Double.valueOf(strs[10].trim()).doubleValue();
-					}
-				}
-			}
-		}
-		return zScoresOfPDBFile;
-	}
-	
-	public double zScore(double currentMean, double totalMean, double totalStdDev) {
-		double zScore = (currentMean - totalMean) / totalStdDev;
-		return zScore;
-	}
-*/
-    
     public double calcStdDev(double total, double squaredTotal, int counter) {
     	double firstTerm = squaredTotal/(counter-1);
     	double secondTerm = (counter/(counter-1));
@@ -110,28 +63,6 @@ public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
     	double stdDev = Math.sqrt(firstTerm-(secondTerm*thirdTerm));
     	return stdDev;
     }
-    
-    /* Should be in AtomToResidue.java
-    public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
-    	ArrayList<Residue> tempArray = new ArrayList<Residue>();
-    	
-    	String[] sheetArray = {"E","B"};
-    	String[] helixArray = {"G","H","I"};
-    	String[] turnArray = {" ","S","T"};
-    	
-    	for (int i = 0; i<dsspFile.size(); ++i) {
-		    tempArray.get(i) = new Residue();
-		    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
-				tempArray.get(i).setSSType("S");
-		    }
-		    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
-				tempArray.get(i).setSSType("H");
-		    }
-		    else if(charsAtEqual(dsspfile, i, 14, turnArray)) {
-				tempArray.get(i).setSSType("T");
-		    }
-    	}
-    }*/
     
         //this method splits a pdb file line into 
 	public String[] customPDBSplit(String splitMe) {
