@@ -54,6 +54,10 @@ public class ParseFiles {
     	
     	meanBFactor = totalBFactor / (atomList.size() - 1);
     	std = calcStdDev(totalbFactor, totalsquaredbFactor, atomList.size() - 1);
+    	//atomList.add(meanBfactor); is this the only way for me to get the meanBfactor value if the return value is the
+    	//arrayList atomList?
+    	//atomList.add(std);
+    	return atomList; //needs a return
     }
     
     public double calcStdDev(double total, double squaredTotal, int counter) {
