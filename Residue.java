@@ -7,7 +7,7 @@ public class Residue {
     CartesianCoord coords;
     String pdbResNum;
     String ssType;
-    boolean missingSS;
+    boolean missingSS, nTerm, cTerm;
     ArrayList<Atom> atomList = new ArrayList<Atom>();
     // other state
 
@@ -46,6 +46,13 @@ public class Residue {
     	return ssType;
     }
     
+    public boolean getCTerm() {
+    	return cTerm;
+    }
+    
+    public boolean getNTerm() {
+    	return nTerm;
+    }
 
     //mutator methods
     public void setBF(double newBF){
@@ -70,5 +77,13 @@ public class Residue {
     
     public void setMissingSS(boolean missingSS) {
     	this.missingSS = missingSS;
+    }
+    
+    public void setNTerm(boolean newNTerm) {
+    	nTerm = newNTerm;
+    }
+    
+    public void setCTerm(boolean newCTerm) {
+    	cTerm = newCTerm;
     }
 }
