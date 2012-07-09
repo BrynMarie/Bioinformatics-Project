@@ -81,7 +81,7 @@ public class ParseFiles {
 		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
 		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
 		
-		return strArrayList.toArray();
+		return strArrayList.toArray(); //type mismatch
 	}
    
     //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
@@ -93,12 +93,12 @@ public class ParseFiles {
     }
     
     public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
-    	return file.get(index).charAt(num).equals(charac);
+    	return file.get(index).charAt(num).equals(charac); //cannot invoke equals(String) on primitive char
     }
     
     public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
-    	for (int j=0; j<chars.size(); ++j){
-	   		if(!charAtEquals(file, index, num, chars.get(j))) {
+    	for (int j=0; j<chars.length; ++j){
+	   		if(!charAtEquals(file, index, num, chars.get[j])) {
 				return false;
 	    	}    	
     	}
