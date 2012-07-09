@@ -3,7 +3,7 @@ import java.util.*;
 public class Atom {
    //change constructors
    
-	CartesianCoord coords;
+    CartesianCoord coords;
     String atomType;
     int resNum;
     double bFactor;
@@ -44,6 +44,14 @@ public class Atom {
     public double getBFactor() {
 	return bFactor;
     }
+    
+    public boolean getCTerm() {
+	return cTerm;
+    }
+	
+    public boolean getNTerm() {
+	return nTerm;
+    }
 
     //mutator methods
     public void setAtomType(String AtomType) {
@@ -72,5 +80,13 @@ public class Atom {
     
     public void setBFactor(double BFactor) {
 	bFactor = BFactor;
+    }
+    
+    public void setCTerm(boolean CTerm){
+	cTerm = CTerm;
+    }
+	
+    public void setNTerm(boolean NTerm){
+	nTerm = NTerm;
     }
 }
