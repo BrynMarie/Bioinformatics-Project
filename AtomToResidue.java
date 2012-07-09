@@ -17,8 +17,20 @@ public class AtomToResidue {
     }
     
     public turnIntoResidueArray(ArrayList<Atom> atomList) {
+    	
+    	int currentResNum = atomList.get(0).getResNum();
+    	
     	for (int i = 0; i<atomList.size(); ++i) {
-    		
+    		newResNum = atomList.get(i).getResNum();
+			//if we're still on the same residue as before...
+			if (newResNum = currentResNum) {
+			
+			}
+			
+			//if we've moved on to the next residue
+			else {
+				currentResNum = newResNum;
+			}
     	}
     }
 //this method will change once we figure out what we're doing with residues and the arrayList of atoms that they're
