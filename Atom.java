@@ -74,10 +74,6 @@ public class Atom {
     	resNum = newResNum;
     }
     
-    public void setCTerm(boolean isCTerminus){
-	cTerm = isCTerminus;
-    }
-    
     public void setBFactor(double BFactor) {
 	bFactor = BFactor;
     }
