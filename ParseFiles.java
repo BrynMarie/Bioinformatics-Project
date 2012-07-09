@@ -15,9 +15,10 @@ public class ParseFiles {
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	CartesianCoord coords;
     	String atomType;
-    	double pdbResNum, tempFact;
+    	int pdbResNum;
+    	double tempFact;
     	boolean backbone = false;
-    	boolean nTerm, cTerm;
+    	boolean nTerm, cTerm = false;
     	boolean nextIsNTerm = false;
     	double totalBFactor = 0;
     	double meanBFactor;
@@ -40,7 +41,7 @@ public class ParseFiles {
     			   atomType.equals("OT2")) {
     				backbone = true;
     			}
-    			pdbResNum = Double.parseDouble(strs[3].trim());
+    			pdbResNum = Integer.parseInt(strs[3].trim());
     			tempFact = Double.parseDouble(strs[8].trim());	
     			totalBFactor += tempFact;
     			totalSquaredBFactor += Math.pow(tempFact, 2);
