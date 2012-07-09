@@ -78,8 +78,19 @@ public class AtomToResidue {
     
     public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray) {
     	// go through that one til they both match up, marking them as 'don't exist in both'
-    	// when they match up, go through them in parallel until they are both exhausted, 
-    	//marking ones that don't match as 'don't exist in both'
+    	// when they match up,
+    	hCounter = 0;
+    	while (lowerArray.get(0).getResNum() != higherArray.get(hCounter).getResNum()) {
+    		higherArray.get(hCounter).setMissingSS(true);
+    		++counter;
+    	}
+    	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
+    	lCounter = 0;
+    	for (int j = 0; j < lowerArray.size(); ++j) {
+    		if(lowerArray.get(lCounter + j).getResNum() != higherArray.get(hCounter + j).getResNum()) {
+    			//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
+    		} 
+    	}
     }
     
     
