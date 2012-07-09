@@ -15,7 +15,7 @@ public class Atom {
 		isBackbone = isBB;
     }
 
-    public Atom(String atom, int resNum, boolean isBB) { //why are there two constructors with different parameters?
+    public Atom(String atom, int resNum, boolean isBB) {
 		atomType = atom;
 		isBackbone = isBB;
     }
