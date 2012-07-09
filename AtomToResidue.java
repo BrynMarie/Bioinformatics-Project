@@ -23,6 +23,7 @@ public class AtomToResidue {
 		long countResidues = 0;
 		double meanOfCurrentResidue = 0;
 		double zScore;
+		boolean cTerm = false, nTerm = false;
     	int currentResNum = atomList.get(0).getResNum();
     	ArrayList<Residue> resArray = new ArrayList<Residue>();
     	ArrayList<Residue> tempArray = extractSS(dsspFile)
@@ -33,6 +34,8 @@ public class AtomToResidue {
 			if (newResNum == currentResNum) {
 				++residueAtoms;
 				currentResidueBFactor += atomList.get(i).getBFactor();
+				cTerm = atomList.get(i).getCTerm();
+				nTerm = atomList.get(i).getNTerm();
 			}
 			
 			//if we've moved on to the next residue
@@ -47,8 +50,15 @@ public class AtomToResidue {
 				currentResNum = newResNum;
 				residueAtom = 0;
 				currentResidueBFactor = atomList.get(i).getBFactor();
+				cTerm = atomList.get(i).getCTerm();
+				nTerm = atomList.get(i).getNTerm();
 			}
     	}
+    	
+    	//once we have tempArray and resArray, sort
+    	// Pick the one with the lowest pdb res num
+    	// go through that one til they both match up, marking them as 'don't exist in both'
+    	// when they match up, go through them in parallel until they are both exhausted, marking ones that don't match as 'don't exist in both'
     }
     
     
