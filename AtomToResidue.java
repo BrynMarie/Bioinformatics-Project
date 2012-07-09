@@ -16,7 +16,7 @@ public class AtomToResidue {
     	Collections.sort(atomList, new AtomComparator);
     }
     
-    public turnIntoResidueArray(ArrayList<Atom> atomList, double bFactorMean, double bFactorSTD) {
+    public turnIntoResidueArray(ArrayList<Atom> atomList, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
     	
 		int residueAtoms = 0;
 		double currentResidueBFactor = 0;
@@ -25,6 +25,7 @@ public class AtomToResidue {
 		double zScore;
     	int currentResNum = atomList.get(0).getResNum();
     	ArrayList<Residue> resArray = new ArrayList<Residue>();
+    	ArrayList<Residue> tempArray = extractSS(dsspFile)
     	
     	for (int i = 0; i<atomList.size(); ++i) {
     		newResNum = atomList.get(i).getResNum();
@@ -89,7 +90,7 @@ public class AtomToResidue {
 		return zScore;
 	}
 
-    public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
+    public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
     	ArrayList<Residue> tempArray = new ArrayList<Residue>();
     	
     	String[] sheetArray = {"E","B"};
@@ -97,7 +98,6 @@ public class AtomToResidue {
     	String[] turnArray = {" ","S","T"};
     	
     	for (int i = 0; i<dsspFile.size(); ++i) {
-		    tempArray.get(i) = new Residue();
 		    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
 				tempArray.get(i).setSSType("S");
 		    }
@@ -108,6 +108,8 @@ public class AtomToResidue {
 				tempArray.get(i).setSSType("T");
 		    }
     	}
+    	
+    	return tempArray;
     }
 
 }
