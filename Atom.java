@@ -9,7 +9,7 @@ public class Atom {
     int bFactor;
     boolean isBackbone, nTerm, cTerm;
     
-    public Atom(String atom, int resNum, boolean isBB, CartesianCoord cc) {
+    public Atom(String atom, int resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
 		atomType = atom;
 		coords = cc;
 		isBackbone = isBB;
