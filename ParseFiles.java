@@ -81,7 +81,9 @@ public class ParseFiles {
 		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
 		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
 		
-		return strArrayList.toArray(); //type mismatch
+		String strArray[] = new String[strArrayList.size()];
+		strArray = strArrayList.toArray(strArray);
+		return strArray; //used this: http://stackoverflow.com/questions/5374311/convert-arrayliststring-to-string
 	}
    
     //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
@@ -94,6 +96,7 @@ public class ParseFiles {
     
     public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
     	return file.get(index).charAt(num).equals(charac); //cannot invoke equals(String) on primitive char
+    	//is this unfinished? i don't see a return type boolean
     }
     
     public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
