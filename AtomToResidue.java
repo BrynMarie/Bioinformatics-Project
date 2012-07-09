@@ -34,8 +34,12 @@ public class AtomToResidue {
 			if (newResNum == currentResNum) {
 				++residueAtoms;
 				currentResidueBFactor += atomList.get(i).getBFactor();
-				cTerm = atomList.get(i).getCTerm();
-				nTerm = atomList.get(i).getNTerm();
+				if(atomList.get(i).getCTerm()) {
+					cTerm = true;
+				}
+				if(atomList.get(i).getNTerm()) {
+					nTerm = true;
+				}
 			}
 			
 			//if we've moved on to the next residue
@@ -44,13 +48,14 @@ public class AtomToResidue {
 				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
 				// String pdbResNum, double bFactor, String ssType, CartesianCoord coords
-				// will need to add ss and coords information
+				//coords information needed, ss added below
+				
 				resArray.add(new Residue(currentResNum, zScore));
 				
 				currentResNum = newResNum;
 				residueAtom = 0;
 				currentResidueBFactor = atomList.get(i).getBFactor();
-				cTerm = atomList.get(i).getCTerm();
+				cTerm = atomList.get(i).getCTerm(); // will set back to false if false; keep true if true
 				nTerm = atomList.get(i).getNTerm();
 			}
     	}
