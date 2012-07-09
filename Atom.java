@@ -6,7 +6,7 @@ public class Atom {
 	CartesianCoord coords;
     String atomType;
     int resNum;
-    int bFactor;
+    double bFactor;
     boolean isBackbone, nTerm, cTerm;
     
     public Atom(String atom, int resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
@@ -40,6 +40,10 @@ public class Atom {
     public int getResNum() {
     	return resNum;
     }
+    
+    public double getBFactor() {
+	return bFactor;
+    }
 
     //mutator methods
     public void setAtomType(String AtomType) {
@@ -64,5 +68,9 @@ public class Atom {
     
     public void setCTerm(boolean isCTerminus){
 	cTerm = isCTerminus;
+    }
+    
+    public void setBFactor(double BFactor) {
+	bFactor = BFactor;
     }
 }
