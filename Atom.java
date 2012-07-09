@@ -43,7 +43,7 @@ public class Atom {
 
     //mutator methods
     public void setAtomType(String AtomType) {
-		atomType = newAtomType;
+		atomType = AtomType;
     }
 
     public void setCoords(double x, double y, double z) {
