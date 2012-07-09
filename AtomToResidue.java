@@ -16,34 +16,44 @@ public class AtomToResidue {
     	Collections.sort(atomList, new AtomComparator);
     }
     
-    public turnIntoResidueArray(ArrayList<Atom> atomList) {
+    public turnIntoResidueArray(ArrayList<Atom> atomList, double bFactorMean, double bFactorSTD) {
     	
+		int residueAtoms = 0;
+		double currentResidueBFactor = 0;
+		long countResidues = 0;
+		double meanOfCurrentResidue = 0;
+		double zScore;
     	int currentResNum = atomList.get(0).getResNum();
+    	ArrayList<Residue> resArray = new ArrayList<Residue>();
     	
     	for (int i = 0; i<atomList.size(); ++i) {
     		newResNum = atomList.get(i).getResNum();
 			//if we're still on the same residue as before...
-			if (newResNum = currentResNum) {
-			
+			if (newResNum == currentResNum) {
+				++residueAtoms;
+				currentResidueBFactor += atomList.get(i).getBFactor();
 			}
 			
 			//if we've moved on to the next residue
 			else {
+				//make new residue here?
+				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
+				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
+				// String pdbResNum, double bFactor, String ssType, CartesianCoord coords
+				// will need to add ss and coords information
+				resArray.add(new Residue(currentResNum, zScore));
+				
 				currentResNum = newResNum;
+				residueAtom = 0;
+				currentResidueBFactor = atomList.get(i).getBFactor();
 			}
     	}
     }
-//this method will change once we figure out what we're doing with residues and the arrayList of atoms that they're
-//supposed to contain, but I made some immediate changes to answer the comments
+    
+    
+// this should be deprecated now; all information is above. Please check and make sure I did it correctly but I'm 95% sure I did. I renamed some variables to make them more concise so make sure to check those over.
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
-		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>(); // should be stored in Residue
-		int countTotalResidueAtoms = 0; //I need this integer to count the residue's number of atoms, not the total
-		//number of atoms in the whole protein from atomList.size();
-		int currentResidue = 0;
-		int pastResidue = 0;
-		double currentResidueBfactor = 0;
-		long countResidues = 0;
-		double meanOfCurrentResidue = 0;
+		
 		for (int i = 0; i< rawPdbFile.size(); ++i) {
 		if(rawPdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
      			String[] strs = customPDBSplit(rawPdbFile.get(i));
@@ -52,6 +62,7 @@ public class AtomToResidue {
 					countTotalResidueAtoms++;
 					currentResidueBfactor += Double.valueOf(strs[8].trim()).doubleValue(); // += necessary?
 					//i need this to add up the b-factor value across the residue
+					// but this is the first time that you're adding anything so you can just set it to equal, right?
 				} else {
 					currentResidue = Integer.parseInt(strs[5]);
 					if (currentResidue == pastResidue) { // if on the same residue, add the next atom's bfactor
