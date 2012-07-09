@@ -38,11 +38,11 @@ public class Residue {
     	return coords;
     }
     
-    public String pdbResNum getResNum() {
+    public String getResNum() {
     	return pdbResNum;
     }
     
-    public String ssType getSS() {
+    public String getSS() {
     	return ssType;
     }
     
