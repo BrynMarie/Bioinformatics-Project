@@ -70,7 +70,7 @@ public class ParseFiles {
     }
     
         //this method splits a pdb file line into 
-	public String[] customPDBSplit(String splitMe) {
+	public static String[] customPDBSplit(String splitMe) {
 		ArrayList<String> strArrayList = new ArrayList<String>();
 		strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
 		strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
