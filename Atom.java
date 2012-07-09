@@ -1,8 +1,6 @@
 import java.util.*;
 
 public class Atom {
-
-   // add setCTerm method
    //change constructors
    
 	CartesianCoord coords;
@@ -17,7 +15,7 @@ public class Atom {
 		isBackbone = isBB;
     }
 
-    public Atom(String atom, int resNum, boolean isBB) {
+    public Atom(String atom, int resNum, boolean isBB) { //why are there two constructors with different parameters?
 		atomType = atom;
 		isBackbone = isBB;
     }
@@ -62,5 +60,9 @@ public class Atom {
     
     public void setResNum(int newResNum){
     	resNum = newResNum;
+    }
+    
+    public void setCTerm(boolean isCTerminus){
+	cTerm = isCTerminus;
     }
 }
