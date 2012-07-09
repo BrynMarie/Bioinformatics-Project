@@ -15,9 +15,10 @@ public class ParseFiles {
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	CartesianCoord coords;
     	String atomType;
-    	double pdbResNum, tempFact;
+    	int pdbResNum;
+    	double tempFact;
     	boolean backbone = false;
-    	boolean nTerm, cTerm;
+    	boolean nTerm, cTerm = false;
     	boolean nextIsNTerm = false;
     	double totalBFactor = 0;
     	double meanBFactor;
@@ -40,7 +41,7 @@ public class ParseFiles {
     			   atomType.equals("OT2")) {
     				backbone = true;
     			}
-    			pdbResNum = Double.parseDouble(strs[3].trim());
+    			pdbResNum = Integer.parseInt(strs[3].trim());
     			tempFact = Double.parseDouble(strs[8].trim());	
     			totalBFactor += tempFact;
     			totalSquaredBFactor += Math.pow(tempFact, 2);
@@ -53,55 +54,12 @@ public class ParseFiles {
     	}// end of for
     	
     	meanBFactor = totalBFactor / (atomList.size() - 1);
-    	std = calcStdDev(totalbFactor, totalsquaredbFactor, atomList.size() - 1);
+    	std = calcStdDev(totalBFactor, totalSquaredBFactor, atomList.size() - 1);
+    	//atomList.add(meanBfactor); is this the only way for me to get the meanBfactor value if the return value is the
+    	//arrayList atomList?
+    	//atomList.add(std);
+    	return atomList; //needs a return
     }
-    
-/*
-Commented out as this will be calculated in residue array, but will keep here momentarily for reference
-public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
-			double totalMean, double totalStdDev) {
-		ArrayList<Double> zScoresOfPDBFile = new ArrayList<Double>();
-		int countTotalAtoms = 0;
-		int currentResidue = 0;
-		int pastResidue = 0;
-		double currentResidueBfactor = 0;
-		long countResidues = 0;
-		double meanOfCurrentResidue = 0;
-		for (int i = 0; i < rawPdbFile.size(); i++) {
-			String[] strs = rawPdbFile.get(i).split("\\s+");
-			if (strs[0].equals("ATOM")) { // only want lines from PDB that are
-						      // from ATOM section
-				// calculate total B-factor of a residue
-				if (countTotalAtoms == 0) {
-					pastResidue = Integer.parseInt(strs[5]);
-					countResidues++;
-					currentResidueBfactor += Double.valueOf(strs[10].trim()).doubleValue();
-				} else {
-					currentResidue = Integer.parseInt(strs[5]);
-					if (currentResidue == pastResidue) {
-						countResidues++;
-						currentResidueBfactor += Double
-								.valueOf(strs[10].trim()).doubleValue();
-					} else {
-						meanOfCurrentResidue = currentResidueBfactor
-								/ (countResidues); // calculate mean B-factor of a residue
-						zScoresOfPDBFile.add(zScore(meanOfCurrentResidue, totalMean, totalStdDev));
-						countResidues = 0;
-						pastResidue = currentResidue;
-						currentResidueBfactor = 0;
-						currentResidueBfactor += Double.valueOf(strs[10].trim()).doubleValue();
-					}
-				}
-			}
-		}
-		return zScoresOfPDBFile;
-	}
-	
-	public double zScore(double currentMean, double totalMean, double totalStdDev) {
-		double zScore = (currentMean - totalMean) / totalStdDev;
-		return zScore;
-	}
-*/
     
     public double calcStdDev(double total, double squaredTotal, int counter) {
     	double firstTerm = squaredTotal/(counter-1);
@@ -111,30 +69,8 @@ public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
     	return stdDev;
     }
     
-    /* Should be in AtomToResidue.java
-    public ArrayList<SecondaryStructure> extractSS(ArrayList<String> dsspFile) {
-    	ArrayList<Residue> tempArray = new ArrayList<Residue>();
-    	
-    	String[] sheetArray = {"E","B"};
-    	String[] helixArray = {"G","H","I"};
-    	String[] turnArray = {" ","S","T"};
-    	
-    	for (int i = 0; i<dsspFile.size(); ++i) {
-		    tempArray.get(i) = new Residue();
-		    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
-				tempArray.get(i).setSSType("S");
-		    }
-		    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
-				tempArray.get(i).setSSType("H");
-		    }
-		    else if(charsAtEqual(dsspfile, i, 14, turnArray)) {
-				tempArray.get(i).setSSType("T");
-		    }
-    	}
-    }*/
-    
         //this method splits a pdb file line into 
-	public String[] customPDBSplit(String splitMe) {
+	public static String[] customPDBSplit(String splitMe) {
 		ArrayList<String> strArrayList = new ArrayList<String>();
 		strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
 		strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
@@ -145,7 +81,9 @@ public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
 		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
 		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
 		
-		return strArrayList.toArray();
+		String strArray[] = new String[strArrayList.size()];
+		strArray = strArrayList.toArray(strArray);
+		return strArray; //used this: http://stackoverflow.com/questions/5374311/convert-arrayliststring-to-string
 	}
    
     //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
@@ -157,12 +95,13 @@ public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile,
     }
     
     public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
-    	return file.get(index).charAt(num).equals(charac);
+    	return file.get(index).charAt(num).equals(charac); //cannot invoke equals(String) on primitive char
+    	//is this unfinished? i don't see a return type boolean
     }
     
     public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
-    	for (int j=0; j<chars.size(); ++j){
-	   		if(!charAtEquals(file, index, num, chars.get(j))) {
+    	for (int j=0; j<chars.length; ++j){
+	   		if(!charAtEquals(file, index, num, chars.get[j])) {
 				return false;
 	    	}    	
     	}
