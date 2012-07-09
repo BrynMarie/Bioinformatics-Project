@@ -16,6 +16,10 @@ public class AtomToResidue {
     	Collections.sort(atomList, new AtomComparator);
     }
     
+    public sortResidues(ArrayList<Residue> resList) {
+    	Collections.sort(resList, new ResidueComparator);
+    }
+    
     public turnIntoResidueArray(ArrayList<Atom> atomList, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
     	
 		int residueAtoms = 0;
@@ -59,11 +63,23 @@ public class AtomToResidue {
 				nTerm = atomList.get(i).getNTerm();
 			}
     	}
+	
+    	tempArray = sortResidues(tempArray);
+    	resArray = sortResidues(resArray);
+    	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
     	
-    	//once we have tempArray and resArray, sort
-    	// Pick the one with the lowest pdb res num
+    	if (tempArray.get(0).getResNum() < resArray.get(0).getResNum()) {
+    		finalResArray = mergeArrays(tempArray, resArray);	
+    	}
+    	else {
+    		finalResArray = mergeArrays(resArray, tempArray);
+    	}
+    }
+    
+    public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray) {
     	// go through that one til they both match up, marking them as 'don't exist in both'
-    	// when they match up, go through them in parallel until they are both exhausted, marking ones that don't match as 'don't exist in both'
+    	// when they match up, go through them in parallel until they are both exhausted, 
+    	//marking ones that don't match as 'don't exist in both'
     }
     
     
