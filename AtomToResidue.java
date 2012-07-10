@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+// to be debugged
+
 public class AtomToResidue {
 
     //takes as input an unsorted arraylist of atoms
@@ -14,6 +16,10 @@ public class AtomToResidue {
     	//this will *certainly* need to be checked for accuracy but according to the link below it works
     	//http://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
     	Collections.sort(atomList, new AtomComparator);
+    }
+    
+    public sortResidues(ArrayList<Residue> resList) {
+    	Collections.sort(resList, new ResidueComparator);
     }
     
     public turnIntoResidueArray(ArrayList<Atom> atomList, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
@@ -47,8 +53,8 @@ public class AtomToResidue {
 				//make new residue here?
 				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
-				// String pdbResNum, double bFactor, String ssType, CartesianCoord coords
-				//coords information needed, ss added below
+				//String pdbResNum, double bFactor, String ssType, 
+				//CartesianCoord coords, boolean nTerm, boolean cTerm
 				
 				resArray.add(new Residue(currentResNum, zScore));
 				
@@ -59,13 +65,76 @@ public class AtomToResidue {
 				nTerm = atomList.get(i).getNTerm();
 			}
     	}
+	
+    	tempArray = sortResidues(tempArray);
+    	resArray = sortResidues(resArray);
+    	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
     	
-    	//once we have tempArray and resArray, sort
-    	// Pick the one with the lowest pdb res num
-    	// go through that one til they both match up, marking them as 'don't exist in both'
-    	// when they match up, go through them in parallel until they are both exhausted, marking ones that don't match as 'don't exist in both'
+    	if (tempArray.get(0).getResNum() < resArray.get(0).getResNum()) {
+    		finalResArray = mergeArrays(tempArray, resArray, true);	
+    	}
+    	else {
+    		finalResArray = mergeArrays(resArray, tempArray, false);
+    	}
     }
     
+    public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, boolean ssFirst) {
+    	// go through that one til they both match up, marking them as 'don't exist in both'
+    	// when they match up,
+    	lCounter = 0;
+    	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
+    	finalCounter = 0;
+    	while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != Integer.parseInt(higherArray.get(0).getResNum()) {
+    		String pdb = lowerArray.get(lCounter).getResNum();
+    		finalResArray.add(new Residue(pdb, true);
+    		++lCounter;
+    	}
+    	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
+    	hCounter = 0;
+    	limit = Math.max(lowerArray.size(), higherArray.size());
+    	for (int j = 0; j < limit; ++j) {
+    		Residue currentLower = lowerArray.get(lCounter + j);
+    		Residue currentHigher = higherArray.get(hCounter + j);
+    		int lResNum = Integer.parseInt(currentLower.getResNum());
+    		int hResNum = Integer.parseInt(currentHigher.getResNum());
+	    	while (lResNum < hResNum) {
+    			//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
+    			finalResArray.add(new Residue(lResNum, true); 
+    			++lCounter;
+    			currentLower = lowerArray.get(lCounter + j);
+    			lResNum = Integer.parseInt(currentLower.getResNum());
+    		} 
+    		while (lResNum > hResNum) {
+    			finalResArray.add(new Residue(hResNum, true);
+    			++hCounter;
+    			currentHigher = higherArray.get(hCounter + j);
+    			int hResNum = Integer.parseInt(currentHigher.getResNum());
+    		}
+    		while (lResNum == hResNum) {
+    			finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
+    		}
+    	}
+    }
+    
+    public Residue mergeResidues(Residue res1, Residue res2, boolean ssFirst) {
+    	Residue retMe;
+    	
+    	if(!ssFirst) {
+    		Residue temp = res2;
+    		res2 = res1;
+    		res1 = temp;
+    	}
+    	//ss info is first
+    	String ss = res1.getSS();
+    	String pdb = res1.getResNum();
+    	double bF = res2.getBFactor();
+    	boolean cTerm = res2.getCTerm();
+    	boolean nTerm = res2.getNTerm();
+    	
+    	//String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm
+    	retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
+    	
+    }
     
 // this should be deprecated now; all information is above. Please check and make sure I did it correctly but I'm 95% sure I did. I renamed some variables to make them more concise so make sure to check those over.
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
