@@ -26,7 +26,7 @@ public class Residue {
         this.ssType = ssType;
     }
 
-    public Residue() {
+    public Residue(String pdbResNum, boolean missing) {
     }
     
     //accessor methods
