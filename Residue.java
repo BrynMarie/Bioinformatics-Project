@@ -19,7 +19,7 @@ public class Residue {
         this.ssType = ssType;
     }
     
-    public Residue(String pdbResNum, double bFactor, String ssType, CartesianCoord coords) {
+    public Residue(String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm) {
         this.bFactor = bFactor;
         this.pdbResNum = pdbResNum;
         this.coords = coords;
