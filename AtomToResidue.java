@@ -69,43 +69,61 @@ public class AtomToResidue {
     	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
     	
     	if (tempArray.get(0).getResNum() < resArray.get(0).getResNum()) {
-    		finalResArray = mergeArrays(tempArray, resArray);	
+    		finalResArray = mergeArrays(tempArray, resArray, true);	
     	}
     	else {
-    		finalResArray = mergeArrays(resArray, tempArray);
+    		finalResArray = mergeArrays(resArray, tempArray, false);
     	}
     }
     
-    public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray) {
+    public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, boolean ssFirst) {
     	// go through that one til they both match up, marking them as 'don't exist in both'
     	// when they match up,
-    	hCounter = 0;
-    	while (lowerArray.get(0).getResNum() != higherArray.get(hCounter).getResNum()) {
-    		higherArray.get(hCounter).setMissingSS(true);
-    		++counter;
+    	lCounter = 0;
+    	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
+    	finalCounter = 0;
+    	while (lowerArray.get(lCounter).getResNum() != higherArray.get(0).getResNum()) {
+    		String pdb = lowerArray.get(lCounter).getResNum().toString();
+    		finalResArray.add(new Residue(pdb, true);
+    		++lCounter;
     	}
     	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
-    	lCounter = 0;
-    	for (int j = 0; j < lowerArray.size(); ++j) {
+    	hCounter = 0;
+    	limit = Math.max(lowerArray.size(), higherArray.size());
+    	for (int j = 0; j < limit; ++j) {
     		currentLower = lowerArray.get(lCounter + j);
     		currentHigher = higherArray.get(hCounter + j);
 	    	while (currentLower.getResNum() < currentHigher.getResNum()) {
     			//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
-				currentLower.setMissingSS(true);    		
+			String pdb = currentLower.getResNum().toString();
+    			finalResArray.add(new Residue(pdb, true); 
     			++lCounter;
     			currentLower = lowerArray.get(lCounter + j);
     		} 
     		while (currentLower.getResNum() > currentHigher.getResNum()) {
-    			higherArray.get(hCounter + j).setMissingSS(true);
+    			String pdb = currentHigher.getResNum().toString();
+    			finalResArray.add(new Residue(pdb, true);
     			++hCounter;
     			currentHigher = higherArray.get(hCounter + j);
     		}
     		while (currentLower.getResNum() == currentHigher.getResNum()) {
-    			
+    			String pdb = lowerArray.get(lCounter).getResNum().toString();
+    			finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
     		}
     	}
     }
     
+    public Residue mergeResidues(Residue res1, Residue res2, boolean ssFirst) {
+    	Residue retMe;
+    	//oh screw this, there's a better way to do it, give me a minute.
+    	if(ssFirst) { // this means that res1 has ss info
+    		String ss = res1.getSS();
+    		
+    	}
+    	else { // res2 has ss info
+    		String ss = res2.getSS();	
+    	}
+    }
     
 // this should be deprecated now; all information is above. Please check and make sure I did it correctly but I'm 95% sure I did. I renamed some variables to make them more concise so make sure to check those over.
 	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
