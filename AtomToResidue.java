@@ -51,8 +51,8 @@ public class AtomToResidue {
 				//make new residue here?
 				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
-				// String pdbResNum, double bFactor, String ssType, CartesianCoord coords
-				//coords information needed, ss added below
+				//String pdbResNum, double bFactor, String ssType, 
+				//CartesianCoord coords, boolean nTerm, boolean cTerm
 				
 				resArray.add(new Residue(currentResNum, zScore));
 				
@@ -125,6 +125,12 @@ public class AtomToResidue {
     	//ss info is first
     	String ss = res1.getSS();
     	String pdb = res1.getResNum();
+    	double bF = res2.getBFactor();
+    	boolean cTerm = res2.getCTerm();
+    	boolean nTerm = res2.getNTerm();
+    	
+    	//String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm
+    	retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
     	
     }
     
