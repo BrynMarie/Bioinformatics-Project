@@ -82,8 +82,8 @@ public class AtomToResidue {
     	lCounter = 0;
     	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
     	finalCounter = 0;
-    	while (lowerArray.get(lCounter).getResNum() != higherArray.get(0).getResNum()) {
-    		String pdb = lowerArray.get(lCounter).getResNum().toString();
+    	while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != Integer.parseInt(higherArray.get(0).getResNum()) {
+    		String pdb = lowerArray.get(lCounter).getResNum();
     		finalResArray.add(new Residue(pdb, true);
     		++lCounter;
     	}
@@ -91,23 +91,24 @@ public class AtomToResidue {
     	hCounter = 0;
     	limit = Math.max(lowerArray.size(), higherArray.size());
     	for (int j = 0; j < limit; ++j) {
-    		currentLower = lowerArray.get(lCounter + j);
-    		currentHigher = higherArray.get(hCounter + j);
-	    	while (currentLower.getResNum() < currentHigher.getResNum()) {
+    		Residue currentLower = lowerArray.get(lCounter + j);
+    		Residue currentHigher = higherArray.get(hCounter + j);
+    		int lResNum = Integer.parseInt(currentLower.getResNum());
+    		int hResNum = Integer.parseInt(currentHigher.getResNum());
+	    	while (lResNum < hResNum) {
     			//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
-			String pdb = currentLower.getResNum().toString();
-    			finalResArray.add(new Residue(pdb, true); 
+    			finalResArray.add(new Residue(lResNum, true); 
     			++lCounter;
     			currentLower = lowerArray.get(lCounter + j);
+    			lResNum = Integer.parseInt(currentLower.getResNum());
     		} 
-    		while (currentLower.getResNum() > currentHigher.getResNum()) {
-    			String pdb = currentHigher.getResNum().toString();
-    			finalResArray.add(new Residue(pdb, true);
+    		while (lResNum > hResNum) {
+    			finalResArray.add(new Residue(hResNum, true);
     			++hCounter;
     			currentHigher = higherArray.get(hCounter + j);
+    			int hResNum = Integer.parseInt(currentHigher.getResNum());
     		}
-    		while (currentLower.getResNum() == currentHigher.getResNum()) {
-    			String pdb = lowerArray.get(lCounter).getResNum().toString();
+    		while (lResNum == hResNum) {
     			finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
     		}
     	}
@@ -115,14 +116,16 @@ public class AtomToResidue {
     
     public Residue mergeResidues(Residue res1, Residue res2, boolean ssFirst) {
     	Residue retMe;
-    	//oh screw this, there's a better way to do it, give me a minute.
-    	if(ssFirst) { // this means that res1 has ss info
-    		String ss = res1.getSS();
-    		
+    	
+    	if(!ssFirst) {
+    		Residue temp = res2;
+    		res2 = res1;
+    		res1 = temp;
     	}
-    	else { // res2 has ss info
-    		String ss = res2.getSS();	
-    	}
+    	//ss info is first
+    	String ss = res1.getSS();
+    	String pdb = res1.getResNum();
+    	
     }
     
 // this should be deprecated now; all information is above. Please check and make sure I did it correctly but I'm 95% sure I did. I renamed some variables to make them more concise so make sure to check those over.
