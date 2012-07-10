@@ -87,9 +87,22 @@ public class AtomToResidue {
     	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
     	lCounter = 0;
     	for (int j = 0; j < lowerArray.size(); ++j) {
-    		if(lowerArray.get(lCounter + j).getResNum() != higherArray.get(hCounter + j).getResNum()) {
+    		currentLower = lowerArray.get(lCounter + j);
+    		currentHigher = higherArray.get(hCounter + j);
+	    	while (currentLower.getResNum() < currentHigher.getResNum()) {
     			//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
+				currentLower.setMissingSS(true);    		
+    			++lCounter;
+    			currentLower = lowerArray.get(lCounter + j);
     		} 
+    		while (currentLower.getResNum() > currentHigher.getResNum()) {
+    			higherArray.get(hCounter + j).setMissingSS(true);
+    			++hCounter;
+    			currentHigher = higherArray.get(hCounter + j);
+    		}
+    		while (currentLower.getResNum() == currentHigher.getResNum()) {
+    			
+    		}
     	}
     }
     
