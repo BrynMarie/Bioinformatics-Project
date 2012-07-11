@@ -135,44 +135,6 @@ public class AtomToResidue {
     	retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
     	
     }
-    
-// this should be deprecated now; all information is above. Please check and make sure I did it correctly but I'm 95% sure I did. I renamed some variables to make them more concise so make sure to check those over.
-	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
-		
-		for (int i = 0; i< rawPdbFile.size(); ++i) {
-		if(rawPdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
-     			String[] strs = customPDBSplit(rawPdbFile.get(i));
-				if (i == 0) { 
-					pastResidue = Integer.parseInt(strs[3]); 
-					countTotalResidueAtoms++;
-					currentResidueBfactor += Double.valueOf(strs[8].trim()).doubleValue(); // += necessary?
-					//i need this to add up the b-factor value across the residue
-					// but this is the first time that you're adding anything so you can just set it to equal, right?
-				} else {
-					currentResidue = Integer.parseInt(strs[5]);
-					if (currentResidue == pastResidue) { // if on the same residue, add the next atom's bfactor
-						countTotalResidueAtoms++;
-						currentResidueBfactor += Double
-								.valueOf(strs[10].trim()).doubleValue();
-					} else { // if not on the same residue
-						meanOfCurrentResidue = currentResidueBfactor
-								/ (countTotalResidueAtoms); // calculate mean B-factor of a residue
-						zScoresOfPDBFile.add(zScore(meanOfCurrentResidue, totalMean, totalStdDev)); // add zscore
-						countResidues = 0;
-						pastResidue = currentResidue;
-						currentResidueBfactor = 0;
-						currentResidueBfactor += Double.valueOf(strs[8].trim()).doubleValue();
-					}
-				}
-			}
-		}
-		return zScoresOfPDBFile;
-	}
-	
-	public double zScore(double currentMean, double totalMean, double totalStdDev) {
-		double zScore = (currentMean - totalMean) / totalStdDev;
-		return zScore;
-	}
 
     public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
     	ArrayList<Residue> tempArray = new ArrayList<Residue>();
