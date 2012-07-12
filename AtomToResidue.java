@@ -86,41 +86,29 @@ public class AtomToResidue {
 				ySq = Math.pow(y,2);
 				zSq = Math.pow(z,2);
 				// calc Ixx term by term
-				firstTermOfIxx = (aw) * (ySq + zSq);
-				secondTermOfIxx = Math.pow((aw * y), 2);
-				thirdTermOfIxx = Math.pow((aw * z), 2);
+				firstTermOfIxx += (aw) * (ySq + zSq);
+				secondTermOfIxx += Math.pow((aw * y), 2);
+				thirdTermOfIxx += Math.pow((aw * z), 2);
 				//calc Iyy term by term
-				firstTermOfIyy = aw * (xSq + zSq);
-				secondTermOfIyy = Math.pow((aw * x),2)
-				thirdTermOfIyy = Math.pow((aw * z), 2);
+				firstTermOfIyy += aw * (xSq + zSq);
+				secondTermOfIyy += Math.pow((aw * x),2)
+				thirdTermOfIyy += Math.pow((aw * z), 2);
 				//set up calculations for Izz term by term
-				firstTermOfIzz = aw * (xSq + ySq);
-				secondTermOfIyy = Math.pow((aw * x), 2);
-				thirdTermOfIyy = Math.pow((aw * y), 2);
+				firstTermOfIzz += aw * (xSq + ySq);
+				secondTermOfIyy += Math.pow((aw * x), 2);
+				thirdTermOfIyy += Math.pow((aw * y), 2);
 				//set up calculations for Ixy/Iyx term by term
-				firstTermOfIxy = (getAtomicWeight(atomList.get(i))
-						* (atomList.get(i).getCoords().getX()) * (atomList
-						.get(i).getCoords().getY()));
-				secondTermOfIxy += (getAtomicWeight(atomList.get(i)))
-						* (atomList.get(i).getCoords().getX());
-				thirdTermOfIxy += (getAtomicWeight(atomList.get(i)))
-						* (atomList.get(i).getCoords().getY());
+				firstTermOfIxy += aw * x * y;
+				secondTermOfIxy += aw * x;
+				thirdTermOfIxy += aw * y;
 				//set up calculations for Ixz/Izx term by term
-				firstTermOfIxz += (getAtomicWeight(atomList.get(i))
-						* (atomList.get(i).getCoords().getX()) * (atomList
-						.get(i).getCoords().getZ()));
-				secondTermOfIxz += (getAtomicWeight(atomList.get(i)))
-						* (atomList.get(i).getCoords().getX());
-				thirdTermOfIxz += (getAtomicWeight(atomList.get(i)))
-						* (atomList.get(i).getCoords().getZ());
+				firstTermOfIxz += aw * x * z;
+				secondTermOfIxz += aw * x;
+				thirdTermOfIxz += aw * z;
 				//set up calculations for Iyz/Izy term by term
-				firstTermOfIxz += (getAtomicWeight(atomList.get(i))
-						* (atomList.get(i).getCoords().getY()) * (atomList
-						.get(i).getCoords().getZ()));
-				secondTermOfIxz += (getAtomicWeight(atomList.get(i)))
-						* (atomList.get(i).getCoords().getY());
-				thirdTermOfIxz += (getAtomicWeight(atomList.get(i)))
-						* (atomList.get(i).getCoords().getZ());
+				firstTermOfIxz += aw * y * z;
+				secondTermOfIxz += aw * y;
+				thirdTermOfIxz += aw * z;
 				// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
 				totalAtomicWeight += getAtomicWeight(atomList.get(i));
 			}
