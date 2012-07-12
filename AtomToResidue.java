@@ -77,37 +77,28 @@ public class AtomToResidue {
 			// if C-terminus or N-terminus => calculate PMOI
 				//set up calculations for Ixx term by term
 				//this should be abstracted further; it's unreadable
-				firstTermOfIxx += (getAtomicWeight(atomList.get(i)))
-						* ((Math.pow(atomList.get(i).getCoords().getY(), 2)) + (Math
-								.pow(atomList.get(i).getCoords().getZ(), 2)));
-				secondTermOfIxx += Math.pow(
-						(getAtomicWeight(atomList.get(i)) * atomList.get(i)
-								.getCoords().getY()), 2);
-				thirdTermOfIxx += Math.pow(
-							(getAtomicWeight(atomList.get(i)) * atomList.get(i)
-								.getCoords().getZ()), 2);
-				//set up calculations for Iyy term by term
-				firstTermOfIyy += (getAtomicWeight(atomList.get(i)))
-						* ((Math.pow(atomList.get(i).getCoords().getX(), 2)) + (Math
-								.pow(atomList.get(i).getCoords().getZ(), 2)));
-				secondTermOfIyy += Math.pow(
-						(getAtomicWeight(atomList.get(i)) * atomList.get(i)
-								.getCoords().getX()), 2);
-				thirdTermOfIyy += Math.pow(
-						(getAtomicWeight(atomList.get(i)) * atomList.get(i)
-								.getCoords().getZ()), 2);
+				//this also ideally will be in a helper method. 
+				aw = getAtomicWeight(atomList.get(i));
+				x = atomList.get(i).getCoords().getX();
+				y = atomList.get(i).getCoords().getY();
+				z = atomList.get(i).getCoords().getZ();
+				xSq = Math.pow(x,2);
+				ySq = Math.pow(y,2);
+				zSq = Math.pow(z,2);
+				// calc Ixx term by term
+				firstTermOfIxx = (aw) * (ySq + zSq);
+				secondTermOfIxx = Math.pow((aw * y), 2);
+				thirdTermOfIxx = Math.pow((aw * z), 2);
+				//calc Iyy term by term
+				firstTermOfIyy = aw * (xSq + zSq);
+				secondTermOfIyy = Math.pow((aw * x),2)
+				thirdTermOfIyy = Math.pow((aw * z), 2);
 				//set up calculations for Izz term by term
-				firstTermOfIzz += (getAtomicWeight(atomList.get(i)))
-						* ((Math.pow(atomList.get(i).getCoords().getX(), 2)) + (Math
-								.pow(atomList.get(i).getCoords().getY(), 2)));
-				secondTermOfIyy += Math.pow(
-						(getAtomicWeight(atomList.get(i)))
-								* (atomList.get(i).getCoords().getX()), 2);
-				thirdTermOfIyy += Math.pow(
-						(getAtomicWeight(atomList.get(i)))
-								* (atomList.get(i).getCoords().getY()), 2);
+				firstTermOfIzz = aw * (xSq + ySq);
+				secondTermOfIyy = Math.pow((aw * x), 2);
+				thirdTermOfIyy = Math.pow((aw * y), 2);
 				//set up calculations for Ixy/Iyx term by term
-				firstTermOfIxy += (getAtomicWeight(atomList.get(i))
+				firstTermOfIxy = (getAtomicWeight(atomList.get(i))
 						* (atomList.get(i).getCoords().getX()) * (atomList
 						.get(i).getCoords().getY()));
 				secondTermOfIxy += (getAtomicWeight(atomList.get(i)))
