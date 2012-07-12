@@ -6,6 +6,7 @@ import Jama.*;
 
 public class AtomToResidue {
      //NEW PMoI variables of atomic weights used in calculation
+     // These should be expressed as Enums in a separate AtomicWeightEnum class
      double nitrogenAtomicWeight = 14.0067;
      double carbonAtomicWeight = 12.0107;
      double hydrogenAtomicWeight = 1.00794;
@@ -29,19 +30,20 @@ public class AtomToResidue {
     }
     
     public double getAtomicWeight(Atom currentAtom) { //NEW PMoI method to get atomic weight given atom type
-	double atomWeight = 0;
-	if (currentAtom.getAtomType().charAt(0).equals("H")) {
-		atomWeight = hydrogenAtomicWeight;
-	} else if (currentAtom.getAtomType().charAt(0).equals("N")) {
-		atomWeight = nitrogenAtomicWeight;
-	} else if (currentAtom.getAtomType().charAt(0).equals("C")) {
-		atomWeight = carbonAtomicWeight;
-	} else if (currentAtom.getAtomType().charAt(0).equals("O")) {
-		atomWeight = oxygenAtomicWeight;
-	} else if (currentAtom.getAtomType().charAt(0).equals("S")) {
-		atomWeight = sulphurAtomicWeight;
-	}
-	return atomWeight;
+    	//enums would make this method a lot shorter
+		double atomWeight = 0;
+		if (currentAtom.getAtomType().charAt(0).equals("H")) {
+			atomWeight = hydrogenAtomicWeight;
+		} else if (currentAtom.getAtomType().charAt(0).equals("N")) {
+			atomWeight = nitrogenAtomicWeight;
+		} else if (currentAtom.getAtomType().charAt(0).equals("C")) {
+			atomWeight = carbonAtomicWeight;
+		} else if (currentAtom.getAtomType().charAt(0).equals("O")) {
+			atomWeight = oxygenAtomicWeight;
+		} else if (currentAtom.getAtomType().charAt(0).equals("S")) {
+			atomWeight = sulphurAtomicWeight;
+		}
+		return atomWeight;
 	}
     
     public turnIntoResidueArray(ArrayList<Atom> atomList, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
@@ -74,6 +76,7 @@ public class AtomToResidue {
 			if (atomList.get(i).getCTerm()	|| atomList.get(i).getNTerm() == true) { 
 			// if C-terminus or N-terminus => calculate PMOI
 				//set up calculations for Ixx term by term
+				//this should be abstracted further; it's unreadable
 				firstTermOfIxx += (getAtomicWeight(atomList.get(i)))
 						* ((Math.pow(atomList.get(i).getCoords().getY(), 2)) + (Math
 								.pow(atomList.get(i).getCoords().getZ(), 2)));
