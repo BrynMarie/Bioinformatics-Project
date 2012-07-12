@@ -73,46 +73,47 @@ public class AtomToResidue {
 			if (newResNum == currentResNum) {
 				++residueAtoms;
 				currentResidueBFactor += atomList.get(i).getBFactor();
-			if (atomList.get(i).getCTerm()	|| atomList.get(i).getNTerm() == true) { 
-			// if C-terminus or N-terminus => calculate PMOI
-				//set up calculations for Ixx term by term
-				//Has been abstracted to a pretty clear point
-				//this also ideally will be in a helper method. 
-				aw = getAtomicWeight(atomList.get(i));
-				x = atomList.get(i).getCoords().getX();
-				y = atomList.get(i).getCoords().getY();
-				z = atomList.get(i).getCoords().getZ();
-				xSq = Math.pow(x,2);
-				ySq = Math.pow(y,2);
-				zSq = Math.pow(z,2);
-				// calc Ixx term by term
-				firstTermOfIxx += (aw) * (ySq + zSq);
-				secondTermOfIxx += Math.pow((aw * y), 2);
-				thirdTermOfIxx += Math.pow((aw * z), 2);
-				//calc Iyy term by term
-				firstTermOfIyy += aw * (xSq + zSq);
-				secondTermOfIyy += Math.pow((aw * x),2)
-				thirdTermOfIyy += Math.pow((aw * z), 2);
-				//set up calculations for Izz term by term
-				firstTermOfIzz += aw * (xSq + ySq);
-				secondTermOfIyy += Math.pow((aw * x), 2);
-				thirdTermOfIyy += Math.pow((aw * y), 2);
-				//set up calculations for Ixy/Iyx term by term
-				firstTermOfIxy += aw * x * y;
-				secondTermOfIxy += aw * x;
-				thirdTermOfIxy += aw * y;
-				//set up calculations for Ixz/Izx term by term
-				firstTermOfIxz += aw * x * z;
-				secondTermOfIxz += aw * x;
-				thirdTermOfIxz += aw * z;
-				//set up calculations for Iyz/Izy term by term
-				firstTermOfIxz += aw * y * z;
-				secondTermOfIxz += aw * y;
-				thirdTermOfIxz += aw * z;
-				// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
-				totalAtomicWeight += getAtomicWeight(atomList.get(i));
+				if (atomList.get(i).getCTerm()	|| atomList.get(i).getNTerm() == true) { 
+				// if C-terminus or N-terminus => calculate PMOI
+					//set up calculations for Ixx term by term
+					//Has been abstracted to a pretty clear point
+					//this also ideally will be in a helper method. 
+					aw = getAtomicWeight(atomList.get(i));
+					x = atomList.get(i).getCoords().getX();
+					y = atomList.get(i).getCoords().getY();
+					z = atomList.get(i).getCoords().getZ();
+					xSq = Math.pow(x,2);
+					ySq = Math.pow(y,2);
+					zSq = Math.pow(z,2);
+					// calc Ixx term by term
+					firstTermOfIxx += (aw) * (ySq + zSq);
+					secondTermOfIxx += Math.pow((aw * y), 2);
+					thirdTermOfIxx += Math.pow((aw * z), 2);
+					//calc Iyy term by term
+					firstTermOfIyy += aw * (xSq + zSq);
+					secondTermOfIyy += Math.pow((aw * x),2)
+					thirdTermOfIyy += Math.pow((aw * z), 2);
+					//set up calculations for Izz term by term
+					firstTermOfIzz += aw * (xSq + ySq);
+					secondTermOfIyy += Math.pow((aw * x), 2);
+					thirdTermOfIyy += Math.pow((aw * y), 2);
+					//set up calculations for Ixy/Iyx term by term
+					firstTermOfIxy += aw * x * y;
+					secondTermOfIxy += aw * x;
+					thirdTermOfIxy += aw * y;
+					//set up calculations for Ixz/Izx term by term
+					firstTermOfIxz += aw * x * z;
+					secondTermOfIxz += aw * x;
+					thirdTermOfIxz += aw * z;
+					//set up calculations for Iyz/Izy term by term
+					firstTermOfIxz += aw * y * z;
+					secondTermOfIxz += aw * y;
+					thirdTermOfIxz += aw * z;
+					// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
+					totalAtomicWeight += getAtomicWeight(atomList.get(i));
+				}
 			}
-			//if we've moved on to the next residue
+				//if we've moved on to the next residue
 			else {
 				//make new residue here?
 				//BEGIN calculate PMoI
@@ -168,8 +169,8 @@ public class AtomToResidue {
 				cTerm = atomList.get(i).getCTerm(); // will set back to false if false; keep true if true
 				nTerm = atomList.get(i).getNTerm();
 			}
-    	}
-	
+		}
+
     	tempArray = sortResidues(tempArray);
     	resArray = sortResidues(resArray);
     	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
