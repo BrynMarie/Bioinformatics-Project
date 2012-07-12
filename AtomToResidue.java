@@ -76,7 +76,7 @@ public class AtomToResidue {
 			if (atomList.get(i).getCTerm()	|| atomList.get(i).getNTerm() == true) { 
 			// if C-terminus or N-terminus => calculate PMOI
 				//set up calculations for Ixx term by term
-				//this should be abstracted further; it's unreadable
+				//Has been abstracted to a pretty clear point
 				//this also ideally will be in a helper method. 
 				aw = getAtomicWeight(atomList.get(i));
 				x = atomList.get(i).getCoords().getX();
