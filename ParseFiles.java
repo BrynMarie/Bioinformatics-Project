@@ -32,13 +32,8 @@ public class ParseFiles {
     			atomType = strs[1].trim();
     			nTerm = nextIsNTerm;
     			nextIsNTerm = false;
-    			if(atomType.equals("N") || 
-    			   atomType.equals("CA") || 
-    			   atomType.equals("C") || 
-    			   atomType.equals("O") ||
-    			   atomType.equals("OXT") ||
-    			   atomType.equals("OT1") ||
-    			   atomType.equals("OT2")) {
+    			String[] atomTypeArray = {"N","CA","C","O","OXT","OT1","OT2"};
+    			if(multiEquals(atomType, atomTypeArray) {
     				backbone = true;
     			}
     			pdbResNum = Integer.parseInt(strs[3].trim());
@@ -59,6 +54,15 @@ public class ParseFiles {
     	//arrayList atomList?
     	//atomList.add(std);
     	return atomList; //needs a return
+    }
+    
+    public boolean multiEquals(String checkMe, String[] againstMe) {
+    	for(int i = 0; i < againstMe.length; ++i) {
+    		if(checkMe.equals(againstMe[i])) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
     
     public double calcStdDev(double total, double squaredTotal, int counter) {
