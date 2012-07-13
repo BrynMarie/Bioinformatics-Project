@@ -14,6 +14,11 @@ public class ResidueToSS {
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         currentInSS.add(oldRes);
+        boolean turn = false;
+        
+        if(oldRes.getSS().equals("T")) {
+            turn = true;
+        }
         
         loopCounter = 0;
         
@@ -23,11 +28,24 @@ public class ResidueToSS {
             //the old and current res are in the same ss, and current res isn't missing
             if(currentRes.getSS().equals(oldRes.getSS() && !currentRes.isMissing()) {
                 currentInSS.add(currentRes);
+                if (loopCounter != 0) { ++loopCounter; }
+                if (loopCounter == 13) { 
+                    currentInSS.clear();
+                    ssArray.add(new SecondaryStructure(currentRes.getSS(), false))
+                }
             }
             //the old and current res are in different ss's, and the current res isn't missing
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
                 //if missing, marker for next not to exist
+                if(currentRes.getSS().equals("T")) {
+                    turn = true;
+                    loopCounter = 1;
+                }
+                else {
+                    turn = false;
+                    loopCounter = 0;
+                }
             }
             // they are in the same ss and the current res is missing
             else if(currentRes.getSS().equals(oldRes.getSS()){
