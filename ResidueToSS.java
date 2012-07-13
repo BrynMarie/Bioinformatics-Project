@@ -2,6 +2,12 @@ import java.util.*;
 import java.io.*;
 
 public class ResidueToSS {
+    
+    /////////////////////
+    
+    // Need coord information to be integrated somehow!
+    
+    /////////////////////
 
     //this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
     //It has not been filtered of loops that are too long, either.
@@ -92,5 +98,7 @@ public class ResidueToSS {
     
     public SecondaryStructure parseSS(ArrayList<Residue> resList) {
         // merge resList into a secondary structure with all necessary information
+        //String ss, int length, ArrayList<Residue> resArray, CartesianCoords coords
+        return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList, COORDS_NEEDED);
     }
 }
