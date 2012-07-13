@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.*;
+import Jama.*;
 
 // to be debugged
 
 public class AtomToResidue {
-
     //takes as input an unsorted arraylist of atoms
     public AtomToResidue(ArrayList<Atom> atomList) {
 		ArrayList<Atom> sortedAtomList = sortAtoms(atomList);
@@ -22,6 +22,20 @@ public class AtomToResidue {
     	Collections.sort(resList, new ResidueComparator);
     }
     
+    public double getAtomicWeight(Atom currentAtom) { //NEW PMoI method to get atomic weight given atom type
+		double atomWeight = 0;
+		atomType = currentAtom.getAtomType().charAt(0);
+		String[] atomTypeArray = {"H","N","C","O","S"};
+		double[] atomWeightArray = {1.00794, 14.0067, 12.0107, 15.9994, 32.065};
+		
+		for(int i=0; i<atomTypeArray.length; ++i) {
+			if (atomType.equals(atomTypeArray[i])) {
+				atomWeight = atomWeightArray[i];
+			}
+		}
+		return atomWeight;
+	}
+    
     public turnIntoResidueArray(ArrayList<Atom> atomList, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
     	
 		int residueAtoms = 0;
@@ -30,42 +44,124 @@ public class AtomToResidue {
 		double meanOfCurrentResidue = 0;
 		double zScore;
 		boolean cTerm = false, nTerm = false;
+		int newResNum=0;
+		// NEW PMoI variable declarations
+		int pastResidue = 0, currentResidue=0;
+		double firstTermOfIxx = 0, firstTermOfIyy = 0, firstTermOfIzz = 0, firstTermOfIxy = 0, firstTermOfIxz = 0, firstTermOfIzx = 0, firstTermOfIyx = 0, firstTermOfIyz = 0, firstTermOfIzy = 0;
+		double secondTermOfIxx = 0, secondTermOfIyy = 0, secondTermOfIzz = 0, secondTermOfIxy = 0, secondTermOfIxz = 0, secondTermOfIzx = 0, secondTermOfIyx = 0, secondTermOfIyz = 0, secondTermOfIzy = 0;
+		double thirdTermOfIxx = 0, thirdTermOfIyy = 0, thirdTermOfIzz = 0, thirdTermOfIxy = 0, thirdTermOfIxz = 0, thirdTermOfIzx = 0, thirdTermOfIyx = 0, thirdTermOfIyz = 0, thirdTermOfIzy = 0;
+		double Ixx = 0, Iyy = 0, Izz = 0, Ixy = 0, Iyx = 0, Ixz = 0, Izx = 0, Iyz = 0, Izy = 0;
+		double totalAtomicWeight = 0;
+		// END PMoI variable declaration
     	int currentResNum = atomList.get(0).getResNum();
     	ArrayList<Residue> resArray = new ArrayList<Residue>();
     	ArrayList<Residue> tempArray = extractSS(dsspFile)
     	
     	for (int i = 0; i<atomList.size(); ++i) {
     		newResNum = atomList.get(i).getResNum();
-			//if we're still on the same residue as before...
+    			//if we're still on the same residue as before...
 			if (newResNum == currentResNum) {
 				++residueAtoms;
 				currentResidueBFactor += atomList.get(i).getBFactor();
-				if(atomList.get(i).getCTerm()) {
-					cTerm = true;
-				}
-				if(atomList.get(i).getNTerm()) {
-					nTerm = true;
+				if (atomList.get(i).getCTerm()	|| atomList.get(i).getNTerm() == true) { 
+				// if C-terminus or N-terminus => calculate PMOI
+					//set up calculations for Ixx term by term
+					//Has been abstracted to a pretty clear point
+					//this also ideally will be in a helper method. 
+					aw = getAtomicWeight(atomList.get(i));
+					x = atomList.get(i).getCoords().getX();
+					y = atomList.get(i).getCoords().getY();
+					z = atomList.get(i).getCoords().getZ();
+					xSq = Math.pow(x,2);
+					ySq = Math.pow(y,2);
+					zSq = Math.pow(z,2);
+					// calc Ixx term by term
+					firstTermOfIxx += (aw) * (ySq + zSq);
+					secondTermOfIxx += Math.pow((aw * y), 2);
+					thirdTermOfIxx += Math.pow((aw * z), 2);
+					//calc Iyy term by term
+					firstTermOfIyy += aw * (xSq + zSq);
+					secondTermOfIyy += Math.pow((aw * x),2)
+					thirdTermOfIyy += Math.pow((aw * z), 2);
+					//set up calculations for Izz term by term
+					firstTermOfIzz += aw * (xSq + ySq);
+					secondTermOfIyy += Math.pow((aw * x), 2);
+					thirdTermOfIyy += Math.pow((aw * y), 2);
+					//set up calculations for Ixy/Iyx term by term
+					firstTermOfIxy += aw * x * y;
+					secondTermOfIxy += aw * x;
+					thirdTermOfIxy += aw * y;
+					//set up calculations for Ixz/Izx term by term
+					firstTermOfIxz += aw * x * z;
+					secondTermOfIxz += aw * x;
+					thirdTermOfIxz += aw * z;
+					//set up calculations for Iyz/Izy term by term
+					firstTermOfIxz += aw * y * z;
+					secondTermOfIxz += aw * y;
+					thirdTermOfIxz += aw * z;
+					// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
+					totalAtomicWeight += getAtomicWeight(atomList.get(i));
 				}
 			}
-			
-			//if we've moved on to the next residue
+				//if we've moved on to the next residue
 			else {
 				//make new residue here?
+				//BEGIN calculate PMoI
+				Ixx = firstTermOfIxx - (1 / totalAtomicWeight)
+						* (secondTermOfIxx) - (1 / totalAtomicWeight)
+						* (thirdTermOfIxx);
+				Iyy = firstTermOfIyy - (1 / totalAtomicWeight)
+						* (secondTermOfIyy) - (1 / totalAtomicWeight)
+						* (thirdTermOfIyy);
+				Izz = firstTermOfIzz - (1 / totalAtomicWeight)
+						* (secondTermOfIzz) - (1 / totalAtomicWeight)
+						* (thirdTermOfIzz);
+				Ixy = -firstTermOfIxy + (1 / totalAtomicWeight)
+						* (secondTermOfIxy) * (thirdTermOfIxy);
+				Iyx = Ixy;
+				Ixz = -firstTermOfIxz + (1 / totalAtomicWeight)
+						* (secondTermOfIxz) * (thirdTermOfIxz);
+				Izx = Ixz;
+				Iyz = -firstTermOfIyz + (1 / totalAtomicWeight)
+						* (secondTermOfIyz) * (thirdTermOfIyz);
+				Izy = Iyz;
+
+				double[][] populateMatrix = new double[][] { { Ixx, Ixy, Izz },
+						{ Iyx, Iyy, Iyz }, { Izx, Izy, Izz } };
+				Matrix matrixForEigen = new Matrix(populateMatrix);
+				EigenvalueDecomposition ed = matrixForEigen.eig();
+				double[] getRealEigenvalues = ed.getRealEigenvalues();
+				double[] getImgEigenvalues = ed.getImagEigenvalues(); 
+				CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[1], getRealEigenvalues[2], getRealEigenvalues[3]);
+				//reset terms
+				Ixx=0, Iyy=0, Izz=0, Ixy=0, Iyx=0, Ixz=0, Izx=0, Izy=0, Iyz=0;
+				//reset first terms
+				firstTermOfIxx=0, firstTermOfIyy=0, firstTermOfIzz=0, firstTermOfIxy=0, firstTermOfIyx=0, 
+				firstTermOfIxz=0, firstTermOfIzx=0, firstTermOfIzy=0, firstTermOfIyz=0;
+				//reset second terms
+				secondTermOfIxx=0, secondTermOfIyy=0, secondTermOfIzz=0, secondTermOfIxy=0, secondTermOfIyx=0, 
+				secondTermOfIxz=0, secondTermOfIzx=0, secondTermOfIzy=0, secondTermOfIyz=0;
+				//reset third terms
+				thirdTermOfIxx=0, thirdTermOfIyy=0, thirdTermOfIzz=0, thirdTermOfIxy=0, thirdTermOfIyx=0, 
+				thirdTermOfIxz=0, thirdTermOfIzx=0, thirdTermOfIzy=0, thirdTermOfIyz=0;
+				totalAtomicWeight=0;
+				//end calculate PMoI
 				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
 				//String pdbResNum, double bFactor, String ssType, 
 				//CartesianCoord coords, boolean nTerm, boolean cTerm
 				
+				//if zscore is too high set as missing HERE
 				resArray.add(new Residue(currentResNum, zScore));
 				
 				currentResNum = newResNum;
-				residueAtom = 0;
+				residueAtoms = 0;
 				currentResidueBFactor = atomList.get(i).getBFactor();
 				cTerm = atomList.get(i).getCTerm(); // will set back to false if false; keep true if true
 				nTerm = atomList.get(i).getNTerm();
 			}
-    	}
-	
+		}
+
     	tempArray = sortResidues(tempArray);
     	resArray = sortResidues(resArray);
     	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
@@ -135,44 +231,6 @@ public class AtomToResidue {
     	retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
     	
     }
-    
-// this should be deprecated now; all information is above. Please check and make sure I did it correctly but I'm 95% sure I did. I renamed some variables to make them more concise so make sure to check those over.
-	public ArrayList<Double> calculateBfactorZScore(ArrayList<String> rawPdbFile, double totalMean, double totalStdDev) {
-		
-		for (int i = 0; i< rawPdbFile.size(); ++i) {
-		if(rawPdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
-     			String[] strs = customPDBSplit(rawPdbFile.get(i));
-				if (i == 0) { 
-					pastResidue = Integer.parseInt(strs[3]); 
-					countTotalResidueAtoms++;
-					currentResidueBfactor += Double.valueOf(strs[8].trim()).doubleValue(); // += necessary?
-					//i need this to add up the b-factor value across the residue
-					// but this is the first time that you're adding anything so you can just set it to equal, right?
-				} else {
-					currentResidue = Integer.parseInt(strs[5]);
-					if (currentResidue == pastResidue) { // if on the same residue, add the next atom's bfactor
-						countTotalResidueAtoms++;
-						currentResidueBfactor += Double
-								.valueOf(strs[10].trim()).doubleValue();
-					} else { // if not on the same residue
-						meanOfCurrentResidue = currentResidueBfactor
-								/ (countTotalResidueAtoms); // calculate mean B-factor of a residue
-						zScoresOfPDBFile.add(zScore(meanOfCurrentResidue, totalMean, totalStdDev)); // add zscore
-						countResidues = 0;
-						pastResidue = currentResidue;
-						currentResidueBfactor = 0;
-						currentResidueBfactor += Double.valueOf(strs[8].trim()).doubleValue();
-					}
-				}
-			}
-		}
-		return zScoresOfPDBFile;
-	}
-	
-	public double zScore(double currentMean, double totalMean, double totalStdDev) {
-		double zScore = (currentMean - totalMean) / totalStdDev;
-		return zScore;
-	}
 
     public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
     	ArrayList<Residue> tempArray = new ArrayList<Residue>();

@@ -4,17 +4,27 @@ import java.util.*;
 public class SecondaryStructure {
 
     String sstype;
-    boolean prevConnected, nextConnected;
     int length;
     ArrayList<Residue> resArray = new ArrayList<Residue>();
-    CartesianCoord coords = new CartesianCoord();
-    //also need principal moment of inertia, not sure which datatype is best for that -- Jennifer?
+    CartesianCoord coords = new CartesianCoord(); //aka pmoi
+    boolean exists
 
-    public SecondaryStructure() {
-	sstype = "";
-	prevConnected = false;
-	nextConnected = false;
-	length = 0;
+    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray, CartesianCoords coords) {
+	sstype = ss;
+	this.length = length;
+	this.resArray = resArray;
+	this.coords = coords;
+    }
+    
+    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray) {
+    	sstype = ss;
+    	this.length = length;
+    	this.resArray = resArray;
+    }
+    
+    public SecondaryStructure(String ss, boolean exists) {
+    	sstype = ss;
+    	this.exists = exists;
     }
 
     //Accessor fields
@@ -22,12 +32,8 @@ public class SecondaryStructure {
 	return sstype;
     }
 
-    public boolean getPrevCnx() {
-	return prevConnected;
-    }
-
-    public boolean getNextCnx() {
-	return nextConnected;
+    public boolean getExists() {
+	return exists;
     }
 
     public int length() {
@@ -48,7 +54,7 @@ public class SecondaryStructure {
 
     //Mutator fields
     public void setSSType(String arg) {
-	if(arg.toString().equals("H") || arg.toString().equals("S") || arg.toString().equals("T")) {
+	if(arg.equals("H") || arg.equals("S") || arg.equals("T")) {
 	    sstype = arg;
 	}
 	else {
@@ -56,12 +62,8 @@ public class SecondaryStructure {
 	}
     }
 
-    public void setPrevCnx(boolean state) {
-	prevConnected = state;
-    }
-    
-    public void setNextCnx(boolean state) {
-	nextConnected = state;
+    public void setExists(boolean state) {
+	exists = state;
     }
 
     public void setLength(int newLength) {
@@ -78,6 +80,10 @@ public class SecondaryStructure {
     
     public void addResidue(Residue res){
     	resArray.add(res);
+    }
+    
+    public void addResArray(ArrayList<Residue> resArray) {
+    	this.resArray = resArray;
     }
 
     //Other
