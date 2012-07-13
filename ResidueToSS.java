@@ -31,7 +31,7 @@ public class ResidueToSS {
             if(currentRes.getSS().equals(oldRes.getSS() && !currentRes.isMissing()) {
                 ss = currentRes.getSS();
                 
-                //if the next one exists you'll add it; if not, you won't.
+                //if the next one exists you'll add it to the currentInSS; if not, you won't.
                 if(!nextNotExist.equals(ss)) { 
                     if (turn) { ++loopCounter; }
                     if (turn && loopCounter == 13) { 
@@ -45,9 +45,11 @@ public class ResidueToSS {
                 
             }
             //the old and current res are in different ss's
+            //must add new SS!
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
-                //if missing, marker for next not to exist
+                
+                // turn behavior
                 ss = currentRes.getSS();
                 if(ss.equals("T")) {
                     turn = true;
@@ -57,6 +59,13 @@ public class ResidueToSS {
                     turn = false;
                     loopCounter = 0;
                 }
+                
+                ////////////////////////////////////////////
+                
+                //add currentInSS to ssArray
+                ssArray.add(parseSS(currentInSS));
+                
+                // if it's missing don't let anything happen
                 if(currentRes.isMissing()) {
                     ssArray.add(new SecondaryStructure(ss, false));
                     nextNotExist = ss;
@@ -77,7 +86,11 @@ public class ResidueToSS {
                 else {
                     currentInSS.add(currentRes);
                 }
-            }
-        }
+            } // end of same ss current missing
+        } // end of for
+    } // end of method
+    
+    public SecondaryStructure parseSS(ArrayList<Residue> resList) {
+        // merge resList into a secondary structure with all necessary information
     }
 }
