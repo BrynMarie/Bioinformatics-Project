@@ -6,7 +6,7 @@ public class ResidueToSS {
     //this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
     //It has not been filtered of loops that are too long, either.
 
-    //TODO: Filter out loops that are greater than 12 residues long w/ loopCounter
+    //DONE: Filter out loops that are greater than 12 residues long w/ loopCounter
     //TODO: Discard loops with missing residues
     //look over coding ideas docs before going too far on this one.
     public ResidueToSS(ArrayList<Residue> resArray) {
@@ -15,6 +15,7 @@ public class ResidueToSS {
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         currentInSS.add(oldRes);
         boolean turn = false;
+        String nextNotExist;
         
         if(oldRes.getSS().equals("T")) {
             turn = true;
@@ -31,10 +32,11 @@ public class ResidueToSS {
                 if (loopCounter != 0) { ++loopCounter; }
                 if (loopCounter == 13) { 
                     currentInSS.clear();
-                    ssArray.add(new SecondaryStructure(currentRes.getSS(), false))
+                    ssArray.add(new SecondaryStructure(currentRes.getSS(), false));
+                    nextNotExist = currentRes.getSS();
                 }
             }
-            //the old and current res are in different ss's, and the current res isn't missing
+            //the old and current res are in different ss's
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
                 //if missing, marker for next not to exist
@@ -46,11 +48,22 @@ public class ResidueToSS {
                     turn = false;
                     loopCounter = 0;
                 }
+                if(currentRes.isMissing()) {
+                    nextNotExist = currentRes.getSS();
+                }
+                else {
+                    nextNotExist = "";
+                }
             }
             // they are in the same ss and the current res is missing
             else if(currentRes.getSS().equals(oldRes.getSS()){
-                currentInSS.clear();
-                ssArray.add(new SecondaryStructure(currentRes.getSS(),false));
+                if(currentRes.getSS().equals("T")) {
+                    currentInSS.clear();
+                    ssArray.add(new SecondaryStructure(currentRes.getSS(),false));  
+                }
+                else {
+                    currentInSS.add(currentRes);
+                }
             }
         }
     }
