@@ -6,16 +6,17 @@ public class ResidueToSS {
     //this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
     //It has not been filtered of loops that are too long, either.
 
-    //DONE: Filter out loops that are greater than 12 residues long w/ loopCounter
-    //TODO: Discard loops with missing residues
+    //Done: Filter out loops that are greater than 12 residues long w/ loopCounter
+    //Done: Discard loops with missing residues
     //look over coding ideas docs before going too far on this one.
-    public ResidueToSS(ArrayList<Residue> resArray) {
-        oldRes = resArray.get(0);
+    public ResidueToSS(ArrayList<Residue> resArray) {      
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
+        oldRes = resArray.get(0);
         currentInSS.add(oldRes);
         boolean turn = false;
         String nextNotExist;
+        String ss;
         
         if(oldRes.getSS().equals("T")) {
             turn = true;
@@ -28,19 +29,27 @@ public class ResidueToSS {
             
             //the old and current res are in the same ss, and current res isn't missing
             if(currentRes.getSS().equals(oldRes.getSS() && !currentRes.isMissing()) {
-                currentInSS.add(currentRes);
-                if (loopCounter != 0) { ++loopCounter; }
-                if (loopCounter == 13) { 
-                    currentInSS.clear();
-                    ssArray.add(new SecondaryStructure(currentRes.getSS(), false));
-                    nextNotExist = currentRes.getSS();
+                ss = currentRes.getSS();
+                
+                //if the next one exists you'll add it; if not, you won't.
+                if(!nextNotExist.equals(ss)) { 
+                    if (turn) { ++loopCounter; }
+                    if (turn && loopCounter == 13) { 
+                        currentInSS.clear();
+                        ssArray.add(new SecondaryStructure(currentRes.getSS(), false));
+                        nextNotExist = currentRes.getSS();
+                    }
+                    currentInSS.add(currentRes);
                 }
+                
+                
             }
             //the old and current res are in different ss's
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
                 //if missing, marker for next not to exist
-                if(currentRes.getSS().equals("T")) {
+                ss = currentRes.getSS();
+                if(ss.equals("T")) {
                     turn = true;
                     loopCounter = 1;
                 }
@@ -49,7 +58,8 @@ public class ResidueToSS {
                     loopCounter = 0;
                 }
                 if(currentRes.isMissing()) {
-                    nextNotExist = currentRes.getSS();
+                    ssArray.add(new SecondaryStructure(ss, false));
+                    nextNotExist = ss;
                 }
                 else {
                     nextNotExist = "";
@@ -57,9 +67,12 @@ public class ResidueToSS {
             }
             // they are in the same ss and the current res is missing
             else if(currentRes.getSS().equals(oldRes.getSS()){
-                if(currentRes.getSS().equals("T")) {
+                ss = currentRes.getSS();
+                
+                if(ss.equals("T")) {
                     currentInSS.clear();
-                    ssArray.add(new SecondaryStructure(currentRes.getSS(),false));  
+                    ssArray.add(new SecondaryStructure(currentRes.getSS(),false)); 
+                    nextNotExist = ss;
                 }
                 else {
                     currentInSS.add(currentRes);
@@ -67,5 +80,4 @@ public class ResidueToSS {
             }
         }
     }
-
 }
