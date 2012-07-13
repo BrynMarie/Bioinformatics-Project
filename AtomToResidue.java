@@ -151,6 +151,7 @@ public class AtomToResidue {
 				//String pdbResNum, double bFactor, String ssType, 
 				//CartesianCoord coords, boolean nTerm, boolean cTerm
 				
+				//if zscore is too high set as missing HERE
 				resArray.add(new Residue(currentResNum, zScore));
 				
 				currentResNum = newResNum;
