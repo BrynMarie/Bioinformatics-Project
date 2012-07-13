@@ -7,8 +7,7 @@ public class ResidueToSS {
     //It has not been filtered of loops that are too long, either.
 
     //TODO: Filter out loops that are greater than 12 residues long w/ loopCounter
-    //TODO: Discard loops with missing residues and/or main chain atoms w/ coding if/else's
-    //TODO: Filter residues with too high of a zscore // mark those as missing in the residue file bitte
+    //TODO: Discard loops with missing residues
     //look over coding ideas docs before going too far on this one.
     public ResidueToSS(ArrayList<Residue> resArray) {
         oldRes = resArray.get(0);
