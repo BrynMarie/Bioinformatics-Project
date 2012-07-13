@@ -5,13 +5,6 @@ import Jama.*;
 // to be debugged
 
 public class AtomToResidue {
-     //NEW PMoI variables of atomic weights used in calculation
-     // These should be expressed as Enums in a separate AtomicWeightEnum class
-     double nitrogenAtomicWeight = 14.0067;
-     double carbonAtomicWeight = 12.0107;
-     double hydrogenAtomicWeight = 1.00794;
-     double oxygenAtomicWeight = 15.9994;
-     double sulphurAtomicWeight = 32.065;
     //takes as input an unsorted arraylist of atoms
     public AtomToResidue(ArrayList<Atom> atomList) {
 		ArrayList<Atom> sortedAtomList = sortAtoms(atomList);
@@ -30,18 +23,15 @@ public class AtomToResidue {
     }
     
     public double getAtomicWeight(Atom currentAtom) { //NEW PMoI method to get atomic weight given atom type
-    	//enums would make this method a lot shorter
 		double atomWeight = 0;
-		if (currentAtom.getAtomType().charAt(0).equals("H")) {
-			atomWeight = hydrogenAtomicWeight;
-		} else if (currentAtom.getAtomType().charAt(0).equals("N")) {
-			atomWeight = nitrogenAtomicWeight;
-		} else if (currentAtom.getAtomType().charAt(0).equals("C")) {
-			atomWeight = carbonAtomicWeight;
-		} else if (currentAtom.getAtomType().charAt(0).equals("O")) {
-			atomWeight = oxygenAtomicWeight;
-		} else if (currentAtom.getAtomType().charAt(0).equals("S")) {
-			atomWeight = sulphurAtomicWeight;
+		atomType = currentAtom.getAtomType().charAt(0);
+		String[] atomTypeArray = {"H","N","C","O","S"};
+		double[] atomWeightArray = {1.00794, 14.0067, 12.0107, 15.9994, 32.065};
+		
+		for(int i=0; i<atomTypeArray.length; ++i) {
+			if (atomType.equals(atomTypeArray[i])) {
+				atomWeight = atomWeightArray[i];
+			}
 		}
 		return atomWeight;
 	}
