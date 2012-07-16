@@ -183,39 +183,51 @@ public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList) {
 }
 
 public double calcGeometries(ArrayList<Residue> residueList){
-	ArrayList<Double> p0 = new ArrayList<Double>();
-	ArrayList<Double> p1 = new ArrayList<Double>();
-	ArrayList<Double> p2 = new ArrayList<Double>();
-	ArrayList<Double> p3 = new ArrayList<Double>();
+	CartesianCoord p0 = new CartesianCoord();
+	CartesianCoord p1 = new CartesianCoord();
+	CartesianCoord p2 = new CartesianCoord();
+	CartesianCoord p3 = new CartesianCoord();
+	CartesianCoord e1 = new CartesianCoord();
+	CartesianCoord l = new CartesianCoord();
+	CartesianCoord e2 = new CartesianCoord();
+	double distance=0, deltaAngle=0;
    	for (int i = 0; i<residueList.size(); ++i) {
-		p0.add(residueList.get(i).getCoords().getX());
-		p0.add(residueList.get(i).getCoords().getY());
-		p0.add(residueList.get(i).getCoords().getZ());
-		p1.add(residueList.get(i+1).getCoords().getX());
-		p1.add(residueList.get(i+1).getCoords().getY());
-		p1.add(residueList.get(i+1).getCoords().getZ());
-		p2.add(residueList.get(i+2).getCoords().getX());
-		p2.add(residueList.get(i+2).getCoords().getY());
-		p2.add(residueList.get(i+2).getCoords().getZ());
-		p3.add(residueList.get(i+3).getCoords().getX());
-		p3.add(residueList.get(i+3).getCoords().getY());
-		p3.add(residueList.get(i+3).getCoords().getZ());
+		p0 = (residueList.get(i).getCoords()); //is this the right way to have the cartesian coord p0 = another coordinate?
+		p1 = (residueList.get(i+1).getCoords());
+		p2 = (residueList.get(i+2).getCoords());
+		p3 = (residueList.get(i+3).getCoords());
 		//calculate e1
-		calcE1LE2(p0, p1);
+		e1 = calcE1LE2(p0, p1);
 		//calculate l
-		calcE1LE2(p2, p1);
+		l = calcE1LE2(p2, p1);
 		//calculate e2
-		calcE1LE2(p3, p2);
+		e2 = calcE1LE2(p3, p2);
 		//calculate distance, d
-		calcDistance(p2, p1);
+		d = calcDistance(p2, p1);
+		//calc delta angle
+		deltaAngle = calcAngles(e1, l);
 	}
 }
 
-public double calcDistance(ArrayList<Double> p2, ArrayList<Double> p1) {
+public double calcAngles(CartesianCoord first, CartesianCoord second){
+	double dotProduct = calc3DDotProduct(first, second);
+	double angle = acos(dotProduct);
+	return angle;
+}
+
+public double calc3DDotProduct(CartesianCoord first, CartesianCoord second){
+	double firstTerm = first.getX()*second.getX();
+	double secondTerm = first.getY()*second.getY();
+	double thirdTerm = first.getZ()*second.getZ();
+	double dotProduct = firstTerm+secondTerm+thirdTerm;
+	return dotProduct;
+}
+
+public double calcDistance(CartesianCoord p2, CartesianCoord p1) {
 	double differenceX = 0, differenceY=0, differenceZ=0, distance=0;
-	differenceX = p2.get(0)-p1.get(0);
-	differenceY = p2.get(1)-p1.get(1);
-	differenceZ = p2.get(2)-p1.get(2);
+	differenceX = p2.getX()-p1.getX();
+	differenceY = p2.getY()-p1.getY();
+	differenceZ = p2.getZ()-p1.getZ();
 	sqDiffX = Math.pow(differenceX, 2);
 	sqDiffY = Math.pow(differenceY, 2);
 	sqDiffZ = Math.pow(differenceZ, 2);
@@ -223,19 +235,16 @@ public double calcDistance(ArrayList<Double> p2, ArrayList<Double> p1) {
 	return distance;
 }
 
-public ArrayList<Double> calcE1LE2(ArrayList<Double> p0, ArrayList<Double> p1){
-	ArrayList<Double> e1 = new ArrayList<Double>();
+public CartesianCoord calcE1LE2(CartesianCoord first, CartesianCoord second){
 	double differenceX = 0, differenceY=0, differenceZ=0, denominator=0;
-	differenceX = p1.get(0)-p0.get(0);
-	differenceY = p1.get(1)-p0.get(1);
-	differenceZ = p1.get(2)-p0.get(2);
+	differenceX = second.getX()-first.getX();
+	differenceY = second.getY()-first.getY();
+	differenceZ = second.getZ()-first.getZ();
 	sqDiffX = Math.pow(differenceX, 2);
 	sqDiffY = Math.pow(differenceY, 2);
 	sqDiffZ = Math.pow(differenceZ, 2);
 	denominator = sqrt(sqDiffX+sqDiffY+sqDiffZ);
-	e1.add(differenceX/denominator);
-	e1.add(differenceY/denominator);
-	e1.add(differenceZ/denominator);
+	CartesianCoord e1 = new CartesianCoord((differenceX/denominator), (differenceY/denominator), (differenceZ/denominator));
 	return e1;
 }
     
