@@ -12,6 +12,7 @@ AtomComparator.java
 AnalyzeOneProtein.java
 CartesianCoord.java
 CalcGeo.java
+ParseFiles.java
 Residue.java
 ResidueComparator.java
 SecondaryStructure.java
@@ -23,7 +24,6 @@ ABEnum.java
 
 To Be Compiled:
 
-ParseFiles.java
 AtomToResidue.java
 ResidueToSS.java
 SSToSmotif.java
