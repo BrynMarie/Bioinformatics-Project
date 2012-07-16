@@ -3,7 +3,6 @@ import java.util.*;
 import java.lang.*;
 import Jama.*;
 //  currently compiles mostly
-// need to change all isMissing to exists() with opposite 
 
 public class AtomToResidue {
 	
@@ -100,7 +99,7 @@ public class AtomToResidue {
 		else {
 			finalResArray = mergeArrays(resArray, tempArray, false);
 		}
-    }
+	}
     
       
 	public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, 
