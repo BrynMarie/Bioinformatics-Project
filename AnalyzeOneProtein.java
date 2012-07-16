@@ -2,11 +2,10 @@ import java.util.*;
 import java.io.*;
 
 public class AnalyzeOneProtein {
-    //All global variables
-    //Holds the dssp file in an ArrayList of type String
+
     ArrayList<String> dsspFile;
-    //Holds the pdb file in an ArrayList of type String
     ArrayList<String> pdbFile;
+    //necessary?
     ArrayList<SecondaryStructure> ssArray;
     
     public AnalyzeOneProtein(){
@@ -14,12 +13,12 @@ public class AnalyzeOneProtein {
 	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
 	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/a0/pdb1a00.ent");
 
+	//Opens parsefiles and gives it the arguments of the dsspFile and the pdbFile
 	ParseFiles f2 = new ParseFiles(dsspFile, pdbFile);
     }
 
     public ArrayList<String> readFile(String arg) {
-	//local variables
-	//Helper variable for storing the array as a list of lines read in one-by-one into the arraylist
+
 	String thisLine;
 	ArrayList<String> fileToRead = new ArrayList<String>();
 	try {
