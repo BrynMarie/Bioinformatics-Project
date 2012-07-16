@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 import java.lang.*;
 import Jama.*;
-// to be debugged
+//  currently compiles mostly
 
 public class AtomToResidue {
 
@@ -38,57 +38,61 @@ public class AtomToResidue {
 	return atomWeight;
     }
     
-    public ArrayList<Residue> turnIntoResidueArray(ArrayList<Atom> atomList, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
-	int residueAtoms = 0;
-	double currentResidueBFactor = 0;
-	long countResidues = 0;
-	double meanOfCurrentResidue = 0;
-	double zScore;
-	boolean cTerm = false, nTerm = false;
-	int newResNum=0;
+    public ArrayList<Residue> turnIntoResidueArray(ArrayList<Atom> atomList, 
+    	ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
+	
+		int residueAtoms, newResNum;
+		double currentResidueBFactor, meanOfCurrentResidue, zScore, x, y, z;
+		long countResidues = 0;
+		boolean cTerm = false, nTerm = false;
     	int currentResNum = atomList.get(0).getResNum();
+    	Residue curAtom = atomList.get(0), newAtom;
     	ArrayList<Residue> resArray = new ArrayList<Residue>();
     	ArrayList<Residue> tempArray = extractSS(dsspFile);
-	ArrayList<CartesianCoord> cartCoordOfAtomsOfResidueList = new ArrayList<CartesianCoord>();
+		ArrayList<CartesianCoord> cartCoordOfAtomsOfResidueList = new ArrayList<CartesianCoord>();
     	
     	for (int i = 0; i<atomList.size(); ++i) {
-	    newResNum = atomList.get(i).getResNum();
-	    //if we're still on the same residue as before...
-	    if (newResNum == currentResNum) {
-		++residueAtoms;
-		currentResidueBFactor += atomList.get(i).getBFactor();
-		CartesianCoord atomCoordinates = new CartesianCoord(atomList.get(i).getX(), atomList.get(i).getY(), atomList.get(i).getZ());
-		cartCoordOfAtomsOfResidueList.add(atomCoordinates);
-	    }
+    		newAtom = atomList.get(i);
+	    	newResNum = newAtom.getResNum();
+		    
+		    x = newAtom.getX();
+			y = newAtom.getY();
+			z = newAtom.getZ();
+			cartCoordOfAtomsOfResidueList.add(new CartesianCoord(x,y,z));
+		    
+		    //if we're still on the same residue as before...
+		    if (newResNum == currentResNum) {
+				++residueAtoms;
+				currentResidueBFactor += newAtom.getBFactor();
+		    }
 
-	    //if we've moved on to the next residue
-	    else {
-		CartesianCoord atomCoordinates = new CartesianCoord(atomList.get(i).getX(), atomList.get(i).getY(), atomList.get(i).getZ());
-		cartCoordOfAtomsOfResidueList.add(atomCoordinates);
-		meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
-		zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
-		//String pdbResNum, double bFactor, String ssType, 
-		//CartesianCoord coords, boolean nTerm, boolean cTerm
-		//if zscore is too high set as missing HERE
-		resArray.add(new Residue(currentResNum, zScore, cartCoordOfAtomsOfResidueList));
-		cartCoordOfAtomsOfResidueList.clear();
-		currentResNum = newResNum;
-		residueAtoms = 0;
-		currentResidueBFactor = atomList.get(i).getBFactor();
-		cTerm = atomList.get(i).getCTerm(); // will set back to false if false; keep true if true
-		nTerm = atomList.get(i).getNTerm();
-	    }
-	}
+	   		//if we've moved on to the next residue
+		    else {
+				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
+				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
+				
+				//String pdbResNum, double bFactor, String ssType, 
+				//CartesianCoord coords, boolean nTerm, boolean cTerm
+				//if zscore is too high set as missing HERE
+				resArray.add(new Residue(currentResNum, zScore, cartCoordOfAtomsOfResidueList));
+				cartCoordOfAtomsOfResidueList.clear();
+				currentResNum = newResNum;
+				residueAtoms = 0;
+				currentResidueBFactor = atomList.get(i).getBFactor();
+				cTerm = atomList.get(i).getCTerm(); // will set back to false if false; keep true if true
+				nTerm = atomList.get(i).getNTerm();
+	    	}
+		}
 
     	tempArray = sortResidues(tempArray);
     	resArray = sortResidues(resArray);
     	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
     	
     	if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
-	    finalResArray = mergeArrays(tempArray, resArray, true);	
+	    	finalResArray = mergeArrays(tempArray, resArray, true);	
     	}
     	else {
-	    finalResArray = mergeArrays(resArray, tempArray, false);
+		    finalResArray = mergeArrays(resArray, tempArray, false);
     	}
     }
     
