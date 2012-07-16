@@ -15,6 +15,10 @@ public class ParseFiles {
         atomList = (ArrayList<Atom>)retMe.get(0);
         meanBFactor = (double)retMe.get(1);
         std = (double)retMe.get(1);
+        
+        // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
+        // a double bFactorMean and a double bFactorSTD
+        AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
     }
     
     public ArrayList<Atom> getInfoFromPDB(ArrayList<String> pdbFile) {
