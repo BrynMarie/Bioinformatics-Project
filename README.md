@@ -9,6 +9,7 @@ At this point, I have ensured that the following files compile:
 
 Atom.java
 AtomComparator.java
+AnalyzeOneProtein.java
 CartesianCoord.java
 CalcGeo.java
 Residue.java
@@ -22,7 +23,6 @@ ABEnum.java
 
 To Be Compiled:
 
-AnalyzeOneProtein.java
 ParseFiles.java
 AtomToResidue.java
 ResidueToSS.java
