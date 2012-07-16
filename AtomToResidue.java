@@ -181,6 +181,63 @@ public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList) {
 	}
 	return newResArray; //returns a residue array of PMOI xyz coordinates
 }
+
+public double calcGeometries(ArrayList<Residue> residueList){
+	ArrayList<Double> p0 = new ArrayList<Double>();
+	ArrayList<Double> p1 = new ArrayList<Double>();
+	ArrayList<Double> p2 = new ArrayList<Double>();
+	ArrayList<Double> p3 = new ArrayList<Double>();
+   	for (int i = 0; i<residueList.size(); ++i) {
+		p0.add(residueList.get(i).getCoords().getX());
+		p0.add(residueList.get(i).getCoords().getY());
+		p0.add(residueList.get(i).getCoords().getZ());
+		p1.add(residueList.get(i+1).getCoords().getX());
+		p1.add(residueList.get(i+1).getCoords().getY());
+		p1.add(residueList.get(i+1).getCoords().getZ());
+		p2.add(residueList.get(i+2).getCoords().getX());
+		p2.add(residueList.get(i+2).getCoords().getY());
+		p2.add(residueList.get(i+2).getCoords().getZ());
+		p3.add(residueList.get(i+3).getCoords().getX());
+		p3.add(residueList.get(i+3).getCoords().getY());
+		p3.add(residueList.get(i+3).getCoords().getZ());
+		//calculate e1
+		calcE1LE2(p0, p1);
+		//calculate l
+		calcE1LE2(p2, p1);
+		//calculate e2
+		calcE1LE2(p3, p2);
+		//calculate distance, d
+		calcDistance(p2, p1);
+	}
+}
+
+public double calcDistance(ArrayList<Double> p2, ArrayList<Double> p1) {
+	double differenceX = 0, differenceY=0, differenceZ=0, distance=0;
+	differenceX = p2.get(0)-p1.get(0);
+	differenceY = p2.get(1)-p1.get(1);
+	differenceZ = p2.get(2)-p1.get(2);
+	sqDiffX = Math.pow(differenceX, 2);
+	sqDiffY = Math.pow(differenceY, 2);
+	sqDiffZ = Math.pow(differenceZ, 2);
+	distance = sqrt(sqDiffX+sqDiffY+sqDiffZ);
+	return distance;
+}
+
+public ArrayList<Double> calcE1LE2(ArrayList<Double> p0, ArrayList<Double> p1){
+	ArrayList<Double> e1 = new ArrayList<Double>();
+	double differenceX = 0, differenceY=0, differenceZ=0, denominator=0;
+	differenceX = p1.get(0)-p0.get(0);
+	differenceY = p1.get(1)-p0.get(1);
+	differenceZ = p1.get(2)-p0.get(2);
+	sqDiffX = Math.pow(differenceX, 2);
+	sqDiffY = Math.pow(differenceY, 2);
+	sqDiffZ = Math.pow(differenceZ, 2);
+	denominator = sqrt(sqDiffX+sqDiffY+sqDiffZ);
+	e1.add(differenceX/denominator);
+	e1.add(differenceY/denominator);
+	e1.add(differenceZ/denominator);
+	return e1;
+}
     
     public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, boolean ssFirst) {
     	// go through that one til they both match up, marking them as 'don't exist in both'
