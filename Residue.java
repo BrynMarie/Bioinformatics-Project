@@ -26,9 +26,9 @@ public class Residue {
         this.ssType = ssType;
     }
 
-    public Residue(String pdbResNum, boolean missing) {
+    public Residue(String pdbResNum, boolean exists) {
 	this.pdbResNum = pdbResNum.toString();
-	this.exists = !missing;
+	this.exists = exists;
     }
 
     public Residue(CartesianCoord pmoi) {
@@ -36,8 +36,8 @@ public class Residue {
     }
     
     //accessor methods
-    public boolean isMissing() {
-	return !exists;
+    public boolean exists() {
+	return exists;
     }
 
     public double getBFactor() {
@@ -95,5 +95,9 @@ public class Residue {
     
     public void setCTerm(boolean newCTerm) {
     	cTerm = newCTerm;
+    }
+    
+    public void setExists(boolean ex) {
+    	exists = ex;
     }
 }
