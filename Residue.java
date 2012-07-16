@@ -69,9 +69,9 @@ public class Residue {
     	bFactor = newBF;
     }
     
-   	public void setCoords(CartesianCoord newCoord) {
-   		coords = newCoord;
-   	}
+   public void setCoords(CartesianCoord newCoord) {
+   	coords = newCoord;
+   }
     
     public void setCoords(double x, double y, double z){
     	coords = new CartesianCoord(x,y,z);
@@ -82,11 +82,7 @@ public class Residue {
     }
     
     public void setSSType(String newSsType) {
-		ssType = newSsType;
-    }
-    
-    public void setMissing(boolean missing) {
-    	this.exists = !missing;
+	ssType = newSsType;
     }
     
     public void setNTerm(boolean newNTerm) {
