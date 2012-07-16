@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Atom {
-   //change constructors
+    //change constructors
    
     CartesianCoord coords;
     String atomType;
@@ -10,27 +10,27 @@ public class Atom {
     boolean isBackbone, nTerm, cTerm;
     
     public Atom(String atom, int resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
-		atomType = atom;
-		coords = cc;
-		isBackbone = isBB;
+	atomType = atom;
+	coords = cc;
+	isBackbone = isBB;
     }
 
     public Atom(String atom, int resNum, boolean isBB) {
-		atomType = atom;
-		isBackbone = isBB;
+	atomType = atom;
+	isBackbone = isBB;
     }
 
-	//constructor template
+    //constructor template
     public Atom() {
     }
 
     //acessor methods
     public String getAtomType() {
-		return atomType;
+	return atomType;
     }
 
     public CartesianCoord getCoords() {
-		return coords;
+	return coords;
     }
     
     public boolean isBackboneAtom() {
@@ -53,17 +53,22 @@ public class Atom {
 	return nTerm;
     }
 
+    public double getX() { return coords.x; }
+    public double getY() { return coords.y; }
+    public double getZ() { return coords.z; }
+
+
     //mutator methods
     public void setAtomType(String AtomType) {
-		atomType = AtomType;
+	atomType = AtomType;
     }
 
     public void setCoords(double x, double y, double z) {
-		coords = new CartesianCoord(x, y, z);
+	coords = new CartesianCoord(x, y, z);
     }
 
     public void setCoords(CartesianCoord newCoord) {
-		coords = newCoord;
+	coords = newCoord;
     }
     
     public void setBackbone(boolean isBB){

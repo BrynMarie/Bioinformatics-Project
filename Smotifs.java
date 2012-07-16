@@ -8,20 +8,17 @@ A data structure class for storing Smotifs and their geometries
  */
 public class Smotifs {
     double hoist, meridian, packing;
-    ABEnum ab;
-    
+    int designator;
+
     public Smotifs(double hoist, double meridian, double packing, int des){
 	this.hoist = hoist;
 	this.meridian = meridian;
 	this.packing = packing;
-	this.ab = new ABEnum(des);
+	this.designator = des;
     }
 
     public Smotifs(int des) {
-	hoist = null;
-	meridian = null;
-	packing = null;
-	ab = new ABEnum(des);
+	this.designator = des;
     }
 
     //accessor methods
@@ -38,7 +35,7 @@ public class Smotifs {
     }
 
     public int getAB() {
-	return ab.designator();
+	return designator;
     }
 
     //mutator methods
@@ -55,6 +52,6 @@ public class Smotifs {
     }
 
     public void setAB(int newDes) {
-	this.ab = new ABEnum(newDes);
+	designator = newDes; 
     }
 }

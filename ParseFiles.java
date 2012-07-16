@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.lang.*;
 
 public class ParseFiles {
     ArrayList<String> dsspFile;
@@ -33,7 +34,7 @@ public class ParseFiles {
     			nTerm = nextIsNTerm;
     			nextIsNTerm = false;
     			String[] atomTypeArray = {"N","CA","C","O","OXT","OT1","OT2"};
-    			if(multiEquals(atomType, atomTypeArray) {
+    			if(multiEquals(atomType, atomTypeArray)) {
     				backbone = true;
     			}
     			pdbResNum = Integer.parseInt(strs[3].trim());
@@ -99,15 +100,15 @@ public class ParseFiles {
     }
     
     public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
-    	return file.get(index).charAt(num).equals(charac); //cannot invoke equals(String) on primitive char
-    	//is this unfinished? i don't see a return type boolean
+    	String fileStr = Character.toString(file.get(index).charAt(num));
+	return fileStr.equals(charac);
     }
     
     public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
     	for (int j=0; j<chars.length; ++j){
-	   		if(!charAtEquals(file, index, num, chars.get[j])) {
-				return false;
-	    	}    	
+	    if(!charAtEquals(file, index, num, chars[j])) {
+		return false;
+	    }    	
     	}
     	return true;
     }

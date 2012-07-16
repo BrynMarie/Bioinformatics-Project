@@ -6,10 +6,10 @@ public class SecondaryStructure {
     String sstype;
     int length;
     ArrayList<Residue> resArray = new ArrayList<Residue>();
-    CartesianCoord coords = new CartesianCoord(); //aka pmoi
-    boolean exists
+    CartesianCoord coords; // pmoi
+    boolean exists;
 
-    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray, CartesianCoords coords) {
+    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray, CartesianCoord coords) {
 	sstype = ss;
 	this.length = length;
 	this.resArray = resArray;
