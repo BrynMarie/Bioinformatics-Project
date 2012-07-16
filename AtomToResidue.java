@@ -13,9 +13,6 @@ public class AtomToResidue {
     }
     
     public ArrayList<Atom> sortAtoms(ArrayList<Atom> atomList) {
-    	//write a sort here, oh gosh...
-    	//this will *certainly* need to be checked for accuracy but according to the link below it works
-    	//http://stackoverflow.com/questions/2784514/sort-arraylist-of-custom-objects-by-property
     	Collections.sort(atomList, new AtomComparator());
     }
     
@@ -64,6 +61,8 @@ public class AtomToResidue {
 		    if (newResNum == currentResNum) {
 				++residueAtoms;
 				currentResidueBFactor += newAtom.getBFactor();
+				if(newAtom.getNTerm()) { nTerm = true; }
+				if(newAtom.getCTerm()) { cTerm = true; }
 		    }
 
 	   		//if we've moved on to the next residue
@@ -73,8 +72,14 @@ public class AtomToResidue {
 				
 				//String pdbResNum, double bFactor, String ssType, 
 				//CartesianCoord coords, boolean nTerm, boolean cTerm
+				
 				//if zscore is too high set as missing HERE
-				resArray.add(new Residue(currentResNum, zScore, "", cartCoordOfAtomsOfResidueList));
+				if(zScore < ____________ ) { // zscore falls into parameters
+					resArray.add(new Residue(currentResNum, zScore, "", cartCoordOfAtomsOfResidueList, nTerm, cTerm));
+				}
+				else {
+					resArray.add(new Residue(currentResNum, false)); //does not exist
+				}
 				cartCoordOfAtomsOfResidueList.clear();
 				currentResNum = newResNum;
 				residueAtoms = 0;
@@ -95,6 +100,102 @@ public class AtomToResidue {
 		    finalResArray = mergeArrays(resArray, tempArray, false);
     	}
     }
+    
+      
+    public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, boolean ssFirst) {
+    	// go through that one til they both match up, marking them as 'don't exist in both'
+    	// when they match up,
+    	int lCounter = 0;
+    	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
+    	int finalCounter = 0;
+    	while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != Integer.parseInt(higherArray.get(0).getResNum())) {
+	    String pdb = lowerArray.get(lCounter).getResNum();
+	    finalResArray.add(new Residue(pdb, false));
+	    ++lCounter;
+	}
+	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
+	int hCounter = 0;
+    	int limit = Math.max(lowerArray.size(), higherArray.size());
+    	for (int j = 0; j < limit; ++j) {
+	    Residue currentLower = lowerArray.get(lCounter + j);
+	    Residue currentHigher = higherArray.get(hCounter + j);
+	    int lResNum = Integer.parseInt(currentLower.getResNum());
+	    int hResNum = Integer.parseInt(currentHigher.getResNum());
+	    while (lResNum < hResNum) {
+		//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
+		finalResArray.add(new Residue("" + lResNum + "", false)); 
+		++lCounter;
+		currentLower = lowerArray.get(lCounter + j);
+		lResNum = Integer.parseInt(currentLower.getResNum());
+	    } 
+	    while (lResNum > hResNum) {
+		finalResArray.add(new Residue("" + hResNum + "", false));
+		++hCounter;
+		currentHigher = higherArray.get(hCounter + j);
+		hResNum = Integer.parseInt(currentHigher.getResNum());
+	    }
+	    while (lResNum == hResNum) {
+		finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
+	    }
+    	}
+    }
+    
+    public Residue mergeResidues(Residue res1, Residue res2, boolean ssFirst) {
+    	Residue retMe;
+    	
+    	if(!ssFirst) {
+	    Residue temp = res2;
+	    res2 = res1;
+	    res1 = temp;
+    	}
+    	//ss info is first
+    	String ss = res1.getSS();
+    	String pdb = res1.getResNum();
+    	double bF = res2.getBFactor();
+    	boolean cTerm = res2.getCTerm();
+    	boolean nTerm = res2.getNTerm();
+    	
+    	//String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm
+    	retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
+    	
+    }
+
+    public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
+    	ArrayList<Residue> tempArray = new ArrayList<Residue>();
+    	
+    	String[] sheetArray = {"E","B"};
+    	String[] helixArray = {"G","H","I"};
+    	String[] turnArray = {" ","S","T"};
+    	
+    	for (int i = 0; i<dsspFile.size(); ++i) {
+	    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
+		tempArray.get(i).setSSType("S");
+	    }
+	    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
+		tempArray.get(i).setSSType("H");
+	    }
+	    else if(charsAtEqual(dsspFile, i, 14, turnArray)) {
+		tempArray.get(i).setSSType("T");
+	    }
+    	}
+    	
+    	return tempArray;
+    }
+
+    public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
+	String str = Character.toString(file.get(index).charAt(num));
+    	return str.equals(charac);
+    }
+    
+    public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
+    	for (int j=0; j<chars.length; ++j){
+	    if(!charAtEquals(file, index, num, chars[j])) {
+		return false;
+	    }    	
+    	}
+    	return true;
+    }
+
     
     public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList, ArrayList<Atom> atomList) {
 	ArrayList<Residue> newResArray = new ArrayList<Residue>();
@@ -217,99 +318,4 @@ public class AtomToResidue {
 	}
 	return newResArray; //returns a residue array of PMOI xyz coordinates
     }
-    
-    public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, boolean ssFirst) {
-    	// go through that one til they both match up, marking them as 'don't exist in both'
-    	// when they match up,
-    	int lCounter = 0;
-    	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
-    	int finalCounter = 0;
-    	while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != Integer.parseInt(higherArray.get(0).getResNum())) {
-	    String pdb = lowerArray.get(lCounter).getResNum();
-	    finalResArray.add(new Residue(pdb, true));
-	    ++lCounter;
-	}
-	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
-	int hCounter = 0;
-    	int limit = Math.max(lowerArray.size(), higherArray.size());
-    	for (int j = 0; j < limit; ++j) {
-	    Residue currentLower = lowerArray.get(lCounter + j);
-	    Residue currentHigher = higherArray.get(hCounter + j);
-	    int lResNum = Integer.parseInt(currentLower.getResNum());
-	    int hResNum = Integer.parseInt(currentHigher.getResNum());
-	    while (lResNum < hResNum) {
-		//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
-		finalResArray.add(new Residue("" + lResNum + "", true)); 
-		++lCounter;
-		currentLower = lowerArray.get(lCounter + j);
-		lResNum = Integer.parseInt(currentLower.getResNum());
-	    } 
-	    while (lResNum > hResNum) {
-		finalResArray.add(new Residue("" + hResNum + "", true));
-		++hCounter;
-		currentHigher = higherArray.get(hCounter + j);
-		hResNum = Integer.parseInt(currentHigher.getResNum());
-	    }
-	    while (lResNum == hResNum) {
-		finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
-	    }
-    	}
-    }
-    
-    public Residue mergeResidues(Residue res1, Residue res2, boolean ssFirst) {
-    	Residue retMe;
-    	
-    	if(!ssFirst) {
-	    Residue temp = res2;
-	    res2 = res1;
-	    res1 = temp;
-    	}
-    	//ss info is first
-    	String ss = res1.getSS();
-    	String pdb = res1.getResNum();
-    	double bF = res2.getBFactor();
-    	boolean cTerm = res2.getCTerm();
-    	boolean nTerm = res2.getNTerm();
-    	
-    	//String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm
-    	retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
-    	
-    }
-
-    public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
-    	ArrayList<Residue> tempArray = new ArrayList<Residue>();
-    	
-    	String[] sheetArray = {"E","B"};
-    	String[] helixArray = {"G","H","I"};
-    	String[] turnArray = {" ","S","T"};
-    	
-    	for (int i = 0; i<dsspFile.size(); ++i) {
-	    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
-		tempArray.get(i).setSSType("S");
-	    }
-	    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
-		tempArray.get(i).setSSType("H");
-	    }
-	    else if(charsAtEqual(dsspFile, i, 14, turnArray)) {
-		tempArray.get(i).setSSType("T");
-	    }
-    	}
-    	
-    	return tempArray;
-    }
-
-    public boolean charAtEquals(ArrayList<String> file, int index, int num, String charac) {
-	String str = Character.toString(file.get(index).charAt(num));
-    	return str.equals(charac);
-    }
-    
-    public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
-    	for (int j=0; j<chars.length; ++j){
-	    if(!charAtEquals(file, index, num, chars[j])) {
-		return false;
-	    }    	
-    	}
-    	return true;
-    }
-
 }
