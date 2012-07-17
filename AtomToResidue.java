@@ -46,7 +46,10 @@ public class AtomToResidue {
 		Residue curAtom = atomList.get(0), newAtom;
 		ArrayList<Residue> resArray = new ArrayList<Residue>();
 		ArrayList<Residue> tempArray = extractSS(dsspFile);
+		ArrayList<Atom> currentlyInResidue = new ArrayList<Atom>();
 		ArrayList<CartesianCoord> cartCoordOfAtomsOfResidueList = new ArrayList<CartesianCoord>();
+		
+		currentlyInResidue.add(curAtom);
 		
 		for (int i = 0; i<atomList.size(); ++i) {
 			newAtom = atomList.get(i);
@@ -61,6 +64,7 @@ public class AtomToResidue {
 			if (newResNum == currentResNum) {
 				++residueAtoms;
 				currentResidueBFactor += newAtom.getBFactor();
+				currentlyInResidue.add(newAtom);
 				if(newAtom.getNTerm()) { nTerm = true; }
 				if(newAtom.getCTerm()) { cTerm = true; }
 			}
@@ -75,16 +79,18 @@ public class AtomToResidue {
 				
 				//if zscore is too high set as missing HERE
 				if(zScore < ____________ ) { // zscore falls into parameters
-					resArray.add(new Residue(currentResNum, zScore, "", cartCoordOfAtomsOfResidueList, nTerm, cTerm));
+					resArray.add(new Residue(currentResNum, zScore, "", 
+					cartCoordOfAtomsOfResidueList, nTerm, cTerm, currentlyInResidue));
 				}
 				else {
-					resArray.add(new Residue(currentResNum, false)); //does not exist
+					resArray.add(new Residue(currentResNum, false));
 				}
 				cartCoordOfAtomsOfResidueList.clear();
+				currentlyInResidue.clear();
 				currentResNum = newResNum;
 				residueAtoms = 0;
 				currentResidueBFactor = atomList.get(i).getBFactor();
-				cTerm = atomList.get(i).getCTerm(); // will set back to false if false; keep true if true
+				cTerm = atomList.get(i).getCTerm();
 				nTerm = atomList.get(i).getNTerm();
 			}
 		}
