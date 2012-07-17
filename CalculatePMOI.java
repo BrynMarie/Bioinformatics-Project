@@ -59,7 +59,7 @@ public class CalculatePMOI {
 		secondTermOfIxz += aw * y;
 		thirdTermOfIxz += aw * z;
 		// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
-		totalAtomicWeight += getAtomicWeight(atomList.get(i));
+		totalAtomicWeight += aw
 		//BEGIN calculate PMoI
 		Ixx = firstTermOfIxx - (1 / totalAtomicWeight) * (secondTermOfIxx) - (1 / totalAtomicWeight)
 		    * (thirdTermOfIxx);
