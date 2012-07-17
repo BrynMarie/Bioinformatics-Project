@@ -93,6 +93,8 @@ public class AtomToResidue {
 		else {
 			finalResArray = mergeArrays(resArray, tempArray, pmoiArray, false);
 		}
+		
+		return finalResArray;
 	}
     
       
