@@ -157,11 +157,11 @@ public class AtomToResidue {
 				finalResArray.add(mergeResidues(currentLower, currentHigher, currentP, ssFirst));	
 			} // end while
 		} // end for
+		
+		return finalResArray;
 	} // end method
     
 	public Residue mergeResidues(Residue res1, Residue res2, Residue res3, boolean ssFirst) {
-		Residue retMe;
-		
 		if(!ssFirst) {
 			Residue temp = res2;
 			res2 = res1;
@@ -177,8 +177,7 @@ public class AtomToResidue {
 		ArrayList<CartesianCoord> coord = res3.getCoords();
 		
 		//String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoords> coords, boolean nTerm, boolean cTerm
-		retMe = new Residue(pdb, bF, ss, coord, nTerm, cTerm, aL);
-		
+		return new Residue(pdb, bF, ss, coord, nTerm, cTerm, aL);	
 	}
 
 	public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
