@@ -2,29 +2,35 @@ import java.util.*;
 import java.io.*;
 
 public class CalcGeo {
+	
+	public static double distance;
+	public static double deltaAngle;
+	CartesianCoord p0, p1, p2, p3, e1, l, e2;
 
     public CalcGeo(ArrayList<Residue> residueList) {
-	CartesianCoord p0, p1, p2, p3, e1, l, e2;
-	double distance=0, deltaAngle=0;
-   	
-	for (int i = 0; i<residueList.size(); ++i) {
-	    p0 = (residueList.get(i).getCoords()); 
-	    p1 = (residueList.get(i+1).getCoords());
-	    p2 = (residueList.get(i+2).getCoords());
-	    p3 = (residueList.get(i+3).getCoords());
-	    
-	    //calculate e1
-	    e1 = calcE1LE2(p0, p1);
-	    //calculate l
-	    l = calcE1LE2(p2, p1);
-	    //calculate e2
-	    e2 = calcE1LE2(p3, p2);
-	    
-	    //calculate distance, d
-	    distance = calcDistance(p2, p1);
-	    //calc delta angle
-	    deltaAngle = calcAngles(e1, l);
-	}
+		calculate(residueList);
+    }
+    
+    public void calculate(ArrayList<Residue> residueList) {
+	   	
+		for (int i = 0; i<residueList.size(); ++i) {
+		    p0 = (residueList.get(i).getCoords()); 
+		    p1 = (residueList.get(i+1).getCoords());
+		    p2 = (residueList.get(i+2).getCoords());
+		    p3 = (residueList.get(i+3).getCoords());
+		    
+		    //calculate e1
+		    e1 = calcE1LE2(p0, p1);
+		    //calculate l
+		    l = calcE1LE2(p2, p1);
+		    //calculate e2
+		    e2 = calcE1LE2(p3, p2);
+		    
+		    //calculate distance, d
+		    this.distance = calcDistance(p2, p1);
+		    //calc delta angle
+		    this.deltaAngle = calcAngles(e1, l);
+		}
     }
     
     public double calcAngles(CartesianCoord first, CartesianCoord second){
