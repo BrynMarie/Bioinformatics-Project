@@ -175,10 +175,11 @@ public class AtomToResidue {
 		boolean cTerm = res2.getCTerm();
 		boolean nTerm = res2.getNTerm();
 		ArrayList<Atom> aL = res2.getAtomList();
-		ArrayList<CartesianCoord> coord = res3.getCoords();
+		// see about coords = al coord
+		CartesianCoord pmoi = res3.getPMOI();
 		
 		//String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoords> coords, boolean nTerm, boolean cTerm
-		return new Residue(pdb, bF, ss, coord, nTerm, cTerm, aL);	
+		return new Residue(pdb, bF, ss, coord, nTerm, cTerm, aL, pmoi);	
 	}
 
 	public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
