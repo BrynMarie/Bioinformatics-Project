@@ -35,12 +35,12 @@ public class ResidueToSS {
         for (int i=1; i<resArray.size(); ++i) {
             currentRes = resArray.get(i);
             
-            //the old and current res are in the same ss, and current res isn't missing
-            if(currentRes.getSS().equals(oldRes.getSS() && !currentRes.isMissing())) {
+            //the old and current res are in the same ss, and current res exists
+            if(currentRes.getSS().equals(oldRes.getSS() && currentRes.exists())) {
                 ss = currentRes.getSS();
                 
                 //if the next one exists you'll add it to the currentInSS; if not, you won't.
-                if(!nextNotExist.equals(ss)) { 
+                if(!(nextNotExist.equals(ss))) { 
                     if (turn) { ++loopCounter; }
                     if (turn && loopCounter == 13) { 
                         currentInSS.clear();
@@ -48,15 +48,13 @@ public class ResidueToSS {
                         nextNotExist = currentRes.getSS();
                     }
                     currentInSS.add(currentRes);
-                }
-                
-                
+                }  
             }
+            
             //the old and current res are in different ss's
             //must add new SS!
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
-                
                 // turn behavior
                 ss = currentRes.getSS();
                 if(ss.equals("T")) {
@@ -74,7 +72,7 @@ public class ResidueToSS {
                 ssArray.add(parseSS(currentInSS));
                 
                 // if it's missing don't let anything happen
-                if(currentRes.isMissing()) {
+                if(!currentRes.exists()) {
                     ssArray.add(new SecondaryStructure(ss, false));
                     nextNotExist = ss;
                 }
@@ -98,8 +96,9 @@ public class ResidueToSS {
         } // end of for
     } // end of method
     
+    // merge resList into a secondary structure with all necessary information
     public SecondaryStructure parseSS(ArrayList<Residue> resList) {
-        // merge resList into a secondary structure with all necessary information
+        
         //String ss, int length, ArrayList<Residue> resArray, CartesianCoords coords
         return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList, COORDS_NEEDED);
     }

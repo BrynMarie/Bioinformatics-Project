@@ -5,31 +5,43 @@ import java.lang.*;
 public class ParseFiles {
     ArrayList<String> dsspFile;
     ArrayList<String> pdbFile;
+    ArrayList<Atom> atomList;
 
+	//takes dsspFile and pdbFile as arguments
     public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
         this.dsspFile = dsspFile;
         this.pdbFile = pdbFile;
+        ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
+        atomList = (ArrayList<Atom>)retMe.get(0);
+        meanBFactor = (double)retMe.get(1);
+        std = (double)retMe.get(1);
+        
+        // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
+        // a double bFactorMean and a double bFactorSTD
+        AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
     }
     
     public ArrayList<Atom> getInfoFromPDB(ArrayList<String> pdbFile) {
-    	
+    	//empty at beginning
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
+    	
     	CartesianCoord coords;
     	String atomType;
     	int pdbResNum;
-    	double tempFact;
-    	boolean backbone = false;
-    	boolean nTerm, cTerm = false;
-    	boolean nextIsNTerm = false;
-    	double totalBFactor = 0;
-    	double meanBFactor;
-    	double totalSquaredBFactor = 0;
-    	double std;
+    	//default double value is 0
+    	double tempFact, meanBFactor, std, totalBFactor, totalSquaredBFactor;
+    	//default boolean value is false
+    	boolean backbone, nTerm, cTerm, nextIsNTerm;
     	
-    	for (int i = 0; i<pdbFile.size(); ++i) {		
+    	for (int i = 0; i<pdbFile.size(); ++i) {
+    		// if it is an Atom
     		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
+    			//splits the data according to customPDBSplit()
     			String[] strs = customPDBSplit(pdbFile.get(i));
-    			coords = getCoordinates(strs);		
+				
+				// gets all necessary information for an Atom
+				// coords, atomType, resNum, bFactor, backbone, nTerm, cTerm
+				coords = getCoordinates(strs);		
     			atomType = strs[1].trim();
     			nTerm = nextIsNTerm;
     			nextIsNTerm = false;
@@ -43,6 +55,9 @@ public class ParseFiles {
     			totalSquaredBFactor += Math.pow(tempFact, 2);
     			atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, tempFact, coords));
     		}
+    		// extra information on whether or not it is a terminus
+    		// one previous is a cTerm
+    		// next one is an nTerm
     		if(pdbFile.get(i).substring(0,6).trim().equals("TER")) {
     			nextIsNTerm = true;
     			atomList.get(atomList.size()-1).setCTerm(true);
@@ -51,11 +66,13 @@ public class ParseFiles {
     	
     	meanBFactor = totalBFactor / (atomList.size() - 1);
     	std = calcStdDev(totalBFactor, totalSquaredBFactor, atomList.size() - 1);
-    	//atomList.add(meanBfactor); is this the only way for me to get the meanBfactor value if the return value is the
-    	//arrayList atomList?
-    	//atomList.add(std);
-    	return atomList; //needs a return
-    }
+    	
+    	ArrayList<Object> retMe = new ArrayList<Object>();
+    	retMe.add(atomList);
+    	retMe.add(meanBFactor);
+    	retMe.add(std);
+    	return retMe;
+    } 
     
     public boolean multiEquals(String checkMe, String[] againstMe) {
     	for(int i = 0; i < againstMe.length; ++i) {
