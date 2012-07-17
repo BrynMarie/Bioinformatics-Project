@@ -5,8 +5,6 @@ public class AnalyzeOneProtein {
 
     ArrayList<String> dsspFile;
     ArrayList<String> pdbFile;
-    //necessary?
-    ArrayList<SecondaryStructure> ssArray;
     
     public AnalyzeOneProtein(){
 	//read in single file
