@@ -19,7 +19,7 @@ public class CalculatePMOI {
     int countBFactorGreaterThanOne = 0;
     boolean discardBFactor = false;
 
-    public CalculatePMOI(ArrayList<Residue> resList, ArrayList<Atom> atomList) {
+    public CalculatePMOI(ArrayList<Residue> residueList, ArrayList<Atom> atomList) {
 	// END PMoI variable declaration
 	for (int i = 0; i<residueList.size(); ++i) {
 	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm() == true) { 
