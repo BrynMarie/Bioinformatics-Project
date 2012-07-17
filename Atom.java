@@ -5,19 +5,20 @@ public class Atom {
    
     CartesianCoord coords;
     String atomType;
-    int resNum;
+    String resNum;
     double bFactor;
     boolean isBackbone, nTerm, cTerm;
     
-    public Atom(String atom, int resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
+    public Atom(String atom, String resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
 	atomType = atom;
 	coords = cc;
 	isBackbone = isBB;
     }
 
-    public Atom(String atom, int resNum, boolean isBB) {
+    public Atom(String atom, String resNum, boolean isBB) {
 	atomType = atom;
 	isBackbone = isBB;
+	this.resNum = resNum;
     }
 
     //constructor template
@@ -37,7 +38,7 @@ public class Atom {
     	return isBackbone;
     }
     
-    public int getResNum() {
+    public String getResNum() {
     	return resNum;
     }
     
@@ -75,7 +76,7 @@ public class Atom {
     	isBackbone = isBB;
     }
     
-    public void setResNum(int newResNum){
+    public void setResNum(String newResNum){
     	resNum = newResNum;
     }
     
