@@ -1,27 +1,26 @@
+/**
+ * 
+ * 
+ * 
+ * Needs some logic work
+ * Please put things that need to be worked on in a comment header above the class.
+ * 
+ * */ 
+
+
 import java.util.*;
 import java.io.*;
 
 public class ResidueToSS {
-    
-    /////////////////////
-    
-    // Need coord information to be integrated somehow!
-    
-    /////////////////////
 
     //this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
-    //It has not been filtered of loops that are too long, either.
-
     //Done: Filter out loops that are greater than 12 residues long w/ loopCounter
     //Done: Discard loops with missing residues
-    //look over coding ideas docs before going too far on this one.
     public ResidueToSS(ArrayList<Residue> resArray) {
     	
     	CalcGeo f5 = new CalcGeo(resArray);
     	resToSS(resArray);
-    	
     	// pass geometries to SSToSmotif
-    	
     }
     
     public resToSS(ArrayList<Residue> resArray) {
@@ -63,7 +62,6 @@ public class ResidueToSS {
             }
             
             //the old and current res are in different ss's
-            //must add new SS!
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
                 // turn behavior
