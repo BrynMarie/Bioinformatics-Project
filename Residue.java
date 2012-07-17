@@ -9,11 +9,12 @@ public class Residue {
     String ssType;
     boolean nTerm, cTerm, exists;
     ArrayList<Atom> atomList = new ArrayList<Atom>();
+    CartesianCoord pmoi;
     // other state
     
     //constructors
     public Residue(String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoord> coords, 
-    	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList) {
+    	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi) {
         this.bFactor = bFactor;
         this.pdbResNum = pdbResNum;
         this.coords = coords;
@@ -22,6 +23,7 @@ public class Residue {
         this.nTerm = nTerm;
         this.cTerm = cTerm;
 	this.atomList = atomList;
+	this.pmoi = pmoi;
     }
 
     public Residue(String pdbResNum, boolean exists) {
@@ -69,6 +71,10 @@ public class Residue {
     public ArrayList<Atom> getAtomList() {
 	return atomList;
     }
+    
+    public CartesianCoord getPMOI() {
+    	return pmoi;
+    }
 
     //mutator methods
     public void setBF(double newBF){
@@ -97,5 +103,9 @@ public class Residue {
     
     public void setExists(boolean ex) {
     	exists = ex;
+    }
+    
+    public void setPMOI(CartesianCoord pmoi) {
+    	this.pmoi = pmoi;
     }
 }
