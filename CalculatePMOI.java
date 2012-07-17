@@ -28,6 +28,8 @@ public class CalculatePMOI {
 		//Has been abstracted to a pretty clear point
 		//this also ideally will be in a helper method. 
 		ArrayList<Atom> currentAtomListOfResidue = residueList.get(i).getAtomListOfResidue();
+		String pdbNum = residueList.get(i).getResNum();
+		
 		for(int j = 0; j<currentAtomListOfResidue.size(); j++){
 			Atom currentAtom = currentAtomListOfResidue.get(j)
 			double aw = getAtomicWeight(currentAtom);
@@ -79,12 +81,14 @@ public class CalculatePMOI {
 			Iyz = -firstTermOfIyz + (1 / totalAtomicWeight) * (secondTermOfIyz) * (thirdTermOfIyz);
 			Izy = Iyz;
 		} //end iterating through the list of atoms of a residue
+		
 		double[][] populateMatrix = new double[][] { { Ixx, Ixy, Izz },{ Iyx, Iyy, Iyz }, { Izx, Izy, Izz } };
 		Matrix matrixForEigen = new Matrix(populateMatrix);
 		EigenvalueDecomposition ed = matrixForEigen.eig();
 		double[] getRealEigenvalues = ed.getRealEigenvalues();
 		double[] getImgEigenvalues = ed.getImagEigenvalues(); 
-		CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[1], getRealEigenvalues[2], getRealEigenvalues[3]);
+		CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[1], 
+			getRealEigenvalues[2], getRealEigenvalues[3]);
 		//reset terms
 		Ixx=0;
 		Iyy=0; 
@@ -128,7 +132,7 @@ public class CalculatePMOI {
 		totalAtomicWeight=0;
 		//end calculate PMoI
 		//need xyz coordinates to calculate geometries
-		newResArray.add(new Residue(principalMomentsOfInertia));
+		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia));
 	    }// end if
 	}// end for
 	return newResArray;
