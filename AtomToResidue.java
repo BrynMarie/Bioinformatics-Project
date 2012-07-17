@@ -54,16 +54,18 @@ public class AtomToResidue {
 				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
 
+				//String pdbResNum, double bFactor, String ssType, 
+    				//boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
 				
 				//if zscore is too high set as missing HERE
 				/* if(zScore < ____________ ) { // zscore falls into parameters
 					resArray.add(new Residue(currentResNum, zScore, "",
-					nTerm, cTerm, currentlyInResidue));
+					nTerm, cTerm, currentlyInResidue, 0));
 					//set pmoi to 0
 				}
 				else {
 					resArray.add(new Residue(currentResNum, false));
-					}*/
+				}*/
 
 				currentlyInResidue.clear();
 				currentResNum = newResNum;
@@ -169,7 +171,8 @@ public class AtomToResidue {
 		ArrayList<Atom> aL = res2.getAtomList();
 		CartesianCoord pmoi = res3.getPMOI();
 		
-		//String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoords> coords, boolean nTerm, boolean cTerm
+		//String pdbResNum, double bFactor, String ssType, 
+    		//boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
 		return new Residue(pdb, bF, ss, nTerm, cTerm, aL, pmoi);	
 	}
 
