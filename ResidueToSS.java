@@ -15,9 +15,20 @@ public class ResidueToSS {
     //Done: Filter out loops that are greater than 12 residues long w/ loopCounter
     //Done: Discard loops with missing residues
     //look over coding ideas docs before going too far on this one.
-    public ResidueToSS(ArrayList<Residue> resArray) {      
+    public ResidueToSS(ArrayList<Residue> resArray) {
+    	
+    	CalcGeo f5 = new CalcGeo(resArray);
+    	resToSS(resArray);
+    	
+    	// pass geometries to SSToSmotif
+    	
+    }
+    
+    public resToSS(ArrayList<Residue> resArray) {
+    	
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
+        
         Residue oldRes = resArray.get(0);
 	Residue currentRes;
         currentInSS.add(oldRes);
