@@ -33,18 +33,12 @@ public class AtomToResidue {
 		ArrayList<Residue> resArray = new ArrayList<Residue>();
 		ArrayList<Residue> tempArray = extractSS(dsspFile);
 		ArrayList<Atom> currentlyInResidue = new ArrayList<Atom>();
-		ArrayList<CartesianCoord> cartCoordOfAtomsOfResidueList = new ArrayList<CartesianCoord>();
 		
 		currentlyInResidue.add(curAtom);
 		
 		for (int i = 0; i<atomList.size(); ++i) {
 			newAtom = atomList.get(i);
 			newResNum = newAtom.getResNum();
-			
-			x = newAtom.getX();
-			y = newAtom.getY();
-			z = newAtom.getZ();
-			cartCoordOfAtomsOfResidueList.add(new CartesianCoord(x,y,z));
 			
 			//if we're still on the same residue as before...
 			if (newResNum == currentResNum) {
@@ -59,19 +53,17 @@ public class AtomToResidue {
 			else {
 				meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 				zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
-				
-				//String pdbResNum, double bFactor, String ssType, 
-				//CartesianCoord coords, boolean nTerm, boolean cTerm
+
 				
 				//if zscore is too high set as missing HERE
 				/* if(zScore < ____________ ) { // zscore falls into parameters
-					resArray.add(new Residue(currentResNum, zScore, "", 
-					cartCoordOfAtomsOfResidueList, nTerm, cTerm, currentlyInResidue));
+					resArray.add(new Residue(currentResNum, zScore, "",
+					nTerm, cTerm, currentlyInResidue));
+					//set pmoi to 0
 				}
 				else {
 					resArray.add(new Residue(currentResNum, false));
 					}*/
-				cartCoordOfAtomsOfResidueList.clear();
 
 				currentlyInResidue.clear();
 				currentResNum = newResNum;
@@ -175,11 +167,10 @@ public class AtomToResidue {
 		boolean cTerm = res2.getCTerm();
 		boolean nTerm = res2.getNTerm();
 		ArrayList<Atom> aL = res2.getAtomList();
-		// see about coords = al coord
 		CartesianCoord pmoi = res3.getPMOI();
 		
 		//String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoords> coords, boolean nTerm, boolean cTerm
-		return new Residue(pdb, bF, ss, coord, nTerm, cTerm, aL, pmoi);	
+		return new Residue(pdb, bF, ss, nTerm, cTerm, aL, pmoi);	
 	}
 
 	public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
