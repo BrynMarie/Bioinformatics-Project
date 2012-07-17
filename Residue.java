@@ -4,7 +4,6 @@ import java.util.*;
 public class Residue {
     
     double bFactor;
-    ArrayList<CartesianCoord> coords;
     String pdbResNum;
     String ssType;
     boolean nTerm, cTerm, exists;
@@ -13,7 +12,7 @@ public class Residue {
     // other state
     
     //constructors
-    public Residue(String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoord> coords, 
+    public Residue(String pdbResNum, double bFactor, String ssType, 
     	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi) {
         this.bFactor = bFactor;
         this.pdbResNum = pdbResNum;
