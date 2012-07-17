@@ -9,7 +9,9 @@ public class AtomToResidue {
 	public AtomToResidue(ArrayList<Atom> al, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
 		ArrayList<Atom> atomList = sortAtoms(al);
 		ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
-		ResidueToSS f4 = new ResidueToSS(resArray);
+		CalculatePMOI f5 = new CalculatePMOI(resArray);
+		pmoiArray = f5.newResArray;
+		ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
 	}
 	
 	public ArrayList<Atom> sortAtoms(ArrayList<Atom> atomList) {
@@ -24,7 +26,7 @@ public class AtomToResidue {
 		ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
 		
 		int residueAtoms, newResNum;
-		double currentResidueBFactor, meanOfCurrentResidue, zScore, x, y, z;
+		double currentResidueBFactor, meanOfCurrentResidue, zScore;
 		long countResidues = 0;
 		boolean cTerm = false, nTerm = false;
 		int currentResNum = atomList.get(0).getResNum();
@@ -78,15 +80,13 @@ public class AtomToResidue {
 
 		tempArray = sortResidues(tempArray);
 		resArray = sortResidues(resArray);
-		CalculatePMOI f2 = new CalculatePMOI(tempArray, atomList);
-		ArrayList<Residue> pmoiArray = f2.newResArray; // synced with tempArray, but only has c/n termini
 		ArrayList<Residue> finalResArray;
 		
 		if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
-			finalResArray = mergeArrays(tempArray, resArray, pmoiArray, true);	
+			finalResArray = mergeArrays(tempArray, resArray, true);	
 		}
 		else {
-			finalResArray = mergeArrays(resArray, tempArray, pmoiArray, false);
+			finalResArray = mergeArrays(resArray, tempArray, false);
 		}
 		
 		return finalResArray;
@@ -100,7 +100,6 @@ public class AtomToResidue {
 		int lCounter = 0;
 		ArrayList<Residue> finalResArray = new ArrayList<Residue>();
 		int finalCounter = 0;
-		int pCounter = 0;
 		
 		while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != 
 			Integer.parseInt(higherArray.get(0).getResNum())) {
@@ -108,7 +107,6 @@ public class AtomToResidue {
 			String pdb = lowerArray.get(lCounter).getResNum();
 			finalResArray.add(new Residue(pdb, false));
 			++lCounter;
-			if(ssFirst) { ++pCounter; }
 		} // end while
 
 		//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
@@ -118,19 +116,12 @@ public class AtomToResidue {
 		for (int j = 0; j < limit; ++j) {
 			Residue currentLower = lowerArray.get(lCounter + j);
 			Residue currentHigher = higherArray.get(hCounter + j);
-			Residue currentP = pmoiArray.get(pCounter + j);
 			int lResNum = Integer.parseInt(currentLower.getResNum());
 			int hResNum = Integer.parseInt(currentHigher.getResNum());
-			int pResNum = Integer.parseInt(currentP.getResNum());
 			
 			while (lResNum < hResNum) {
 				//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
 				finalResArray.add(new Residue("" + lResNum + "", false)); 	
-				if(ssFirst) { 
-					++pCounter; 
-					currentP = pmoiArray.get(pCounter + j);
-					pResNum = Integer.parseInt(currentP.getResNum());
-				}
 				++lCounter;
 				currentLower = lowerArray.get(lCounter + j);
 				lResNum = Integer.parseInt(currentLower.getResNum());
@@ -139,17 +130,12 @@ public class AtomToResidue {
 			while (lResNum > hResNum) {
 				finalResArray.add(new Residue("" + hResNum + "", false));
 				++hCounter;
-				if(!ssFirst) { 
-					++pCounter; 
-					currentP = pmoiArray.get(pCounter + j);
-					pResNum = Integer.parseInt(currentP.getResNum());
-				}
 				currentHigher = higherArray.get(hCounter + j);
 				hResNum = Integer.parseInt(currentHigher.getResNum());
 			} // end other while
 			
 			while (lResNum == hResNum && lResNum == pResNum) {
-				finalResArray.add(mergeResidues(currentLower, currentHigher, currentP, ssFirst));	
+				finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
 			} // end while
 		} // end for
 		
@@ -169,11 +155,11 @@ public class AtomToResidue {
 		boolean cTerm = res2.getCTerm();
 		boolean nTerm = res2.getNTerm();
 		ArrayList<Atom> aL = res2.getAtomList();
-		CartesianCoord pmoi = res3.getPMOI();
+		CartesianCoord holder;
 		
 		//String pdbResNum, double bFactor, String ssType, 
     		//boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
-		return new Residue(pdb, bF, ss, nTerm, cTerm, aL, pmoi);	
+		return new Residue(pdb, bF, ss, nTerm, cTerm, aL, holder);	
 	}
 
 	// returns arraylist of residues that only have ss information
