@@ -48,7 +48,7 @@ public class ResidueToSS {
             if(currentRes.getSS().equals(oldRes.getSS() && currentRes.exists())) {
                 ss = currentRes.getSS();
                 
-                //if the next one exists you'll add it to the currentInSS; if not, you won't.
+                // if you are supposed to add this ss you can.
                 if(!(nextNotExist.equals(ss))) { 
                     if (turn) { ++loopCounter; }
                     if (turn && loopCounter == 13) { 
@@ -57,7 +57,8 @@ public class ResidueToSS {
                         nextNotExist = currentRes.getSS();
                     }
                     currentInSS.add(currentRes);
-                }  
+                    nextNotExist = "";
+                }
             }
             
             //the old and current res are in different ss's
