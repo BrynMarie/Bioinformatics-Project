@@ -96,22 +96,21 @@ public class AtomToResidue {
 		}
 
 		tempArray = sortResidues(tempArray);
-		resArray = sortResidues(resArray);		
+		resArray = sortResidues(resArray);
+		ArrayList<Residue> pmoiArray = calculatePMOI(tempArray, atomList); // synced with tempArray
 		ArrayList<Residue> finalResArray;
 		
 		if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
-			finalResArray = mergeArrays(tempArray, resArray, true);	
+			finalResArray = mergeArrays(tempArray, resArray, pmoiArray, true);	
 		}
 		else {
-			finalResArray = mergeArrays(resArray, tempArray, false);
+			finalResArray = mergeArrays(resArray, tempArray, pmoiArray, false);
 		}
-		
-		ArrayList<Residue> pmoiArray = sortResidues(calculatePMOI(finalResArray, atomList));
 	}
     
       
 	public ArrayList<Residue> mergeArrays(ArrayList<Residue> lowerArray, ArrayList<Residue> higherArray, 
-		boolean ssFirst) {
+		ArrayList<Residue> pmoiArray, boolean ssFirst) {
 		
 		// go through that one til they both match up, marking them as 'don't exist in both',
 		int lCounter = 0;
