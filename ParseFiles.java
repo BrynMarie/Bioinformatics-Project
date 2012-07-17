@@ -24,8 +24,7 @@ public class ParseFiles {
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	
     	CartesianCoord coords;
-    	String atomType;
-    	String pdbResNum;
+    	String atomType, pdbResNum;
     	//default double value is 0
     	double tempFact, meanBFactor, std, totalBFactor, totalSquaredBFactor;
     	//default boolean value is false
