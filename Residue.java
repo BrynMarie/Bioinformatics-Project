@@ -16,7 +16,6 @@ public class Residue {
     	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi) {
         this.bFactor = bFactor;
         this.pdbResNum = pdbResNum;
-        this.coords = coords;
         this.ssType = ssType;
         this.atomList = atomList;
         this.nTerm = nTerm;
@@ -30,8 +29,9 @@ public class Residue {
 	this.exists = exists;
     }
 
-    public Residue(ArrayList<CartesianCoord> pmoi) {
-	this.coords = pmoi;
+    public Residue(String pdbResNum, CartesianCoord pmoi) {
+    	this.pdbResNum = pdbResNum;
+	this.pmoi = pmoi;
     }
     
     //accessor methods
