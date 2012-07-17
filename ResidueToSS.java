@@ -1,7 +1,5 @@
 /**
  * 
- * 
- * 
  * this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
  * Filter out loops that are greater than 12 residues long w/ loopCounter
  * Discard loops with missing residues
