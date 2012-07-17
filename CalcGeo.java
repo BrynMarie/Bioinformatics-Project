@@ -1,14 +1,27 @@
+/**
+ * 
+ * 
+ * You should probably make an array of distances/delta/theta/rho angles and the like, 
+ * that way we can have one 'geometries' file for each secondary structure. Each of these does correspond 
+ * to a secondary structure so hopefully that should work out. I would also like to see stored the 
+ * first and last residue pdbResNum in the data structure of the geometry.
+ * 
+ * I'll see about putting together the geometries data structure if you'll see how it works out...
+ * */
+
+
 import java.util.*;
 import java.io.*;
 
 public class CalcGeo {
 	
+	//these should be arrays
 	public static double distance;
 	public static double deltaAngle;
 	CartesianCoord p0, p1, p2, p3, e1, l, e2;
 	// also need theta and rho angles, then we have all of the geometries
 	public static double thetaAngle;
-	public static double deltaAngle;
+	public static double rhoAngle;
 
     public CalcGeo(ArrayList<Residue> residueList) {
 		calculate(residueList);
