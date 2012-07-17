@@ -9,6 +9,7 @@ public class AtomToResidue {
 	public AtomToResidue(ArrayList<Atom> al, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
 		ArrayList<Atom> atomList = sortAtoms(al);
 		ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
+		ResidueToSS f4 = new ResidueToSS(resArray);
 	}
 	
 	public ArrayList<Atom> sortAtoms(ArrayList<Atom> atomList) {
