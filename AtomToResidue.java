@@ -176,6 +176,7 @@ public class AtomToResidue {
 		return new Residue(pdb, bF, ss, nTerm, cTerm, aL, pmoi);	
 	}
 
+	// returns arraylist of residues that only have ss information
 	public ArrayList<Residue> extractSS(ArrayList<String> dsspFile) {
 		ArrayList<Residue> tempArray = new ArrayList<Residue>();
 		
