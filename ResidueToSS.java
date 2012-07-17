@@ -77,13 +77,15 @@ public class ResidueToSS {
                 
                 //add currentInSS to ssArray
                 ssArray.add(parseSS(currentInSS));
+                currentInSS.clear();
                 
                 // if it's missing don't let anything happen
-                if(!currentRes.exists()) {
+                if(!currentRes.exists() && turn) {
                     ssArray.add(new SecondaryStructure(ss, false));
                     nextNotExist = ss;
                 }
                 else {
+                    currentInSS.add(currentRes);
                     nextNotExist = "";
                 }
             }
