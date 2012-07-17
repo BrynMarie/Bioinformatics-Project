@@ -19,21 +19,6 @@ public class AtomToResidue {
 		Collections.sort(resList, new ResidueComparator());
 	}
     
-	public double getAtomicWeight(Atom currentAtom) { //NEW PMoI method to get atomic weight given atom type
-		double atomWeight = 0;
-		String atomType = Character.toString(currentAtom.getAtomType().charAt(0));
-		String[] atomTypeArray = {"H","N","C","O","S"};
-		double[] atomWeightArray = {1.00794, 14.0067, 12.0107, 15.9994, 32.065};
-			
-		for(int i=0; i<atomTypeArray.length; ++i) {
-			if (atomType.equals(atomTypeArray[i])) {
-				atomWeight = atomWeightArray[i];
-			}
-		}
-		
-		return atomWeight;
-	}
-    
 	public ArrayList<Residue> turnIntoResidueArray(ArrayList<Atom> atomList, 
 		ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
 		
