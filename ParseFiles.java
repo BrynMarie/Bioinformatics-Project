@@ -134,5 +134,6 @@ public class ParseFiles {
     }
     
     public static void main(String[] args){
+    	ParseFiles f1 = new ParseFiles();
     }
 }
