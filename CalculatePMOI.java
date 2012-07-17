@@ -28,6 +28,8 @@ public class CalculatePMOI {
 		//Has been abstracted to a pretty clear point
 		//this also ideally will be in a helper method. 
 		double aw = getAtomicWeight(atomList.get(i));
+
+		//needs to be changed
 		double x = residueList.get(i).getCoords().getX();
 		double y = residueList.get(i).getCoords().getY();
 		double z = residueList.get(i).getCoords().getZ();
@@ -59,7 +61,7 @@ public class CalculatePMOI {
 		secondTermOfIxz += aw * y;
 		thirdTermOfIxz += aw * z;
 		// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
-		totalAtomicWeight += aw
+		totalAtomicWeight += aw;
 		//BEGIN calculate PMoI
 		Ixx = firstTermOfIxx - (1 / totalAtomicWeight) * (secondTermOfIxx) - (1 / totalAtomicWeight)
 		    * (thirdTermOfIxx);
@@ -129,4 +131,20 @@ public class CalculatePMOI {
 	    }// end if
 	}// end for
     }// end method
+
+    public double getAtomicWeight(Atom currentAtom) { //NEW PMoI method to get atomic weight given atom type
+
+	double atomWeight = 0;
+	String atomType = Character.toString(currentAtom.getAtomType().charAt(0));
+	String[] atomTypeArray = {"H","N","C","O","S"};
+	double[] atomWeightArray = {1.00794, 14.0067, 12.0107, 15.9994, 32.065};
+	
+	for(int i=0; i<atomTypeArray.length; ++i) {
+	    if (atomType.equals(atomTypeArray[i])) {
+		atomWeight = atomWeightArray[i];
+	    }
+	}	
+	return atomWeight;
+    }
+
 }// end class

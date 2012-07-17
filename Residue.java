@@ -21,6 +21,7 @@ public class Residue {
         this.atomList = atomList;
         this.nTerm = nTerm;
         this.cTerm = cTerm;
+	this.atomList = atomList;
     }
 
     public Residue(String pdbResNum, boolean exists) {
@@ -28,7 +29,7 @@ public class Residue {
 	this.exists = exists;
     }
 
-    public Residue(CartesianCoord pmoi) {
+    public Residue(ArrayList<CartesianCoord> pmoi) {
 	this.coords = pmoi;
     }
     
@@ -41,8 +42,12 @@ public class Residue {
     	return bFactor;
     }
     
-    public CartesianCoord getCoords() {
+    public ArrayList<CartesianCoord> getCoords() {
     	return coords;
+    }
+
+    public CartesianCoord getCoordsAt(int i) {
+	return coords.get(i);
     }
     
     public String getResNum() {
@@ -61,17 +66,17 @@ public class Residue {
     	return nTerm;
     }
 
+    public ArrayList<Atom> getAtomList() {
+	return atomList;
+    }
+
     //mutator methods
     public void setBF(double newBF){
     	bFactor = newBF;
     }
     
-   public void setCoords(CartesianCoord newCoord) {
-   	coords = newCoord;
-   }
-    
-    public void setCoords(double x, double y, double z){
-    	coords = new CartesianCoord(x,y,z);
+    public void setCoords(ArrayList<CartesianCoord> coordsList){
+    	coords = coordsList;
     }
     
     public void setResNum(String pdbResNum){

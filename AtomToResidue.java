@@ -42,7 +42,8 @@ public class AtomToResidue {
 		long countResidues = 0;
 		boolean cTerm = false, nTerm = false;
 		int currentResNum = atomList.get(0).getResNum();
-		Residue curAtom = atomList.get(0), newAtom;
+		Atom curAtom = atomList.get(0); 
+		Atom newAtom;
 		ArrayList<Residue> resArray = new ArrayList<Residue>();
 		ArrayList<Residue> tempArray = extractSS(dsspFile);
 		ArrayList<Atom> currentlyInResidue = new ArrayList<Atom>();
@@ -77,14 +78,15 @@ public class AtomToResidue {
 				//CartesianCoord coords, boolean nTerm, boolean cTerm
 				
 				//if zscore is too high set as missing HERE
-				if(zScore < ____________ ) { // zscore falls into parameters
+				/* if(zScore < ____________ ) { // zscore falls into parameters
 					resArray.add(new Residue(currentResNum, zScore, "", 
 					cartCoordOfAtomsOfResidueList, nTerm, cTerm, currentlyInResidue));
 				}
 				else {
 					resArray.add(new Residue(currentResNum, false));
-				}
+					}*/
 				cartCoordOfAtomsOfResidueList.clear();
+
 				currentlyInResidue.clear();
 				currentResNum = newResNum;
 				residueAtoms = 0;
@@ -96,7 +98,8 @@ public class AtomToResidue {
 
 		tempArray = sortResidues(tempArray);
 		resArray = sortResidues(resArray);
-		ArrayList<Residue> pmoiArray = calculatePMOI(tempArray, atomList); // synced with tempArray
+		CalculatePMOI f2 = new CalculatePMOI(tempArray, atomList);
+		ArrayList<Residue> pmoiArray = f2.newResArray; // synced with tempArray
 		ArrayList<Residue> finalResArray;
 		
 		if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
@@ -183,10 +186,11 @@ public class AtomToResidue {
 		double bF = res2.getBFactor();
 		boolean cTerm = res2.getCTerm();
 		boolean nTerm = res2.getNTerm();
-		CartesianCoord coord = res3.getCoords();
+		ArrayList<Atom> aL = res2.getAtomList();
+		ArrayList<CartesianCoord> coord = res3.getCoords();
 		
-		//String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm
-		retMe = new Residue(pdb, bF, ss, coord, nTerm, cTerm);
+		//String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoords> coords, boolean nTerm, boolean cTerm
+		retMe = new Residue(pdb, bF, ss, coord, nTerm, cTerm, aL);
 		
 	}
 
