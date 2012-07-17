@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 import java.lang.*;
-//  currently compiles mostly
 
 public class AtomToResidue {
 	
@@ -48,7 +47,7 @@ public class AtomToResidue {
 				currentResidueBFactor += newAtom.getBFactor();
 				currentlyInResidue.add(newAtom);
 				if(newAtom.getNTerm()) { nTerm = true; }
-				if(newAtom.getCTerm()) { cTerm = true; }
+				else if(newAtom.getCTerm()) { cTerm = true; }
 			}
 
 	   		//if we've moved on to the next residue
