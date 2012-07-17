@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.*;
 import java.lang.*;
-import Jama.*;
 //  currently compiles mostly
 
 public class AtomToResidue {
