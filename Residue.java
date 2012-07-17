@@ -10,20 +10,17 @@ public class Residue {
     boolean nTerm, cTerm, exists;
     ArrayList<Atom> atomList = new ArrayList<Atom>();
     // other state
-
-    //make as many constructors as needed
-    public Residue(String pdbResNum, double bFactor, String ssType, double x, double y, double z) {
-        this.bFactor = bFactor;
-        this.coords = new CartesianCoord(x, y, z);
-        this.pdbResNum = pdbResNum;
-        this.ssType = ssType;
-    }
     
-    public Residue(String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm) {
+    //constructors
+    public Residue(String pdbResNum, double bFactor, String ssType, CartesianCoord coords, 
+    	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList) {
         this.bFactor = bFactor;
         this.pdbResNum = pdbResNum;
         this.coords = coords;
         this.ssType = ssType;
+        this.atomList = atomList;
+        this.nTerm = nTerm;
+        this.cTerm = cTerm;
     }
 
     public Residue(String pdbResNum, boolean exists) {
