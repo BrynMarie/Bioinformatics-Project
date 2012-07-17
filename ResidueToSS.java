@@ -2,8 +2,9 @@
  * 
  * 
  * 
- * Needs some logic work
- * Please put things that need to be worked on in a comment header above the class.
+ * this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
+ * Filter out loops that are greater than 12 residues long w/ loopCounter
+ * Discard loops with missing residues
  * 
  * */ 
 
@@ -13,11 +14,7 @@ import java.io.*;
 
 public class ResidueToSS {
 
-    //this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
-    //Done: Filter out loops that are greater than 12 residues long w/ loopCounter
-    //Done: Discard loops with missing residues
     public ResidueToSS(ArrayList<Residue> resArray) {
-    	
     	CalcGeo f5 = new CalcGeo(resArray);
     	resToSS(resArray);
     	// pass geometries to SSToSmotif
@@ -25,7 +22,9 @@ public class ResidueToSS {
     
     public resToSS(ArrayList<Residue> resArray) {
     	
+    	//holds residues in each respect ss
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
+        // array to hold ss's
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         
         Residue oldRes = resArray.get(0);
@@ -108,7 +107,7 @@ public class ResidueToSS {
     // merge resList into a secondary structure with all necessary information
     public SecondaryStructure parseSS(ArrayList<Residue> resList) {
         
-        //String ss, int length, ArrayList<Residue> resArray, CartesianCoords coords
-        return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList, COORDS_NEEDED);
+        //String ss, int length, ArrayList<Residue> resArray
+        return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList);
     }
 }
