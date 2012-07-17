@@ -116,6 +116,7 @@ public class AtomToResidue {
 		int lCounter = 0;
 		ArrayList<Residue> finalResArray = new ArrayList<Residue>();
 		int finalCounter = 0;
+		int pCounter = 0;
 		
 		while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != 
 			Integer.parseInt(higherArray.get(0).getResNum())) {
@@ -123,6 +124,7 @@ public class AtomToResidue {
 			String pdb = lowerArray.get(lCounter).getResNum();
 			finalResArray.add(new Residue(pdb, false));
 			++lCounter;
+			if(ssFirst) { ++pCounter; }
 		} // end while
 
 		//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(counter)
@@ -132,12 +134,19 @@ public class AtomToResidue {
 		for (int j = 0; j < limit; ++j) {
 			Residue currentLower = lowerArray.get(lCounter + j);
 			Residue currentHigher = higherArray.get(hCounter + j);
+			Residue currentP = pmoiArray.get(pCounter + j);
 			int lResNum = Integer.parseInt(currentLower.getResNum());
 			int hResNum = Integer.parseInt(currentHigher.getResNum());
+			int pResNum = Integer.parseInt(currentP.getResNum());
 			
 			while (lResNum < hResNum) {
 				//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
-				finalResArray.add(new Residue("" + lResNum + "", false)); 
+				finalResArray.add(new Residue("" + lResNum + "", false)); 	
+				if(ssFirst) { 
+					++pCounter; 
+					currentP = pmoiArray.get(pCounter + j);
+					pResNum = Integer.parseInt(currentP.getResNum());
+				}
 				++lCounter;
 				currentLower = lowerArray.get(lCounter + j);
 				lResNum = Integer.parseInt(currentLower.getResNum());
@@ -146,17 +155,22 @@ public class AtomToResidue {
 			while (lResNum > hResNum) {
 				finalResArray.add(new Residue("" + hResNum + "", false));
 				++hCounter;
+				if(!ssFirst) { 
+					++pCounter; 
+					currentP = pmoiArray.get(pCounter + j);
+					pResNum = Integer.parseInt(currentP.getResNum());
+				}
 				currentHigher = higherArray.get(hCounter + j);
 				hResNum = Integer.parseInt(currentHigher.getResNum());
 			} // end other while
 			
-			while (lResNum == hResNum) {
-				finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
+			while (lResNum == hResNum && lResNum == pResNum) {
+				finalResArray.add(mergeResidues(currentLower, currentHigher, currentP, ssFirst));	
 			} // end while
 		} // end for
 	} // end method
     
-	public Residue mergeResidues(Residue res1, Residue res2, boolean ssFirst) {
+	public Residue mergeResidues(Residue res1, Residue res2, Residue res3, boolean ssFirst) {
 		Residue retMe;
 		
 		if(!ssFirst) {
@@ -170,9 +184,10 @@ public class AtomToResidue {
 		double bF = res2.getBFactor();
 		boolean cTerm = res2.getCTerm();
 		boolean nTerm = res2.getNTerm();
+		CartesianCoord coord = res3.getCoords();
 		
 		//String pdbResNum, double bFactor, String ssType, CartesianCoord coords, boolean nTerm, boolean cTerm
-		retMe = new Residue(pdb, bF, ss, COORDS_NEEDED, nTerm, cTerm);
+		retMe = new Residue(pdb, bF, ss, coord, nTerm, cTerm);
 		
 	}
 
