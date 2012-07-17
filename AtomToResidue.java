@@ -79,7 +79,7 @@ public class AtomToResidue {
 		tempArray = sortResidues(tempArray);
 		resArray = sortResidues(resArray);
 		CalculatePMOI f2 = new CalculatePMOI(tempArray, atomList);
-		ArrayList<Residue> pmoiArray = f2.newResArray; // synced with tempArray
+		ArrayList<Residue> pmoiArray = f2.newResArray; // synced with tempArray, but only has c/n termini
 		ArrayList<Residue> finalResArray;
 		
 		if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
