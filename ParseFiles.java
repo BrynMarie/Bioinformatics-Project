@@ -21,7 +21,7 @@ public class ParseFiles {
         AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
     }
     
-    public ArrayList<Atom> getInfoFromPDB(ArrayList<String> pdbFile) {
+    public ArrayList<Object> getInfoFromPDB(ArrayList<String> pdbFile) {
     	//empty at beginning
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	
