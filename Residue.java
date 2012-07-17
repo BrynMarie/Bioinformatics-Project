@@ -43,14 +43,6 @@ public class Residue {
     	return bFactor;
     }
     
-    public ArrayList<CartesianCoord> getCoords() {
-    	return coords;
-    }
-
-    public CartesianCoord getCoordsAt(int i) {
-	return coords.get(i);
-    }
-    
     public String getResNum() {
     	return pdbResNum;
     }
@@ -78,10 +70,6 @@ public class Residue {
     //mutator methods
     public void setBF(double newBF){
     	bFactor = newBF;
-    }
-    
-    public void setCoords(ArrayList<CartesianCoord> coordsList){
-    	coords = coordsList;
     }
     
     public void setResNum(String pdbResNum){
