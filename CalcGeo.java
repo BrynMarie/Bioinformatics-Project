@@ -28,36 +28,38 @@ public class CalcGeo {
     }
     
     public void calculate(ArrayList<Residue> residueList) {
-	   	
+	   	double magnitudeOfX = 0;
 		for (int i = 0; i<residueList.size(); ++i) {
 		    p0 = (residueList.get(i).getCoords()); 
 		    p1 = (residueList.get(i+1).getCoords());
 		    p2 = (residueList.get(i+2).getCoords());
 		    p3 = (residueList.get(i+3).getCoords());
 		    
-		    //calculate e1
+		    //calculate e1, vector
 		    e1 = calcE1LE2(p0, p1);
-		    //calculate l
+		    //calculate l, vector
 		    l = calcE1LE2(p2, p1);
-		    //calculate e2
+		    //calculate e2, vector
 		    e2 = calcE1LE2(p3, p2);
 		    
-		    //calculate distance, d
+		    //calculate distance, d, scalar
 		    this.distance = calcDistance(p2, p1);
 		    //calc delta angle
 		    this.deltaAngle = calcAngles(e1, l);
-		    //calc n
+		    //calc theta angle
+		    this.thetaAngle = calcAngles(e1, e2);
+		    //calc n, this is a vector
             	    CartesianCoord crossProd = calc3By3CrossProd(l, e1);
 	      	    double lengthOfCrossProd = calcMagntidue(l)*calcMagnitude(e1)*Math.sin(thetaAngle);
 	    	    CartesianCoord n = new CartesianCoord(crossProd.getX()/lengthOfCrossProd,
 		    crossProd.getY()/lengthOfCrossProd, crossProd.getZ()/lengthOfCrossProd);
-	    	    //calc x
+	    	    //calc x, this is a vector
 	    	    double e1e2DotProd = calc3DDotProduct(e1, e2);
 	    	    CartesianCoord secondTermOfX = new CartesianCoord(e1.getX()*e1e2DotProd,
 		    e2.getY()*e1e2DotProd, e3.getZ()*e1e2DotProd);
 	            CartesianCoord x = new CartesianCoord(e2.getX()-e1.getX(),
 		    e2.getY()-e1.getY(), e2.getZ()-e1.getZ());
-	    	    //calc rho, has two cases
+	    	    //calc rho angle, has two cases
             	    double firstCaseRho = dotProd(x, crossProd(e1, n));
 	    	    if(firstCaseRho >= 0) {
 			magnitudeOfX = calcMagnitude(x);
