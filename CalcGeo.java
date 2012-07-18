@@ -46,12 +46,58 @@ public class CalcGeo {
 		    this.distance = calcDistance(p2, p1);
 		    //calc delta angle
 		    this.deltaAngle = calcAngles(e1, l);
+		    //calc n
+            	    CartesianCoord crossProd = calc3By3CrossProd(l, e1);
+	      	    double lengthOfCrossProd = calcMagntidue(l)*calcMagnitude(e1)*Math.sin(thetaAngle);
+	    	    CartesianCoord n = new CartesianCoord(crossProd.getX()/lengthOfCrossProd,
+		    crossProd.getY()/lengthOfCrossProd, crossProd.getZ()/lengthOfCrossProd);
+	    	    //calc x
+	    	    double e1e2DotProd = calc3DDotProduct(e1, e2);
+	    	    CartesianCoord secondTermOfX = new CartesianCoord(e1.getX()*e1e2DotProd,
+		    e2.getY()*e1e2DotProd, e3.getZ()*e1e2DotProd);
+	            CartesianCoord x = new CartesianCoord(e2.getX()-e1.getX(),
+		    e2.getY()-e1.getY(), e2.getZ()-e1.getZ());
+	    	    //calc rho, has two cases
+            	    double firstCaseRho = dotProd(x, crossProd(e1, n));
+	    	    if(firstCaseRho >= 0) {
+			magnitudeOfX = calcMagnitude(x);
+			rho = Math.acos(dotProd(x/magnitudeOfX, n));
+	     	     }
+	   	    else{
+			magnitudeOfX = calcMagnitude(x);
+			rho = (2*Math.pi)-Math.acos(dotProd(x/magnitudeOfX, n));
+	     	    }
 		}
     }
     
     public double calcAngles(CartesianCoord first, CartesianCoord second){
 	double dotProduct = calc3DDotProduct(first, second);
 	return Math.acos(dotProduct);
+    }
+    
+    public double calcMagnitude(CartesianCoord a){
+	double a1 = a.getX();
+	double a2 = a.getY();
+	double a3 = a.getZ();
+	sqrtA1 = Math.pow(a1, 2);
+	sqrtA2 = Math.pow(a2, 2);
+	sqrtA3 = Math.pow(a3, 2);
+	double magnitude = Math.sqrt(sqrtA1+sqrtA2+sqrtA3);
+	return magnitude;
+    }
+    
+    public CartesianCoord calcCrossProd(CartesianCoord first, CartesianCoord second){
+    	double a1 = first.getX();
+    	double a2 = first.getY();
+    	double a3 = first.getZ();
+    	double b1 = first.getX();
+    	double b2 = first.getY();
+    	double b3 = first.getZ();
+    	double firstTerm=(a2*b3)-(a3*b2);
+    	double secondTerm = (a3*b1)-(a1*b3);
+   	double thirdTerm = (a1*b2)-(a2*b1);
+ 	CartesianCoord crossProd = new CartesianCoord(firstTerm, secondTerm, thirdTerm);
+   	return crossProd;
     }
     
     public double calc3DDotProduct(CartesianCoord first, CartesianCoord second){
