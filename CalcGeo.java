@@ -29,11 +29,12 @@ public class CalcGeo {
     
     public void calculate(ArrayList<Residue> residueList) {
 	   	double magnitudeOfX = 0;
+	   	double rho;
 		for (int i = 0; i<residueList.size(); ++i) {
-		    p0 = (residueList.get(i).getCoords()); 
-		    p1 = (residueList.get(i+1).getCoords());
-		    p2 = (residueList.get(i+2).getCoords());
-		    p3 = (residueList.get(i+3).getCoords());
+		    p0 = (residueList.get(i).getAtomList().get(i).getCoords()); 
+		    p1 = (residueList.get(i+1).getAtomList().get(i).getCoords());
+		    p2 = (residueList.get(i+2).getAtomList().get(i).getCoords());
+		    p3 = (residueList.get(i+3).getAtomList().get(i).getCoords());
 		    
 		    //calculate e1, vector
 		    e1 = calcE1LE2(p0, p1);
@@ -49,43 +50,47 @@ public class CalcGeo {
 		    //calc theta angle
 		    this.thetaAngle = calcAngles(e1, e2);
 		    //calc n, this is a vector
-            	    CartesianCoord crossProd = calc3By3CrossProd(l, e1);
-	      	    double lengthOfCrossProd = calcMagntidue(l)*calcMagnitude(e1)*Math.sin(thetaAngle);
+            	    CartesianCoord crossProd = calcCrossProd(l, e1);
+	      	    double lengthOfCrossProd = calcMagnitude(l)*calcMagnitude(e1)*Math.sin(thetaAngle);
 	    	    CartesianCoord n = new CartesianCoord(crossProd.getX()/lengthOfCrossProd,
 		    crossProd.getY()/lengthOfCrossProd, crossProd.getZ()/lengthOfCrossProd);
 	    	    //calc x, this is a vector
-	    	    double e1e2DotProd = calc3DDotProduct(e1, e2);
+	    	    double e1e2DotProd = calcDotProd(e1, e2);
 	    	    CartesianCoord secondTermOfX = new CartesianCoord(e1.getX()*e1e2DotProd,
-		    e2.getY()*e1e2DotProd, e3.getZ()*e1e2DotProd);
+		    e1.getY()*e1e2DotProd, e1.getZ()*e1e2DotProd);
 	            CartesianCoord x = new CartesianCoord(e2.getX()-e1.getX(),
 		    e2.getY()-e1.getY(), e2.getZ()-e1.getZ());
 	    	    //calc rho angle, has two cases
-            	    double firstCaseRho = dotProd(x, crossProd(e1, n));
-	    	    if(firstCaseRho >= 0) {
-			magnitudeOfX = calcMagnitude(x);
-			rho = Math.acos(dotProd(x/magnitudeOfX, n));
+            	    double whichCaseOfRho = calcDotProd(x, calcCrossProd(e1, n));
+        			double xOfX = x.getX();
+        			double yOfX = x.getY();
+        			double zOfX = x.getZ();
+        			magnitudeOfX = calcMagnitude(x);
+        			CartesianCoord vectorXDividedByLength = new CartesianCoord(xOfX/magnitudeOfX, yOfX/magnitudeOfX, zOfX/magnitudeOfX);
+	    	    if(whichCaseOfRho >= 0) {
+					rho = Math.acos(calcDotProd(vectorXDividedByLength, n));
 	     	     }
-	   	    else{
-			magnitudeOfX = calcMagnitude(x);
-			rho = (2*Math.pi)-Math.acos(dotProd(x/magnitudeOfX, n));
-	     	    }
+	   	   		else{
+	   	   			magnitudeOfX = calcMagnitude(x);
+	   	   			rho = (2*Math.PI)-Math.acos(calcDotProd(vectorXDividedByLength, n));
+	     	}
 		}
     }
     
     public double calcAngles(CartesianCoord first, CartesianCoord second){
-	double dotProduct = calc3DDotProduct(first, second);
+	double dotProduct = calcDotProd(first, second);
 	return Math.acos(dotProduct);
     }
     
     public double calcMagnitude(CartesianCoord a){
-	double a1 = a.getX();
-	double a2 = a.getY();
-	double a3 = a.getZ();
-	sqrtA1 = Math.pow(a1, 2);
-	sqrtA2 = Math.pow(a2, 2);
-	sqrtA3 = Math.pow(a3, 2);
-	double magnitude = Math.sqrt(sqrtA1+sqrtA2+sqrtA3);
-	return magnitude;
+    	double a1 = a.getX();
+    	double a2 = a.getY();
+    	double a3 = a.getZ();
+    	double sqrtA1 = Math.pow(a1, 2);
+		double sqrtA2 = Math.pow(a2, 2);
+		double sqrtA3 = Math.pow(a3, 2);
+		double magnitude = Math.sqrt(sqrtA1+sqrtA2+sqrtA3);
+		return magnitude;
     }
     
     public CartesianCoord calcCrossProd(CartesianCoord first, CartesianCoord second){
@@ -102,7 +107,7 @@ public class CalcGeo {
    	return crossProd;
     }
     
-    public double calc3DDotProduct(CartesianCoord first, CartesianCoord second){
+    public double calcDotProd(CartesianCoord first, CartesianCoord second){
 	double firstTerm = first.getX()*second.getX();
 	double secondTerm = first.getY()*second.getY();
 	double thirdTerm = first.getZ()*second.getZ();
