@@ -5,18 +5,14 @@ public class SSToSmotif {
     
 	// takes an arraylist of secondary structures
 	// prints out final information
-
-
 	public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
-		syncArrays(geometries, ssArray);
-		
 		printOutInformation(ssArray, geometries);
 	}
 	
 	public String parseToString(SecondaryStructure ss1, SeconaryStructure ss2, Geometry gg) {
 		//return information needed in appropriate manner
-		String stRes = gg.getStart();
-		String endREs = gg.getEnd();
+		String stRes = cutToSize(gg.getStart(), 12);
+		String endREs = cutToSize(gg.getEnd(), 10);
 		String type = "";
 		switch (ss1.getSSType()) {
 			case "S":
@@ -44,12 +40,27 @@ public class SSToSmotif {
 				type += "T";
 				break;
 		}
-		String d = gg.getD();
-		String delta = gg.getDelta();
-		String theta = gg.getTheta();
-		String rho = gg.getRho();
+		type = cutToSize(type, 19)
+		String d = cutToSize(gg.getD(), 8);
+		String delta = cutToSize(gg.getDelta(), 8);
+		String theta = cutToSize(gg.getTheta(), 8);
+		String rho = cutToSize(gg.getRho(), 8);
 		
-		// figure out how to set string at specific places?
+		return "" + stRes + "" + endRes + "" + type + "" + d + "" + delta + "" + theta + "" + rho + "";
+	}
+	
+	public String cutToSize(String o, int limit) {
+		
+		if(o.length() > limit) {
+			o = o.substring(0, limit);	
+		}
+		else if (o.length() < limit) {
+			while (o.length() < limit) {
+				o += " ";
+			}
+		}
+		
+		return o;
 	}
 	
 	// will be replaced by a print to file eventually
