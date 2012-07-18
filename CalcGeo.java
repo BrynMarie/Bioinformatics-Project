@@ -15,22 +15,23 @@ import java.io.*;
 
 public class CalcGeo {
 	
-	//these should be arrays
-	public static double distance;
-	public static double deltaAngle;
-	CartesianCoord p0, p1, p2, p3, e1, l, e2;
-	// also need theta and rho angles, then we have all of the geometries
-	public static double thetaAngle;
-	public static double rhoAngle;
+	public static ArrayList<Geometry> geoList;
 
     public CalcGeo(ArrayList<Residue> residueList) {
-		calculate(residueList);
+		this.geoList = calculate(residueList);
     }
     
-    public void calculate(ArrayList<Residue> residueList) {
+    public ArrayList<Geometry> calculate(ArrayList<Residue> residueList) {
 	   	double magnitudeOfX = 0;
-	   	double rho;
-		for (int i = 0; i<residueList.size(); ++i) {
+		public static double distance;
+		public static double delta;
+		public static double theta;
+		public static double rho;
+		CartesianCoord p0, p1, p2, p3, e1, l, e2;
+		
+		ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
+
+		for (int i = 0; i<residueList.size(); i+=2) {
 		    p0 = (residueList.get(i).getAtomList().get(i).getCoords()); 
 		    p1 = (residueList.get(i+1).getAtomList().get(i).getCoords());
 		    p2 = (residueList.get(i+2).getAtomList().get(i).getCoords());
@@ -44,36 +45,48 @@ public class CalcGeo {
 		    e2 = calcE1LE2(p3, p2);
 		    
 		    //calculate distance, d, scalar
-		    this.distance = calcDistance(p2, p1);
+		    distance = calcDistance(p2, p1);
 		    //calc delta angle
-		    this.deltaAngle = calcAngles(e1, l);
+		    delta = calcAngles(e1, l);
 		    //calc theta angle
-		    this.thetaAngle = calcAngles(e1, e2);
+		    theta = calcAngles(e1, e2);
 		    //calc n, this is a vector
-            	    CartesianCoord crossProd = calcCrossProd(l, e1);
-	      	    double lengthOfCrossProd = calcMagnitude(l)*calcMagnitude(e1)*Math.sin(thetaAngle);
-	    	    CartesianCoord n = new CartesianCoord(crossProd.getX()/lengthOfCrossProd,
-		    crossProd.getY()/lengthOfCrossProd, crossProd.getZ()/lengthOfCrossProd);
-	    	    //calc x, this is a vector
-	    	    double e1e2DotProd = calcDotProd(e1, e2);
-	    	    CartesianCoord secondTermOfX = new CartesianCoord(e1.getX()*e1e2DotProd,
-		    e1.getY()*e1e2DotProd, e1.getZ()*e1e2DotProd);
-	            CartesianCoord x = new CartesianCoord(e2.getX()-e1.getX(),
-		    e2.getY()-e1.getY(), e2.getZ()-e1.getZ());
+			CartesianCoord crossProd = calcCrossProd(l, e1);
+			double lengthOfCrossProd = calcMagnitude(l)*calcMagnitude(e1)*Math.sin(thetaAngle);
+			
+			CartesianCoord n = new CartesianCoord(crossProd.getX()/lengthOfCrossProd,
+				crossProd.getY()/lengthOfCrossProd, crossProd.getZ()/lengthOfCrossProd);
+			//calc x, this is a vector
+			double e1e2DotProd = calcDotProd(e1, e2);
+			
+			CartesianCoord secondTermOfX = new CartesianCoord(e1.getX()*e1e2DotProd,
+				e1.getY()*e1e2DotProd, e1.getZ()*e1e2DotProd);
+			
+			CartesianCoord x = new CartesianCoord(e2.getX()-e1.getX(),
+				e2.getY()-e1.getY(), e2.getZ()-e1.getZ());
 	    	    //calc rho angle, has two cases
-            	    double whichCaseOfRho = calcDotProd(x, calcCrossProd(e1, n));
-        			double xOfX = x.getX();
-        			double yOfX = x.getY();
-        			double zOfX = x.getZ();
-        			magnitudeOfX = calcMagnitude(x);
-        			CartesianCoord vectorXDividedByLength = new CartesianCoord(xOfX/magnitudeOfX, yOfX/magnitudeOfX, zOfX/magnitudeOfX);
-	    	    if(whichCaseOfRho >= 0) {
-					rho = Math.acos(calcDotProd(vectorXDividedByLength, n));
-	     	     }
-	   	   		else{
-	   	   			magnitudeOfX = calcMagnitude(x);
-	   	   			rho = (2*Math.PI)-Math.acos(calcDotProd(vectorXDividedByLength, n));
-	     	}
+			double whichCaseOfRho = calcDotProd(x, calcCrossProd(e1, n));
+			double xOfX = x.getX();
+			double yOfX = x.getY();
+			double zOfX = x.getZ();
+			magnitudeOfX = calcMagnitude(x);
+			CartesianCoord vectorXDividedByLength = new CartesianCoord(xOfX/magnitudeOfX, yOfX/magnitudeOfX, 
+				zOfX/magnitudeOfX);
+			if(whichCaseOfRho >= 0) {
+				rho = Math.acos(calcDotProd(vectorXDividedByLength, n));
+			}
+			else{
+				magnitudeOfX = calcMagnitude(x);
+				rho = (2*Math.PI)-Math.acos(calcDotProd(vectorXDividedByLength, n));
+			}
+			
+			//(String stRes, String endRes,
+		    //String distance, String delta, String theta, String rho
+		    String stRes = residueList.get(i).getResNum();
+		    String endRes = residueList.get(i+3).getResNum();
+		    
+			geoArray.add(new Geometry(stRes, endRes, toString(distance), toString(delta), 
+				toString(theta), toString(rho)));
 		}
     }
     
