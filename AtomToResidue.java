@@ -6,15 +6,15 @@ public class AtomToResidue {
 	
 	//takes as input an unsorted arraylist of atoms
 	public AtomToResidue(ArrayList<Atom> al, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
-		ArrayList<Atom> atomList = sortAtoms(al);
+		/*ArrayList<Atom> atomList = sortAtoms(al);
 		ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
-		CalculatePMOI f5 = new CalculatePMOI(resArray);
+		CalculatePMOI f5 = new CalcPMOI(resArray);
 		pmoiArray = f5.newResArray;
-		ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
+		ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);*/
 	}
 	
 	public ArrayList<Atom> sortAtoms(ArrayList<Atom> atomList) {
-		Collections.sort(atomList, new AtomComparator());
+		return Collections.sort(atomList, new AtomComparator());
 	}
     
 	public ArrayList<Residue> sortResidues(ArrayList<Residue> resList) {
