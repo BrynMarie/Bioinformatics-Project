@@ -34,22 +34,23 @@ public class ParseFiles {
     		// if it is an Atom
     		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
     			//splits the data according to customPDBSplit()
-    			String[] strs = customPDBSplit(pdbFile.get(i));
+				String[] strs = customPDBSplit(pdbFile.get(i));
 				
-				// gets all necessary information for an Atom
-				// coords, atomType, resNum, bFactor, backbone, nTerm, cTerm
 				coords = getCoordinates(strs);		
-    			atomType = strs[1].trim();
-    			nTerm = nextIsNTerm;
-    			nextIsNTerm = false;
-    			String[] atomTypeArray = {"N","CA","C","O","OXT","OT1","OT2"};
-    			if(multiEquals(atomType, atomTypeArray)) {
-    				backbone = true;
-    			}
-    			pdbResNum = strs[3].trim();
-    			tempFact = Double.parseDouble(strs[8].trim());	
-    			totalBFactor += tempFact;
-    			totalSquaredBFactor += Math.pow(tempFact, 2);
+				atomType = strs[1].trim();
+				nTerm = nextIsNTerm;
+				nextIsNTerm = false;
+				String[] atomTypeArray = {"N","CA","C","O","OXT","OT1","OT2"};
+				if(multiEquals(atomType, atomTypeArray)) {
+					backbone = true;
+				}
+				pdbResNum = strs[3].trim();
+				tempFact = Double.parseDouble(strs[8].trim());	
+				totalBFactor += tempFact;
+				totalSquaredBFactor += Math.pow(tempFact, 2);
+    			//String atom typ String resNum, boolean isBB, 
+    			//boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc
+    			
     			atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, tempFact, coords));
     		}
     		// extra information on whether or not it is a terminus
