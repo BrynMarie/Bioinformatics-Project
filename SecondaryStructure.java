@@ -10,12 +10,6 @@ public class SecondaryStructure {
     boolean exists;
 
     public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray) {
-	sstype = ss;
-	this.length = length;
-	this.resArray = resArray;
-    }
-    
-    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray) {
     	sstype = ss;
     	this.length = length;
     	this.resArray = resArray;
