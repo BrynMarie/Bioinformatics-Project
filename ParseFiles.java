@@ -11,8 +11,8 @@ public class ParseFiles {
         
         ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
         atomList = (ArrayList<Atom>)retMe.get(0);
-        meanBFactor = (double)retMe.get(1);
-        std = (double)retMe.get(2);
+        double meanBFactor = (Double)retMe.get(1);
+        double std = (Double)retMe.get(2);
         
         // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
         // a double bFactorMean and a double bFactorSTD
@@ -26,9 +26,9 @@ public class ParseFiles {
     	CartesianCoord coords;
     	String atomType, pdbResNum;
     	//default double value is 0
-    	double tempFact, meanBFactor, std, totalBFactor, totalSquaredBFactor;
+    	double tempFact, meanBFactor, std, totalBFactor=0, totalSquaredBFactor=0;
     	//default boolean value is false
-    	boolean backbone, nTerm, cTerm, nextIsNTerm;
+    	boolean backbone=false, nTerm=false, cTerm=false, nextIsNTerm = false;
     	
     	for (int i = 0; i<pdbFile.size(); ++i) {
     		// if it is an Atom
@@ -131,9 +131,5 @@ public class ParseFiles {
     	for (int i=0; i<al.size(); ++i){
     	    System.out.println(al.get(i));
     	}
-    }
-    
-    public static void main(String[] args){
-    	ParseFiles f1 = new ParseFiles();
     }
 }
