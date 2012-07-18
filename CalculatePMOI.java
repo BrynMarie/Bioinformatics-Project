@@ -64,7 +64,7 @@ public class CalculatePMOI {
 			secondTermOfIxz += aw * y;
 			thirdTermOfIxz += aw * z;
 			// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
-			totalAtomicWeight += aw;
+			totalAtomicWeight += aw; } //end iterating through the list of atoms of a residue
 			//BEGIN calculate PMoI
 			Ixx = firstTermOfIxx - (1 / totalAtomicWeight) * (secondTermOfIxx) - (1 / totalAtomicWeight)
 		    * (thirdTermOfIxx);
@@ -80,7 +80,6 @@ public class CalculatePMOI {
 			Izx = Ixz;
 			Iyz = -firstTermOfIyz + (1 / totalAtomicWeight) * (secondTermOfIyz) * (thirdTermOfIyz);
 			Izy = Iyz;
-		} //end iterating through the list of atoms of a residue
 		
 		double[][] populateMatrix = new double[][] { { Ixx, Ixy, Izz },{ Iyx, Iyy, Iyz }, { Izx, Izy, Izz } };
 		Matrix matrixForEigen = new Matrix(populateMatrix);
