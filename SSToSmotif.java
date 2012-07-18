@@ -14,8 +14,8 @@ public class SSToSmotif {
 		String stRes = cutToSize(gg.getStart(), 12);
 		String endRes = cutToSize(gg.getEnd(), 10);
 		String type = "";
-		ss1Type = ss1.getSSType();
-		ss2Type = ss2.getSSType();
+		String ss1Type = ss1.getSSType();
+		String ss2Type = ss2.getSSType();
 		if(ss1Type.equals("S")) { type += "B"; }
 		else if (ss1Type.equals("H")) { type += "A"; }
 		else if (ss1Type.equals("T")) { type += "T"; }
