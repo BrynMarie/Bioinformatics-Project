@@ -13,22 +13,35 @@ public class SSToSmotif {
 		printOutInformation(ssArray, geometries);
 	}
 	
-	public String parseToString(SecondaryStructure ss, Geometry gg) {
+	public String parseToString(SecondaryStructure ss1, SeconaryStructure ss2, Geometry gg) {
 		//return information needed in appropriate manner
 		String stRes = gg.getStart();
 		String endREs = gg.getEnd();
-		String type;
-		switch (ss.getSSType()) {
+		String type = "";
+		switch (ss1.getSSType()) {
 			case "S":
-				type = "β";
+				type += "β";
 				break;
 				
 			case "H":
-				type = "α";
+				type += "α";
 				break;
 				
 			default:
-				type = "T";
+				type += "T";
+				break;
+		}
+		switch (ss2.getSSType()) {
+			case "S":
+				type += "β";
+				break;
+				
+			case "H":
+				type += "α";
+				break;
+				
+			default:
+				type += "T";
 				break;
 		}
 		String d = gg.getD();
@@ -56,10 +69,19 @@ public class SSToSmotif {
 			// delta at 61
 			// theta at 69
 			// rho at 76
+			gCounter = 0;
+			
 			for (int i=0; i<ssArray.size(); ++i) {
-				if(ssArray.get(i).exists()) {
-					String printMe = parseToString(ssArray.get(i), geoArray.get(i));
-					out.println();
+				if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T")) {
+					if(ssArray.get(i+1).exists()) { // this should be the turn
+						String printMe = parseToString(ssArray.get(i), 
+							ssArray.get(i+2), geoArray.get(i));
+						out.println(printMe);
+					}
+
+					i += 2; // check for off by one error
+					++gCounter;
+					
 				}
 			}
 			out.close();
