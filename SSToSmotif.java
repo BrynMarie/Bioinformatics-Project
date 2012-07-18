@@ -6,13 +6,13 @@ public class SSToSmotif {
 	// takes an arraylist of secondary structures
 	// prints out final information
 	public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
-		printOutInformation(ssArray, geometries);
+		printOutInformation(ssList, geometries);
 	}
 	
-	public String parseToString(SecondaryStructure ss1, SeconaryStructure ss2, Geometry gg) {
+	public String parseToString(SecondaryStructure ss1, SecondaryStructure ss2, Geometry gg) {
 		//return information needed in appropriate manner
 		String stRes = cutToSize(gg.getStart(), 12);
-		String endREs = cutToSize(gg.getEnd(), 10);
+		String endRes = cutToSize(gg.getEnd(), 10);
 		String type = "";
 		switch (ss1.getSSType()) {
 			case "S":
@@ -40,13 +40,14 @@ public class SSToSmotif {
 				type += "T";
 				break;
 		}
-		type = cutToSize(type, 19)
+		type = cutToSize(type, 19);
 		String d = cutToSize(gg.getD(), 8);
 		String delta = cutToSize(gg.getDelta(), 8);
 		String theta = cutToSize(gg.getTheta(), 8);
 		String rho = cutToSize(gg.getRho(), 8);
 		
-		return "" + stRes + "" + endRes + "" + type + "" + d + "" + delta + "" + theta + "" + rho + "";
+		return "" + stRes + "" + endRes + "" + type + "" + d + 
+		    "" + delta + "" + theta + "" + rho + "";
 	}
 	
 	public String cutToSize(String o, int limit) {
@@ -66,7 +67,7 @@ public class SSToSmotif {
 	// will be replaced by a print to file eventually
 	public void printOutInformation(ArrayList<SecondaryStructure> ssArray, ArrayList<Geometry> geoArray) {
 		try {
-			PrintWriter out = new PrintWriter(new FileWriter(args[0]));
+			PrintWriter out = new PrintWriter(new FileWriter("OutputFile"));
 			
 			// print header
 			out.println("" + 
@@ -80,7 +81,7 @@ public class SSToSmotif {
 			// delta at 61
 			// theta at 69
 			// rho at 76
-			gCounter = 0;
+			int gCounter = 0;
 			
 			for (int i=0; i<ssArray.size(); ++i) {
 				if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T")) {
