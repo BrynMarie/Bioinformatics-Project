@@ -6,19 +6,11 @@ public class AtomToResidue {
 	
 	//takes as input an unsorted arraylist of atoms
 	public AtomToResidue(ArrayList<Atom> al, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
-		/*ArrayList<Atom> atomList = sortAtoms(al);
+		this.atomList = al;
+		Collections.sort(atomList, new AtomComparator());
 		ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
-		CalculatePMOI f5 = new CalcPMOI(resArray);
 		pmoiArray = f5.newResArray;
-		ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);*/
-	}
-	
-	public ArrayList<Atom> sortAtoms(ArrayList<Atom> atomList) {
-		return Collections.sort(atomList, new AtomComparator());
-	}
-    
-	public ArrayList<Residue> sortResidues(ArrayList<Residue> resList) {
-		Collections.sort(resList, new ResidueComparator());
+		ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
 	}
     
 	public ArrayList<Residue> turnIntoResidueArray(ArrayList<Atom> atomList, 
@@ -77,8 +69,8 @@ public class AtomToResidue {
 			}
 		}
 
-		tempArray = sortResidues(tempArray);
-		resArray = sortResidues(resArray);
+		Collections.sort(tempArray, new ResidueComparator());
+		Collections.sort(resArray, new ResidueComparator());
 		ArrayList<Residue> finalResArray;
 		
 		if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
