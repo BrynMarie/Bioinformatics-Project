@@ -12,24 +12,26 @@ import java.io.*;
 
 public class ResidueToSS {
 
+	public static ArrayList<SecondaryStructure> ssArray;
+	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
     	CalcGeo f5 = new CalcGeo(pmoiArray);
     	resToSS(resArray);
     	// pass geometries to SSToSmotif
     }
     
-    public resToSS(ArrayList<Residue> resArray) {
+    public void resToSS(ArrayList<Residue> resArray) {
     	
     	//holds residues in each respect ss
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
         // array to hold ss's
-        ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
+        //ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         
         Residue oldRes = resArray.get(0);
 	Residue currentRes;
         currentInSS.add(oldRes);
         boolean turn = false;
-        String nextNotExist;
+        String nextNotExist= "";
         String ss;
 	int loopCounter = 0;
 
@@ -43,7 +45,7 @@ public class ResidueToSS {
             currentRes = resArray.get(i);
             
             //the old and current res are in the same ss, and current res exists
-            if(currentRes.getSS().equals(oldRes.getSS() && currentRes.exists())) {
+            if(currentRes.getSS().equals(oldRes.getSS()) && currentRes.exists()) {
                 ss = currentRes.getSS();
                 
                 // if you are supposed to add this ss you can.
