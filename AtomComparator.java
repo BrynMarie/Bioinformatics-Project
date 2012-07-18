@@ -1,9 +1,14 @@
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 18th 2012
+ * File Name: Atom Comparator
+ * 
+ * Purpose: Sorts atoms by pdb residue number
+ * */
+
 import java.util.*;
 import java.io.*;
 
-/**
- * Sorts atoms by pdb residue number
- * */
 public class AtomComparator implements Comparator<Atom> {
     
     /* Compares two atoms and returns the one with -, 0, or + 
