@@ -4,7 +4,7 @@ import Jama.*;
 
 public class CalculatePMOI {
 
-    ArrayList<Residue> newResArray;
+    static ArrayList<Residue> newResArray;
     
     // NEW PMoI variable declarations
     int pastResidue = 0, currentResidue=0;
@@ -19,7 +19,7 @@ public class CalculatePMOI {
     int countBFactorGreaterThanOne = 0;
     boolean discardBFactor = false;
 
-    public ArrayList<Residue> CalculatePMOI(ArrayList<Residue> residueList, ArrayList<Atom> atomList) {
+    public ArrayList<Residue> CalcPMOI(ArrayList<Residue> residueList) {
 	// END PMoI variable declaration
 	for (int i = 0; i<residueList.size(); ++i) {
 	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm() == true) { 
@@ -27,11 +27,11 @@ public class CalculatePMOI {
 		//set up calculations for Ixx term by term
 		//Has been abstracted to a pretty clear point
 		//this also ideally will be in a helper method. 
-		ArrayList<Atom> currentAtomListOfResidue = residueList.get(i).getAtomListOfResidue();
+		ArrayList<Atom> currentAtomListOfResidue = residueList.get(i).getAtomList();
 		String pdbNum = residueList.get(i).getResNum();
 		
 		for(int j = 0; j<currentAtomListOfResidue.size(); j++){
-			Atom currentAtom = currentAtomListOfResidue.get(j)
+			Atom currentAtom = currentAtomListOfResidue.get(j);
 			double aw = getAtomicWeight(currentAtom);
 			double x = currentAtom.getCoords().getX();
 			double y = currentAtom.getCoords().getY();
