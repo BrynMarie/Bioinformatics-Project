@@ -7,21 +7,31 @@ public class SSToSmotif {
     // prints out final information
 
 
-	public SSToSmotif(ArrayList<SecondaryStructure> ssList, CalcGeo geometries) {
-		ArrayList<SecondaryStructure> ssArray = ssList;
+	public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
+		syncArrays(geometries, ssArray);
 		
 		printOutInformation(ssArray, geometries);
 	}
 	
+	public String parseToString(SecondaryStructure ss, Geometry gg) {
+		//return information needed in appropriate manner
+	}
+	
 	// will be replaced by a print to file eventually
-	public void printOutInformation(ArrayList<SecondaryStructure> ssArray, CalcGeo geometries) {
+	public void printOutInformation(ArrayList<SecondaryStructure> ssArray, ArrayList<Geometry> geoArray) {
 		// we need to sync up the information from the ssarray and the geometries somehow or this is going to be a mess.
 		
 		try {
 			PrintWriter out = new PrintWriter(new FileWriter(args[0]));
 			
-			for(int i = 0; i < ssArray.size(); ++i) {
-				out.println("Put information here");
+			// print header
+			out.println("HEADER");
+			
+			for (int i=0; i<ssArray.size(); ++i) {
+				if(ssArray.get(i).exists()) {
+					String printMe = parseToString(ssArray.get(i), geoArray.get(i));
+					out.println();
+				}
 			}
 			out.close();
 		}
