@@ -6,14 +6,13 @@ public class SecondaryStructure {
     String sstype;
     int length;
     ArrayList<Residue> resArray = new ArrayList<Residue>();
-    CartesianCoord coords; // pmoi
+    //CartesianCoord coords; currently deprecated.
     boolean exists;
 
-    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray, CartesianCoord coords) {
+    public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray) {
 	sstype = ss;
 	this.length = length;
 	this.resArray = resArray;
-	this.coords = coords;
     }
     
     public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray) {
@@ -40,10 +39,11 @@ public class SecondaryStructure {
 	return length;
     }
     
+    /*
     public CartesianCoord getCoords() {
     	return coords;
     }
-    
+    */
     public Residue firstResidue() {
     	return resArray.get(0);
     }
@@ -70,13 +70,9 @@ public class SecondaryStructure {
 	length = newLength;
     }
     
-    public void setCoords(CartesianCoord newCoord) {
+    /* public void setCoords(CartesianCoord newCoord) {
     	coords = newCoord;
-    }
-    
-    public void setCoords(double x, double y, double z) {
-    	coords = new CartesianCoord(x,y,z);
-    }
+    } */
     
     public void addResidue(Residue res){
     	resArray.add(res);

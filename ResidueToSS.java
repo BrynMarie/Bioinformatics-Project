@@ -1,23 +1,30 @@
+/**
+ * 
+ * this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
+ * Filter out loops that are greater than 12 residues long w/ loopCounter
+ * Discard loops with missing residues
+ * 
+ * */ 
+
+
 import java.util.*;
 import java.io.*;
 
 public class ResidueToSS {
-    
-    /////////////////////
-    
-    // Need coord information to be integrated somehow!
-    
-    /////////////////////
 
-    //this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
-    //It has not been filtered of loops that are too long, either.
-
-    //Done: Filter out loops that are greater than 12 residues long w/ loopCounter
-    //Done: Discard loops with missing residues
-    //look over coding ideas docs before going too far on this one.
-    public ResidueToSS(ArrayList<Residue> resArray) {      
+    public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
+    	CalcGeo f5 = new CalcGeo(pmoiArray);
+    	resToSS(resArray);
+    	// pass geometries to SSToSmotif
+    }
+    
+    public resToSS(ArrayList<Residue> resArray) {
+    	
+    	//holds residues in each respect ss
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
+        // array to hold ss's
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
+        
         Residue oldRes = resArray.get(0);
 	Residue currentRes;
         currentInSS.add(oldRes);
@@ -39,7 +46,7 @@ public class ResidueToSS {
             if(currentRes.getSS().equals(oldRes.getSS() && currentRes.exists())) {
                 ss = currentRes.getSS();
                 
-                //if the next one exists you'll add it to the currentInSS; if not, you won't.
+                // if you are supposed to add this ss you can.
                 if(!(nextNotExist.equals(ss))) { 
                     if (turn) { ++loopCounter; }
                     if (turn && loopCounter == 13) { 
@@ -48,11 +55,11 @@ public class ResidueToSS {
                         nextNotExist = currentRes.getSS();
                     }
                     currentInSS.add(currentRes);
-                }  
+                    nextNotExist = "";
+                }
             }
             
             //the old and current res are in different ss's
-            //must add new SS!
             else if(!currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
                 // turn behavior
@@ -70,13 +77,15 @@ public class ResidueToSS {
                 
                 //add currentInSS to ssArray
                 ssArray.add(parseSS(currentInSS));
+                currentInSS.clear();
                 
                 // if it's missing don't let anything happen
-                if(!currentRes.exists()) {
+                if(!currentRes.exists() && turn) {
                     ssArray.add(new SecondaryStructure(ss, false));
                     nextNotExist = ss;
                 }
                 else {
+                    currentInSS.add(currentRes);
                     nextNotExist = "";
                 }
             }
@@ -99,7 +108,7 @@ public class ResidueToSS {
     // merge resList into a secondary structure with all necessary information
     public SecondaryStructure parseSS(ArrayList<Residue> resList) {
         
-        //String ss, int length, ArrayList<Residue> resArray, CartesianCoords coords
-        return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList, COORDS_NEEDED);
+        //String ss, int length, ArrayList<Residue> resArray
+        return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList);
     }
 }

@@ -5,8 +5,8 @@ import java.io.*;
 public class AtomComparator implements Comparator<Atom> {
     
     public int compare(Atom a1, Atom a2) {
-        Integer parsed1 = a1.getResNum();
-	Integer parsed2 = a2.getResNum();
+        Integer parsed1 = Integer.parseInt(a1.getResNum());
+	Integer parsed2 = Integer.parseInt(a2.getResNum());
 	return parsed1.compareTo(parsed2);
     }
     

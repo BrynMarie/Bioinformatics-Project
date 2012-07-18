@@ -19,7 +19,7 @@ public class CalculatePMOI {
     int countBFactorGreaterThanOne = 0;
     boolean discardBFactor = false;
 
-    public CalculatePMOI(ArrayList<Residue> residueList, ArrayList<Atom> atomList) {
+    public ArrayList<Residue> CalculatePMOI(ArrayList<Residue> residueList, ArrayList<Atom> atomList) {
 	// END PMoI variable declaration
 	for (int i = 0; i<residueList.size(); ++i) {
 	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm() == true) { 
@@ -27,63 +27,67 @@ public class CalculatePMOI {
 		//set up calculations for Ixx term by term
 		//Has been abstracted to a pretty clear point
 		//this also ideally will be in a helper method. 
-		double aw = getAtomicWeight(atomList.get(i));
-
-		//needs to be changed
-		double x = residueList.get(i).getCoords().getX();
-		double y = residueList.get(i).getCoords().getY();
-		double z = residueList.get(i).getCoords().getZ();
-		double xSq = Math.pow(x,2);
-		double ySq = Math.pow(y,2);
-		double zSq = Math.pow(z,2);
-		// calc Ixx term by term
-		firstTermOfIxx += (aw) * (ySq + zSq);
-		secondTermOfIxx += Math.pow((aw * y), 2);
-		thirdTermOfIxx += Math.pow((aw * z), 2);
-		//calc Iyy term by term
-		firstTermOfIyy += aw * (xSq + zSq);
-		secondTermOfIyy += Math.pow((aw * x),2);
-		thirdTermOfIyy += Math.pow((aw * z), 2);
-		//set up calculations for Izz term by term
-		firstTermOfIzz += aw * (xSq + ySq);
-		secondTermOfIyy += Math.pow((aw * x), 2);
-		thirdTermOfIyy += Math.pow((aw * y), 2);
-		//set up calculations for Ixy/Iyx term by term
-		firstTermOfIxy += aw * x * y;
-		secondTermOfIxy += aw * x;
-		thirdTermOfIxy += aw * y;
-		//set up calculations for Ixz/Izx term by term
-		firstTermOfIxz += aw * x * z;
-		secondTermOfIxz += aw * x;
-		thirdTermOfIxz += aw * z;
-		//set up calculations for Iyz/Izy term by term
-		firstTermOfIxz += aw * y * z;
-		secondTermOfIxz += aw * y;
-		thirdTermOfIxz += aw * z;
-		// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
-		totalAtomicWeight += aw;
-		//BEGIN calculate PMoI
-		Ixx = firstTermOfIxx - (1 / totalAtomicWeight) * (secondTermOfIxx) - (1 / totalAtomicWeight)
+		ArrayList<Atom> currentAtomListOfResidue = residueList.get(i).getAtomListOfResidue();
+		String pdbNum = residueList.get(i).getResNum();
+		
+		for(int j = 0; j<currentAtomListOfResidue.size(); j++){
+			Atom currentAtom = currentAtomListOfResidue.get(j)
+			double aw = getAtomicWeight(currentAtom);
+			double x = currentAtom.getCoords().getX();
+			double y = currentAtom.getCoords().getY();
+			double z = currentAtom.getCoords().getZ();
+			double xSq = Math.pow(x,2);
+			double ySq = Math.pow(y,2);
+			double zSq = Math.pow(z,2);
+			// calc Ixx term by term
+			firstTermOfIxx += (aw) * (ySq + zSq);
+			secondTermOfIxx += Math.pow((aw * y), 2);
+			thirdTermOfIxx += Math.pow((aw * z), 2);
+			//calc Iyy term by term
+			firstTermOfIyy += aw * (xSq + zSq);
+			secondTermOfIyy += Math.pow((aw * x),2);
+			thirdTermOfIyy += Math.pow((aw * z), 2);
+			//set up calculations for Izz term by term
+			firstTermOfIzz += aw * (xSq + ySq);
+			secondTermOfIyy += Math.pow((aw * x), 2);
+			thirdTermOfIyy += Math.pow((aw * y), 2);
+			//set up calculations for Ixy/Iyx term by term
+			firstTermOfIxy += aw * x * y;
+			secondTermOfIxy += aw * x;
+			thirdTermOfIxy += aw * y;
+			//set up calculations for Ixz/Izx term by term
+			firstTermOfIxz += aw * x * z;
+			secondTermOfIxz += aw * x;
+			thirdTermOfIxz += aw * z;
+			//set up calculations for Iyz/Izy term by term
+			firstTermOfIxz += aw * y * z;
+			secondTermOfIxz += aw * y;
+			thirdTermOfIxz += aw * z;
+			// calculate total sum of atom weights of a C-terminus/N-terminus for later calculation
+			totalAtomicWeight += aw; } //end iterating through the list of atoms of a residue
+			//BEGIN calculate PMoI
+			Ixx = firstTermOfIxx - (1 / totalAtomicWeight) * (secondTermOfIxx) - (1 / totalAtomicWeight)
 		    * (thirdTermOfIxx);
-		Iyy = firstTermOfIyy - (1 / totalAtomicWeight)	* (secondTermOfIyy) - (1 / totalAtomicWeight)
+			Iyy = firstTermOfIyy - (1 / totalAtomicWeight)	* (secondTermOfIyy) - (1 / totalAtomicWeight)
 		    * (thirdTermOfIyy);
-		Izz = firstTermOfIzz - (1 / totalAtomicWeight)
+			Izz = firstTermOfIzz - (1 / totalAtomicWeight)
 		    * (secondTermOfIzz) - (1 / totalAtomicWeight)
 		    * (thirdTermOfIzz);
-		Ixy = -firstTermOfIxy + (1 / totalAtomicWeight)
+			Ixy = -firstTermOfIxy + (1 / totalAtomicWeight)
 		    * (secondTermOfIxy) * (thirdTermOfIxy);
-		Iyx = Ixy;
-		Ixz = -firstTermOfIxz + (1 / totalAtomicWeight)	* (secondTermOfIxz) * (thirdTermOfIxz);
-		Izx = Ixz;
-		Iyz = -firstTermOfIyz + (1 / totalAtomicWeight) * (secondTermOfIyz) * (thirdTermOfIyz);
-		Izy = Iyz;
+			Iyx = Ixy;
+			Ixz = -firstTermOfIxz + (1 / totalAtomicWeight)	* (secondTermOfIxz) * (thirdTermOfIxz);
+			Izx = Ixz;
+			Iyz = -firstTermOfIyz + (1 / totalAtomicWeight) * (secondTermOfIyz) * (thirdTermOfIyz);
+			Izy = Iyz;
 		
 		double[][] populateMatrix = new double[][] { { Ixx, Ixy, Izz },{ Iyx, Iyy, Iyz }, { Izx, Izy, Izz } };
 		Matrix matrixForEigen = new Matrix(populateMatrix);
 		EigenvalueDecomposition ed = matrixForEigen.eig();
 		double[] getRealEigenvalues = ed.getRealEigenvalues();
 		double[] getImgEigenvalues = ed.getImagEigenvalues(); 
-		CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[1], getRealEigenvalues[2], getRealEigenvalues[3]);
+		CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[1], 
+			getRealEigenvalues[2], getRealEigenvalues[3]);
 		//reset terms
 		Ixx=0;
 		Iyy=0; 
@@ -127,10 +131,12 @@ public class CalculatePMOI {
 		totalAtomicWeight=0;
 		//end calculate PMoI
 		//need xyz coordinates to calculate geometries
-		newResArray.add(new Residue(principalMomentsOfInertia));
+		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia));
 	    }// end if
 	}// end for
+	return newResArray;
     }// end method
+
 
     public double getAtomicWeight(Atom currentAtom) { //NEW PMoI method to get atomic weight given atom type
 

@@ -4,24 +4,24 @@ import java.util.*;
 public class Residue {
     
     double bFactor;
-    ArrayList<CartesianCoord> coords;
     String pdbResNum;
     String ssType;
     boolean nTerm, cTerm, exists;
     ArrayList<Atom> atomList = new ArrayList<Atom>();
+    CartesianCoord pmoi;
     // other state
     
     //constructors
-    public Residue(String pdbResNum, double bFactor, String ssType, ArrayList<CartesianCoord> coords, 
-    	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList) {
+    public Residue(String pdbResNum, double bFactor, String ssType, 
+    	boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi) {
         this.bFactor = bFactor;
         this.pdbResNum = pdbResNum;
-        this.coords = coords;
         this.ssType = ssType;
         this.atomList = atomList;
         this.nTerm = nTerm;
         this.cTerm = cTerm;
 	this.atomList = atomList;
+	this.pmoi = pmoi;
     }
 
     public Residue(String pdbResNum, boolean exists) {
@@ -29,8 +29,9 @@ public class Residue {
 	this.exists = exists;
     }
 
-    public Residue(ArrayList<CartesianCoord> pmoi) {
-	this.coords = pmoi;
+    public Residue(String pdbResNum, CartesianCoord pmoi) {
+    	this.pdbResNum = pdbResNum;
+	this.pmoi = pmoi;
     }
     
     //accessor methods
@@ -40,14 +41,6 @@ public class Residue {
 
     public double getBFactor() {
     	return bFactor;
-    }
-    
-    public ArrayList<CartesianCoord> getCoords() {
-    	return coords;
-    }
-
-    public CartesianCoord getCoordsAt(int i) {
-	return coords.get(i);
     }
     
     public String getResNum() {
@@ -69,14 +62,14 @@ public class Residue {
     public ArrayList<Atom> getAtomList() {
 	return atomList;
     }
+    
+    public CartesianCoord getPMOI() {
+    	return pmoi;
+    }
 
     //mutator methods
     public void setBF(double newBF){
     	bFactor = newBF;
-    }
-    
-    public void setCoords(ArrayList<CartesianCoord> coordsList){
-    	coords = coordsList;
     }
     
     public void setResNum(String pdbResNum){
@@ -97,5 +90,9 @@ public class Residue {
     
     public void setExists(boolean ex) {
     	exists = ex;
+    }
+    
+    public void setPMOI(CartesianCoord pmoi) {
+    	this.pmoi = pmoi;
     }
 }

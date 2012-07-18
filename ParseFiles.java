@@ -3,31 +3,28 @@ import java.util.*;
 import java.lang.*;
 
 public class ParseFiles {
-    ArrayList<String> dsspFile;
-    ArrayList<String> pdbFile;
+
     ArrayList<Atom> atomList;
 
 	//takes dsspFile and pdbFile as arguments
     public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
-        this.dsspFile = dsspFile;
-        this.pdbFile = pdbFile;
+        
         ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
         atomList = (ArrayList<Atom>)retMe.get(0);
         meanBFactor = (double)retMe.get(1);
-        std = (double)retMe.get(1);
+        std = (double)retMe.get(2);
         
         // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
         // a double bFactorMean and a double bFactorSTD
         AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
     }
     
-    public ArrayList<Atom> getInfoFromPDB(ArrayList<String> pdbFile) {
+    public ArrayList<Object> getInfoFromPDB(ArrayList<String> pdbFile) {
     	//empty at beginning
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
     	
     	CartesianCoord coords;
-    	String atomType;
-    	int pdbResNum;
+    	String atomType, pdbResNum;
     	//default double value is 0
     	double tempFact, meanBFactor, std, totalBFactor, totalSquaredBFactor;
     	//default boolean value is false
@@ -49,7 +46,7 @@ public class ParseFiles {
     			if(multiEquals(atomType, atomTypeArray)) {
     				backbone = true;
     			}
-    			pdbResNum = Integer.parseInt(strs[3].trim());
+    			pdbResNum = strs[3].trim();
     			tempFact = Double.parseDouble(strs[8].trim());	
     			totalBFactor += tempFact;
     			totalSquaredBFactor += Math.pow(tempFact, 2);
@@ -137,5 +134,6 @@ public class ParseFiles {
     }
     
     public static void main(String[] args){
+    	ParseFiles f1 = new ParseFiles();
     }
 }
