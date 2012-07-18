@@ -31,7 +31,7 @@ public class SecondaryStructure {
 	return sstype;
     }
 
-    public boolean getExists() {
+    public boolean exists() {
 	return exists;
     }
 
