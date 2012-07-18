@@ -6,17 +6,18 @@ public class ParseFiles {
 
     ArrayList<Atom> atomList;
 
-	//takes dsspFile and pdbFile as arguments
+    //takes dsspFile and pdbFile as arguments
     public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
         
         ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
         atomList = (ArrayList<Atom>)retMe.get(0);
-        double meanBFactor = (Double)retMe.get(1);
+	double meanBFactor = (Double)retMe.get(1);
         double std = (Double)retMe.get(2);
+	System.out.println("Mean BFactor " + meanBFactor + "\nSTD: " + std);
         
         // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
         // a double bFactorMean and a double bFactorSTD
-        AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
+	AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
     }
     
     public ArrayList<Object> getInfoFromPDB(ArrayList<String> pdbFile) {
@@ -31,34 +32,34 @@ public class ParseFiles {
     	boolean backbone=false, nTerm=false, cTerm=false, nextIsNTerm = false;
     	
     	for (int i = 0; i<pdbFile.size(); ++i) {
-    		// if it is an Atom
-    		if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
-    			//splits the data according to customPDBSplit()
-    			String[] strs = customPDBSplit(pdbFile.get(i));
+	    // if it is an Atom
+	    if(pdbFile.get(i).substring(0,6).trim().equals("ATOM")) {
+		//splits the data according to customPDBSplit()
+		String[] strs = customPDBSplit(pdbFile.get(i));
 				
-				// gets all necessary information for an Atom
-				// coords, atomType, resNum, bFactor, backbone, nTerm, cTerm
-				coords = getCoordinates(strs);		
-    			atomType = strs[1].trim();
-    			nTerm = nextIsNTerm;
-    			nextIsNTerm = false;
-    			String[] atomTypeArray = {"N","CA","C","O","OXT","OT1","OT2"};
-    			if(multiEquals(atomType, atomTypeArray)) {
-    				backbone = true;
-    			}
-    			pdbResNum = strs[3].trim();
-    			tempFact = Double.parseDouble(strs[8].trim());	
-    			totalBFactor += tempFact;
-    			totalSquaredBFactor += Math.pow(tempFact, 2);
-    			atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, tempFact, coords));
-    		}
-    		// extra information on whether or not it is a terminus
-    		// one previous is a cTerm
-    		// next one is an nTerm
-    		if(pdbFile.get(i).substring(0,6).trim().equals("TER")) {
-    			nextIsNTerm = true;
-    			atomList.get(atomList.size()-1).setCTerm(true);
-    		}
+		// gets all necessary information for an Atom
+		// coords, atomType, resNum, bFactor, backbone, nTerm, cTerm
+		coords = getCoordinates(strs);		
+		atomType = strs[1].trim();
+		nTerm = nextIsNTerm;
+		nextIsNTerm = false;
+		String[] atomTypeArray = {"N","CA","C","O","OXT","OT1","OT2"};
+		if(multiEquals(atomType, atomTypeArray)) {
+		    backbone = true;
+		}
+		pdbResNum = strs[3].trim();
+		tempFact = Double.parseDouble(strs[7].trim());	
+		totalBFactor += tempFact;
+		totalSquaredBFactor += Math.pow(tempFact, 2);
+		atomList.add(new Atom(atomType, pdbResNum, backbone, nTerm, cTerm, tempFact, coords));
+	    }
+	    // extra information on whether or not it is a terminus
+	    // one previous is a cTerm
+	    // next one is an nTerm
+	    if(pdbFile.get(i).substring(0,6).trim().equals("TER")) {
+		nextIsNTerm = true;
+		atomList.get(atomList.size()-1).setCTerm(true);
+	    }
     	}// end of for
     	
     	meanBFactor = totalBFactor / (atomList.size() - 1);
@@ -73,9 +74,9 @@ public class ParseFiles {
     
     public boolean multiEquals(String checkMe, String[] againstMe) {
     	for(int i = 0; i < againstMe.length; ++i) {
-    		if(checkMe.equals(againstMe[i])) {
-    			return true;
-    		}
+	    if(checkMe.equals(againstMe[i])) {
+		return true;
+	    }
     	}
     	return false;
     }
@@ -88,22 +89,22 @@ public class ParseFiles {
     	return stdDev;
     }
     
-        //this method splits a pdb file line into 
-	public static String[] customPDBSplit(String splitMe) {
-		ArrayList<String> strArrayList = new ArrayList<String>();
-		strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
-		strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
-		strArrayList.add(splitMe.substring(17,20).trim()); //  2   residue name
-		strArrayList.add(splitMe.substring(22,26).trim()); //  3   residue sequence number
-		strArrayList.add(splitMe.substring(30,38).trim()); //  4   x
-		strArrayList.add(splitMe.substring(38,46).trim()); //  5   y
-		strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
-		strArrayList.add(splitMe.substring(60,66).trim()); //  8   temperature factor
+    //this method splits a pdb file line into 
+    public static String[] customPDBSplit(String splitMe) {
+	ArrayList<String> strArrayList = new ArrayList<String>();
+	strArrayList.add(splitMe.substring(0,6).trim()); //    0   ATOM designation
+	strArrayList.add(splitMe.substring(11,16).trim()); //  1   atom name type
+	strArrayList.add(splitMe.substring(17,20).trim()); //  2   residue name
+	strArrayList.add(splitMe.substring(22,26).trim()); //  3   residue sequence number
+	strArrayList.add(splitMe.substring(30,38).trim()); //  4   x
+	strArrayList.add(splitMe.substring(38,46).trim()); //  5   y
+	strArrayList.add(splitMe.substring(47,54).trim()); //  6   z
+	strArrayList.add(splitMe.substring(60,66).trim()); //  7   temperature factor
 		
-		String strArray[] = new String[strArrayList.size()];
-		strArray = strArrayList.toArray(strArray);
-		return strArray; //used this: http://stackoverflow.com/questions/5374311/convert-arrayliststring-to-string
-	}
+	String strArray[] = new String[strArrayList.size()];
+	strArrayList.toArray(strArray);
+	return strArray;
+    }
    
     //At indices 4, 5, and 6 are where the xyz coordinates are stored, accounting for zero indexing.
     public CartesianCoord getCoordinates(String[] strs){

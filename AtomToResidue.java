@@ -12,7 +12,7 @@ public class AtomToResidue {
 		atomList = al;
 		Collections.sort(atomList, new AtomComparator());
 		ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
-		pmoiArray = CalculatePMOI.newResArray;
+		//pmoiArray = CalculatePMOI.newResArray;
 		ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
 	}
     
@@ -52,6 +52,7 @@ public class AtomToResidue {
 
 				//String pdbResNum, double bFactor, String ssType, 
     				//boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
+				resArray.add(new Residue("" + currentResNum + "" , zScore, "", nTerm, cTerm, currentlyInResidue, new CartesianCoord(0,0,0)));
 
 				currentlyInResidue.clear();
 				currentResNum = newResNum;
@@ -65,8 +66,10 @@ public class AtomToResidue {
 		Collections.sort(tempArray, new ResidueComparator());
 		Collections.sort(resArray, new ResidueComparator());
 		ArrayList<Residue> finalResArray;
-		
-		if (Integer.parseInt(tempArray.get(0).getResNum()) < Integer.parseInt(resArray.get(0).getResNum())) {
+
+		int firstNum = Integer.parseInt(tempArray.get(0).getResNum());
+		int secNum = Integer.parseInt(resArray.get(0).getResNum());
+		if (firstNum < secNum) {
 			finalResArray = mergeArrays(tempArray, resArray, pmoiArray, true);	
 		}
 		else {
@@ -157,17 +160,24 @@ public class AtomToResidue {
 		String[] sheetArray = {"E","B"};
 		String[] helixArray = {"G","H","I"};
 		String[] turnArray = {" ","S","T"};
-		
+
 		for (int i = 0; i<dsspFile.size(); ++i) {
-		    if(charsAtEqual(dsspFile, i, 14, sheetArray)) {
-				tempArray.get(i).setSSType("S");
+		    try {
+		
+			int pdbResNum = Integer.parseInt(dsspFile.get(i).substring(0,3).trim());
+		
+			
+			if(charsAtEqual(dsspFile, i, 13, sheetArray)) {
+			    tempArray.add(new Residue("" + pdbResNum + "", "S"));
+			}
+			else if(charsAtEqual(dsspFile, i, 13, helixArray)) {
+			    tempArray.add(new Residue("" + pdbResNum + "","H"));
+			}
+			else if(charsAtEqual(dsspFile, i, 13, turnArray)) {
+			    tempArray.add(new Residue("" + pdbResNum + "","T"));
+			}
 		    }
-		    else if(charsAtEqual(dsspFile, i, 14, helixArray)) {
-				tempArray.get(i).setSSType("H");
-		    }
-		    else if(charsAtEqual(dsspFile, i, 14, turnArray)) {
-				tempArray.get(i).setSSType("T");
-		    }
+		    catch (Exception e) {}
 		}	
 		return tempArray;
 	}
@@ -179,10 +189,10 @@ public class AtomToResidue {
     
 	public boolean charsAtEqual(ArrayList<String> file, int index, int num, String[] chars) {
 		for (int j=0; j<chars.length; ++j){
-			if(!charAtEquals(file, index, num, chars[j])) {
-				return false;
+			if(charAtEquals(file, index, num, chars[j])) {
+				return true;
 			} // end if   	
 		} // end for
-		return true;
+		return false;
 	}
 }
