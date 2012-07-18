@@ -4,7 +4,7 @@ import java.lang.*;
 
 public class ParseFiles {
 
-    ArrayList<Atom> atomList;
+	public static ArrayList<Atom> atomList;
 
     //takes dsspFile and pdbFile as arguments
     public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
