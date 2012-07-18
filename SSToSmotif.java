@@ -16,11 +16,11 @@ public class SSToSmotif {
 		String type = "";
 		switch (ss1.getSSType()) {
 			case "S":
-				type += "β";
+				type += "B";
 				break;
 				
 			case "H":
-				type += "α";
+				type += "A";
 				break;
 				
 			default:
@@ -29,11 +29,11 @@ public class SSToSmotif {
 		}
 		switch (ss2.getSSType()) {
 			case "S":
-				type += "β";
+				type += "B";
 				break;
 				
 			case "H":
-				type += "α";
+				type += "A";
 				break;
 				
 			default:
@@ -72,7 +72,7 @@ public class SSToSmotif {
 			out.println("" + 
 			"Bryn Reinstadler and Jennifer Van, 2012.\n" + 
 			"Ran with _________ DSSP/PDB files on ___________(date)." + 
-			"PDB/DSSP     StartRes    EndRes    (αα/αβ/βα/ββ)      d       δ       θ       ρ       ");
+			"PDB/DSSP     StartRes    EndRes    (aa/ab/ba/bb)      d       delta   theta   rho     ");
 			// start res starts at 12
 			// endres starts at 24
 			// type information starts at 34
