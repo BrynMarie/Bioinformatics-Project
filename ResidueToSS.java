@@ -16,12 +16,14 @@ public class ResidueToSS {
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
     	CalcGeo f5 = new CalcGeo(pmoiArray);
-    	f5.calculate(pmoiArray);
-	resToSS(resArray);
+    	ArrayList<Geometries> = f5.calculate(pmoiArray);
+	ArrayList<SecondaryStructure> ssArray = resToSS(resArray);
     	// pass geometries to SSToSmotif
+    	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
+    	SSToSmotif f6 = new SSToSmotif(ssArray, geometries);
     }
     
-    public void resToSS(ArrayList<Residue> resArray) {
+    public ArrayList<SecondaryStructure> resToSS(ArrayList<Residue> resArray) {
     	
     	//holds residues in each respect ss
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
