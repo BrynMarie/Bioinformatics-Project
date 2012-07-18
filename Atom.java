@@ -10,6 +10,10 @@ public class Atom {
     boolean isBackbone, nTerm, cTerm;
     
     public Atom(String atom, String resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
+	this.resNum = resNum;
+	this.nTerm = nTerm;
+	this.cTerm = cTerm;
+	bFactor = tempFactor;
 	atomType = atom;
 	coords = cc;
 	isBackbone = isBB;

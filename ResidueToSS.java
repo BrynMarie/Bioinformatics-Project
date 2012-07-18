@@ -12,11 +12,12 @@ import java.io.*;
 
 public class ResidueToSS {
 
-	public static ArrayList<SecondaryStructure> ssArray;
+    public static ArrayList<SecondaryStructure> ssArray;
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
     	CalcGeo f5 = new CalcGeo(pmoiArray);
-    	resToSS(resArray);
+    	f5.calculate(pmoiArray);
+	resToSS(resArray);
     	// pass geometries to SSToSmotif
     }
     

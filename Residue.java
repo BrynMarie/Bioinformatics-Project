@@ -33,6 +33,11 @@ public class Residue {
     	this.pdbResNum = pdbResNum;
 	this.pmoi = pmoi;
     }
+
+    public Residue(String pdbResNum, String ss) {
+	this.pdbResNum = pdbResNum;
+	this.ssType = ss;
+    }
     
     //accessor methods
     public boolean exists() {
