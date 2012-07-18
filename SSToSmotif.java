@@ -97,6 +97,6 @@ public class SSToSmotif {
 			}
 			out.close();
 		}
-		catch (IOException ioe) { e.printStackTrace(); }		
+		catch (IOException ioe) { ioe.printStackTrace(); }		
 	}
 }
