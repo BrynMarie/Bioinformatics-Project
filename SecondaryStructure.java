@@ -6,7 +6,6 @@ public class SecondaryStructure {
     String sstype;
     int length;
     ArrayList<Residue> resArray = new ArrayList<Residue>();
-    //CartesianCoord coords; currently deprecated.
     boolean exists;
 
     public SecondaryStructure(String ss, int length, ArrayList<Residue> resArray) {
@@ -33,11 +32,6 @@ public class SecondaryStructure {
 	return length;
     }
     
-    /*
-    public CartesianCoord getCoords() {
-    	return coords;
-    }
-    */
     public Residue firstResidue() {
     	return resArray.get(0);
     }
@@ -64,10 +58,6 @@ public class SecondaryStructure {
 	length = newLength;
     }
     
-    /* public void setCoords(CartesianCoord newCoord) {
-    	coords = newCoord;
-    } */
-    
     public void addResidue(Residue res){
     	resArray.add(res);
     }
@@ -75,6 +65,4 @@ public class SecondaryStructure {
     public void addResArray(ArrayList<Residue> resArray) {
     	this.resArray = resArray;
     }
-
-    //Other
 }
