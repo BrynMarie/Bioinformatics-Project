@@ -14,32 +14,14 @@ public class SSToSmotif {
 	String stRes = cutToSize(gg.getStart(), 12);
 	String endRes = cutToSize(gg.getEnd(), 10);
 	String type = "";
-	switch (ss1.getSSType()) {
-	case "S":
-	    type += "B";
-	    break;
-
-	case "H":
-	    type += "A";
-	    break;
-
-	default:
-	    type += "T";
-	    break;
-	}
-	switch (ss2.getSSType()) {
-	case "S":
-	    type += "B";
-	    break;
-
-	case "H":
-	    type += "A";
-	    break;
-
-	default:
-	    type += "T";
-	    break;
-	}
+	
+	if(ss1.getSSType().equals("S")) { type += "B"; }
+	if(ss1.getSSType().equals("H")) { type += "A"; }
+	if(ss1.getSSType().equals("T")) { type += "T"; }
+	if(ss1.getSSType().equals("S")) { type += "B"; }
+	if(ss1.getSSType().equals("H")) { type += "A"; }
+	if(ss1.getSSType().equals("T")) { type += "T"; }
+	
 	type = cutToSize(type, 19);
 	String d = cutToSize(gg.getD(), 8);
 	String delta = cutToSize(gg.getDelta(), 8);
