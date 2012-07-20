@@ -12,12 +12,13 @@ import java.io.*;
 
 public class ResidueToSS {
 
-    public static ArrayList<SecondaryStructure> ssArray;
+    public static ArrayList<SecondaryStructure> ssList;
+    public static ArrayList<Geometry> geometries;
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
     	CalcGeo f5 = new CalcGeo(pmoiArray);
-    	ArrayList<Geometry> geometries = f5.calculate(pmoiArray);
-	ArrayList<SecondaryStructure> ssArray = resToSS(resArray);
+    	this.geometries = f5.calculate(pmoiArray);
+	this.ssList = resToSS(resArray);
     	// pass geometries to SSToSmotif
     	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
     	SSToSmotif f6 = new SSToSmotif(ssArray, geometries);
@@ -27,6 +28,7 @@ public class ResidueToSS {
     	
     	//holds residues in each respect ss
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
+        ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         // array to hold ss's
         //ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         
@@ -108,6 +110,7 @@ public class ResidueToSS {
                 }
             } // end of same ss current missing
         } // end of for
+        return ssArray;
     } // end of method
     
     // merge resList into a secondary structure with all necessary information
