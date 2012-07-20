@@ -107,6 +107,7 @@ public class AtomToResidue {
 	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(hCounter)
 	int hCounter = 0;
 	int limit = Math.max(lowerArray.size(), higherArray.size() - hCounter);
+	int lowerLimit = Math.min(lowerArray.size(), higherArray.size() - hCounter);
 	System.out.println("LA : " + lowerArray.size() + " UA: " + higherArray.size());
 	for (int j = 0; j < limit; ++j) {
 	    Residue currentLower = lowerArray.get(lCounter + j);
@@ -118,7 +119,7 @@ public class AtomToResidue {
 		//mark ones that don't match as 'don't exist'...this may be more complicated than previously thought.
 		finalResArray.add(new Residue("" + lResNum + "", false)); 	
 		++lCounter;
-		if(((hCounter + j) >= limit) || ((lCounter + j) >= limit)) { //breaks out of for loop
+		if(((hCounter + j) >= lowerLimit) || ((lCounter + j) >= limit)) { //breaks out of for loop
 		    j = limit;
 		    break;
 		}
@@ -129,7 +130,7 @@ public class AtomToResidue {
 	    while (lResNum > hResNum) {
 		finalResArray.add(new Residue("" + hResNum + "", false));
 		++hCounter;
-		if(((hCounter + j) >= limit) || ((lCounter + j) >= limit)) { //breaks out of for loop
+		if(((hCounter + j) >= lowerLimit) || ((lCounter + j) >= limit)) { //breaks out of for loop
 		    j = limit;
 		    break;
 		}
@@ -141,7 +142,7 @@ public class AtomToResidue {
 		finalResArray.add(mergeResidues(currentLower, currentHigher, ssFirst));	
 		++lCounter;
 		++hCounter;
-		if(((hCounter + j) >= limit) || ((lCounter + j) >= limit)) { //breaks out of for loop
+		if(((hCounter + j) >= lowerLimit) || ((lCounter + j) >= limit)) { //breaks out of for loop
 		    j = limit;
 		    break;
 		}
@@ -185,8 +186,9 @@ public class AtomToResidue {
 
 	for (int i = 0; i<dsspFile.size(); ++i) {
 	    try {
-		String strResNum = dsspFile.get(i).substring(0,3).trim();
-	
+		String strResNum = dsspFile.get(i).substring(0,5).trim();
+		Integer resNum = Integer.parseInt(strResNum); 
+
 		if(charsAtEqual(dsspFile, i, 13, sheetArray)) {
 		    tempArray.add(new Residue(strResNum, "S"));
 		}
@@ -197,11 +199,12 @@ public class AtomToResidue {
 		    tempArray.add(new Residue(strResNum,"T"));
 		}
 	    }
-	    catch (Exception e) { e.printStackTrace(); }
-	}	
-	for (int i=0; i<tempArray.size(); ++i) {
-	    System.out.println(tempArray.get(i).getSS());
+	    catch (Exception e) { }
 	}
+	/*
+	for (int i=0; i<tempArray.size(); ++i) {
+	    System.out.println("" + tempArray.get(i).getResNum() + ": " + tempArray.get(i).getSS());
+	    }*/
 
 	return tempArray;
     }
