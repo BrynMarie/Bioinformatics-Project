@@ -185,22 +185,24 @@ public class AtomToResidue {
 
 	for (int i = 0; i<dsspFile.size(); ++i) {
 	    try {
-		
-		int pdbResNum = Integer.parseInt(dsspFile.get(i).substring(0,3).trim());
-		
-			
+		String strResNum = dsspFile.get(i).substring(0,3).trim();
+	
 		if(charsAtEqual(dsspFile, i, 13, sheetArray)) {
-		    tempArray.add(new Residue("" + pdbResNum + "", "S"));
+		    tempArray.add(new Residue(strResNum, "S"));
 		}
 		else if(charsAtEqual(dsspFile, i, 13, helixArray)) {
-		    tempArray.add(new Residue("" + pdbResNum + "","H"));
+		    tempArray.add(new Residue(strResNum,"H"));
 		}
 		else if(charsAtEqual(dsspFile, i, 13, turnArray)) {
-		    tempArray.add(new Residue("" + pdbResNum + "","T"));
+		    tempArray.add(new Residue(strResNum,"T"));
 		}
 	    }
-	    catch (Exception e) {}
+	    catch (Exception e) { e.printStackTrace(); }
 	}	
+	for (int i=0; i<tempArray.size(); ++i) {
+	    System.out.println(tempArray.get(i).getSS());
+	}
+
 	return tempArray;
     }
 
