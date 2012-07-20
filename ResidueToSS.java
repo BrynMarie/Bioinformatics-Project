@@ -21,7 +21,7 @@ public class ResidueToSS {
 	this.ssList = resToSS(resArray);
     	// pass geometries to SSToSmotif
     	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
-    	SSToSmotif f6 = new SSToSmotif(ssArray, geometries);
+    	SSToSmotif f6 = new SSToSmotif(ssList, geometries);
     }
     
     public ArrayList<SecondaryStructure> resToSS(ArrayList<Residue> resArray) {
