@@ -67,6 +67,10 @@ public class AtomToResidue {
 		
 	Collections.sort(tempArray, new ResidueComparator());
 	Collections.sort(resArray, new ResidueComparator());
+	/* for(int i = 0; i<tempArray.size(); ++i) {
+	    System.out.println("temp array pdb : " + tempArray.get(i).getResNum());
+	    }*/
+	System.out.println("Temp array size : " + tempArray.size());
 	ArrayList<Residue> finalResArray;
 
 	int firstNum = Integer.parseInt(tempArray.get(0).getResNum());
@@ -79,7 +83,7 @@ public class AtomToResidue {
 	else {
 	    finalResArray = mergeArrays(resArray, tempArray, pmoiArray, false);
 	}
-		
+	System.out.println("Final res Array size : " + finalResArray.size());
 	return finalResArray;
     }
     
@@ -94,20 +98,18 @@ public class AtomToResidue {
 	// go through that one til they both match up, marking them as 'don't exist in both',
 	int lCounter = 0, finalCounter = 0;
 	ArrayList<Residue> finalResArray = new ArrayList<Residue>();
-		    
-	while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) != 
-	       Integer.parseInt(higherArray.get(0).getResNum())) {
+	System.out.println(higherArray.get(0).getResNum());
+	while (Integer.parseInt(lowerArray.get(lCounter).getResNum()) < 1) {
 		
 	    String pdb = lowerArray.get(lCounter).getResNum();
 	    finalResArray.add(new Residue(pdb, false));
 	    ++lCounter;
 	} // end while
-	System.out.println("Got out of first while in a timely fashion");
 
-	//now we are at a point where the two arrays are synced, starting at lowerArray(0) and higherArray(hCounter)
+	//now we are at a point where the two arrays are synced, starting at lowerArray(lCounter) and higherArray(0)
 	int hCounter = 0;
-	int limit = Math.max(lowerArray.size(), higherArray.size() - hCounter);
-	int lowerLimit = Math.min(lowerArray.size(), higherArray.size() - hCounter);
+	int limit = Math.max(lowerArray.size() - lCounter, higherArray.size());
+	int lowerLimit = Math.min(lowerArray.size() - lCounter, higherArray.size());
 	System.out.println("LA : " + lowerArray.size() + " UA: " + higherArray.size());
 	for (int j = 0; j < limit; ++j) {
 	    Residue currentLower = lowerArray.get(lCounter + j);
@@ -186,7 +188,7 @@ public class AtomToResidue {
 
 	for (int i = 0; i<dsspFile.size(); ++i) {
 	    try {
-		String strResNum = dsspFile.get(i).substring(0,5).trim();
+		String strResNum = dsspFile.get(i).substring(6,10).trim();
 		Integer resNum = Integer.parseInt(strResNum); 
 
 		if(charsAtEqual(dsspFile, i, 13, sheetArray)) {
@@ -201,10 +203,10 @@ public class AtomToResidue {
 	    }
 	    catch (Exception e) { }
 	}
-	/*
-	for (int i=0; i<tempArray.size(); ++i) {
+	
+	/*for (int i=0; i<tempArray.size(); ++i) {
 	    System.out.println("" + tempArray.get(i).getResNum() + ": " + tempArray.get(i).getSS());
-	    }*/
+	}*/
 
 	return tempArray;
     }

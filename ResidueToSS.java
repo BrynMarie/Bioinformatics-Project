@@ -16,7 +16,6 @@ public class ResidueToSS {
     public static ArrayList<Geometry> geometries;
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
-	System.out.println("Size of total residue array " + resArray.size());
 	this.ssList = resToSS(resArray);
 	System.out.println("Size of secondary Structure list: " + ssList.size());    	
 	CalcGeo f5 = new CalcGeo(pmoiArray);
@@ -29,13 +28,15 @@ public class ResidueToSS {
     
     public ArrayList<SecondaryStructure> resToSS(ArrayList<Residue> resArray) {
     	
-    	//holds residues in each respect ss
+    	//holds residues in each respective ss
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
-        ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
         // array to hold ss's
-        //ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
-        
-        Residue oldRes = resArray.get(0);
+        ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
+        int tempC = 0;
+	while (resArray.get(tempC).getSS() == null) {
+	    ++tempC;
+	}
+        Residue oldRes = resArray.get(tempC);
 	Residue currentRes;
         currentInSS.add(oldRes);
         boolean turn = false;
@@ -43,8 +44,12 @@ public class ResidueToSS {
         String ss;
 	int loopCounter = 0;
 
-	System.out.println("Getting ss of a residue ln 46 of RTS: " + oldRes.getSS());
-        if(oldRes.getSS().equals("T")) {
+	/*
+	for(int i=0; i<resArray.size(); ++i) {
+	    System.out.println("" + resArray.get(i).getResNum() + ": " + resArray.get(i).getSS());
+	    }*/
+	System.out.println("Got to tricky if");
+        if(oldRes.getSS() != null && oldRes.getSS().equals("T")) {
             turn = true;
         }
         
@@ -54,7 +59,7 @@ public class ResidueToSS {
             currentRes = resArray.get(i);
             
             //the old and current res are in the same ss, and current res exists
-            if(currentRes.getSS().equals(oldRes.getSS()) && currentRes.exists()) {
+            if(currentRes.getSS() != null && currentRes.getSS().equals(oldRes.getSS()) && currentRes.exists()) {
                 ss = currentRes.getSS();
                 
                 // if you are supposed to add this ss you can.
@@ -71,7 +76,7 @@ public class ResidueToSS {
             }
             
             //the old and current res are in different ss's
-            else if(!currentRes.getSS().equals(oldRes.getSS())) {
+            else if(currentRes.getSS() != null && !currentRes.getSS().equals(oldRes.getSS())) {
                 //add currentInSS to the ssArray
                 // turn behavior
                 ss = currentRes.getSS();
@@ -101,7 +106,7 @@ public class ResidueToSS {
                 }
             }
             // they are in the same ss and the current res is missing
-            else if(currentRes.getSS().equals(oldRes.getSS())){
+            else if(currentRes.getSS() != null && currentRes.getSS().equals(oldRes.getSS())){
                 ss = currentRes.getSS();
                 
                 if(ss.equals("T")) {
@@ -119,8 +124,16 @@ public class ResidueToSS {
     
     // merge resList into a secondary structure with all necessary information
     public SecondaryStructure parseSS(ArrayList<Residue> resList) {
-        
-        //String ss, int length, ArrayList<Residue> resArray
-        return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList);
+        if(resList.size() > 0) {
+	    //String ss, int length, ArrayList<Residue> resArray
+	    int tempCO = 0;
+	    while(resList.get(tempCO).getSS() == null ) {
+		++tempCO;
+	    }
+	    return new SecondaryStructure(resList.get(tempCO).getSS(), resList.size() - 1, resList);
+	}
+	
+	return new SecondaryStructure("T", false);
+	
     }
 }
