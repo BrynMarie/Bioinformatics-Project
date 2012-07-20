@@ -42,4 +42,10 @@ public class CartesianCoord {
     public void setZ(double newZ) {
 	z = newZ;
     }
+
+    //other
+    public String toString() {
+	return "(" + x + ", " + y + ", " + z + ")";
+    }
+
 }

@@ -12,7 +12,9 @@ public class AtomToResidue {
 	atomList = al;
 	Collections.sort(atomList, new AtomComparator());
 	ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
+	CalculatePMOI f5 = new CalculatePMOI(resArray);
 	ArrayList<Residue> pmoiArray = CalculatePMOI.newResArray;
+	System.out.println("PMOI Size: " + pmoiArray.size());
 	ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
     }
     

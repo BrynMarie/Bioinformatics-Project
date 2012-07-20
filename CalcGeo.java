@@ -18,6 +18,7 @@ public class CalcGeo {
     public static ArrayList<Geometry> geoList;
 
     public CalcGeo(ArrayList<Residue> residueList) {
+	System.out.println(residueList.size());
 	this.geoList = calculate(residueList);
     }
     

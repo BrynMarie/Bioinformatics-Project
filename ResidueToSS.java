@@ -16,9 +16,12 @@ public class ResidueToSS {
     public static ArrayList<Geometry> geometries;
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
-    	CalcGeo f5 = new CalcGeo(pmoiArray);
-    	this.geometries = f5.calculate(pmoiArray);
+	System.out.println("Size of total residue array " + resArray.size());
 	this.ssList = resToSS(resArray);
+	System.out.println("Size of secondary Structure list: " + ssList.size());    	
+	CalcGeo f5 = new CalcGeo(pmoiArray);
+    	this.geometries = f5.calculate(pmoiArray);
+
     	// pass geometries to SSToSmotif
     	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
     	SSToSmotif f6 = new SSToSmotif(ssList, geometries);
@@ -40,6 +43,7 @@ public class ResidueToSS {
         String ss;
 	int loopCounter = 0;
 
+	System.out.println(oldRes.getSS());
         if(oldRes.getSS().equals("T")) {
             turn = true;
         }

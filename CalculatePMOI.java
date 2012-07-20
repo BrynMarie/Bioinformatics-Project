@@ -1,4 +1,3 @@
-//package Jama;
 import java.io.*;
 import java.util.*;
 import Jama.*;
@@ -20,7 +19,12 @@ public class CalculatePMOI {
     int countBFactorGreaterThanOne = 0;
     boolean discardBFactor = false;
 
-    public ArrayList<Residue> CalcPMOI(ArrayList<Residue> residueList) {
+    public CalculatePMOI(ArrayList<Residue> residueList) {
+	this.newResArray = calcPMOI(residueList);
+    }
+
+    public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList) {
+	newResArray = new ArrayList<Residue>();
 	// END PMoI variable declaration
 	for (int i = 0; i<residueList.size(); ++i) {
 	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm() == true) { 
@@ -87,8 +91,7 @@ public class CalculatePMOI {
 		EigenvalueDecomposition ed = matrixForEigen.eig();
 		double[] getRealEigenvalues = ed.getRealEigenvalues();
 		double[] getImgEigenvalues = ed.getImagEigenvalues(); 
-		CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[1], 
-			getRealEigenvalues[2], getRealEigenvalues[3]);
+		CartesianCoord principalMomentsOfInertia = new CartesianCoord(getRealEigenvalues[0], getRealEigenvalues[1], getRealEigenvalues[2]);
 		//reset terms
 		Ixx=0;
 		Iyy=0; 
@@ -132,6 +135,8 @@ public class CalculatePMOI {
 		totalAtomicWeight=0;
 		//end calculate PMoI
 		//need xyz coordinates to calculate geometries
+		System.out.println(principalMomentsOfInertia.toString());
+		System.out.println("CP ln 139" + pdbNum);
 		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia));
 	    }// end if
 	}// end for
