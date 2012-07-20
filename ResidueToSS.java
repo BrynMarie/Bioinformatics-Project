@@ -16,7 +16,7 @@ public class ResidueToSS {
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
     	CalcGeo f5 = new CalcGeo(pmoiArray);
-    	ArrayList<Geometries> = f5.calculate(pmoiArray);
+    	ArrayList<Geometry> geometries = f5.calculate(pmoiArray);
 	ArrayList<SecondaryStructure> ssArray = resToSS(resArray);
     	// pass geometries to SSToSmotif
     	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
