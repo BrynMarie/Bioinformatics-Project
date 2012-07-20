@@ -43,7 +43,7 @@ public class ResidueToSS {
         String ss;
 	int loopCounter = 0;
 
-	System.out.println(oldRes.getSS());
+	System.out.println("Getting ss of a residue ln 46 of RTS: " + oldRes.getSS());
         if(oldRes.getSS().equals("T")) {
             turn = true;
         }
