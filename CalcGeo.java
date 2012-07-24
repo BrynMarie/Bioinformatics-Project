@@ -31,12 +31,13 @@ public class CalcGeo {
 		
 	ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
 
+	System.out.println("residue list in calcgeo size : " + residueList.size());
 	for (int i = 0; i<residueList.size() - 3; i+=2) {
 
-	    p0 = (residueList.get(i).getAtomList().get(i).getCoords()); 
-	    p1 = (residueList.get(i+1).getAtomList().get(i).getCoords());
-	    p2 = (residueList.get(i+2).getAtomList().get(i).getCoords());
-	    p3 = (residueList.get(i+3).getAtomList().get(i).getCoords());
+	    p0 = (residueList.get(i).getPMOI()); 
+	    p1 = (residueList.get(i+1).getPMOI());
+	    p2 = (residueList.get(i+2).getPMOI());
+	    p3 = (residueList.get(i+3).getPMOI());
 	    
 	    //calculate e1, vector
 	    e1 = calcE1LE2(p0, p1);

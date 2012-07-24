@@ -6,6 +6,7 @@ public class SSToSmotif {
     // takes an arraylist of secondary structures
     // prints out final information
     public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
+	System.out.println("Got to sstosmotif");
 	printOutInformation(ssList, geometries);
     }
 
@@ -48,13 +49,15 @@ public class SSToSmotif {
 
     // will be replaced by a print to file eventually
     public void printOutInformation(ArrayList<SecondaryStructure> ssArray, ArrayList<Geometry> geoArray) {
+	System.out.println("Got to poi");
 	try {
-	    PrintWriter out = new PrintWriter(new FileWriter("OutputFile"));
+	    System.out.println("Inside try");
+	    PrintWriter out = new PrintWriter(new FileWriter("OutputFile.txt"));
 
 	    // print header
 	    out.println("" + 
 			"Bryn Reinstadler and Jennifer Van, 2012.\n" + 
-			"Ran with _________ DSSP/PDB files on ___________(date)." + 
+			"Ran with _________ DSSP/PDB files on ___________(date). \n\n" + 
 			"PDB/DSSP     StartRes    EndRes    (aa/ab/ba/bb)      d       delta   theta   rho     ");
 	    // start res starts at 12
 	    // endres starts at 24
@@ -63,19 +66,23 @@ public class SSToSmotif {
 	    // delta at 61
 	    // theta at 69
 	    // rho at 76
-	    int gCounter = 0;
-
-	    for (int i=0; i<ssArray.size(); ++i) {
-		if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T")) {
-		    if(ssArray.get(i+1).exists()) { // this should be the turn
-			String printMe = parseToString(ssArray.get(i), 
-						       ssArray.get(i+2), geoArray.get(i));
-			out.println(printMe);
+	    System.out.println("ssarray size : " + ssArray.size());
+	    System.out.println("geoarrays size : " + geoArray.size());
+	    for (int i=0; i<ssArray.size() - 3; i+= 2) {
+		
+		if(ssArray.get(i).exists() && ssArray.get(i+1).exists() 
+		   && ssArray.get(i+1).getSSType().equals("T") && 
+		   ssArray.get(i+2).exists()) { 
+		    System.out.println("ss first" + ssArray.get(i).firstResidue().getResNum());  
+		    for(int k=0; k<geoArray.size(); ++k){
+			System.out.println(geoArray.get(k).getStart());
+		
+			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
+			    String printMe = parseToString(ssArray.get(i), 
+							   ssArray.get(i+2), geoArray.get(i));
+			    out.println(printMe);
+			}
 		    }
-
-		    i += 2; // check for off by one error
-		    ++gCounter;
-
 		}
 	    }
 	    out.close();
