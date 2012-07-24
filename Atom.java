@@ -26,7 +26,8 @@ public class Atom {
     }
 
     //constructor template
-    public Atom() {
+    public String toString() {	
+	return "" + atomType + " " + resNum + " " + coords.toString();
     }
 
     //acessor methods

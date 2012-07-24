@@ -7,7 +7,7 @@ public class Residue {
     String pdbResNum;
     String ssType;
     boolean nTerm, cTerm, exists;
-    ArrayList<Atom> atomList = new ArrayList<Atom>();
+    ArrayList<Atom> atomList;
     CartesianCoord pmoi;
     // other state
     

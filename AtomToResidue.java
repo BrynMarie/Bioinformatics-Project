@@ -73,10 +73,12 @@ public class AtomToResidue {
 	    oldResNum = curResNum;
 	    oldAtom = curAtom;
 	} // end for going through atom array
+	extractSS(dsspFile, resArray);
 	resArray.get(0).setNTerm(true);
 	resArray.get(resArray.size() - 1).setCTerm(true);
-	extractSS(dsspFile, resArray);
-
+	for (int i =0; i<resArray.size(); ++i) {
+	    //System.out.println("CTerm / NTerm : " + resArray.get(i).getCTerm() + "/" + resArray.get(i).getNTerm());
+	}
 	return resArray;
     }
     
@@ -88,7 +90,8 @@ public class AtomToResidue {
     // returns arraylist of residues that only have ss information
     public void extractSS(ArrayList<String> dsspFile, ArrayList<Residue> resArray) {
 
-	int resArrayCounter = 0;	
+	int resArrayCounter = 0;
+	String current = "T";
 	String[] sheetArray = {"E","B"};
 	String[] helixArray = {"G","H","I"};
 	String[] turnArray = {"","S","T"," "};
@@ -100,14 +103,29 @@ public class AtomToResidue {
 
 		if(charsAtEqual(dsspFile, i, 16, sheetArray)) {
 		    resArray.get(resArrayCounter).setSSType("S");
+		    if(!current.equals("S")) {
+			resArray.get(resArrayCounter).setNTerm(true);
+			resArray.get(resArrayCounter - 1).setCTerm(true);
+		    }
+		    current = "S";
 		    ++resArrayCounter;
 		}
 		else if(charsAtEqual(dsspFile, i, 16, helixArray)) {
 		    resArray.get(resArrayCounter).setSSType("H");
+		    if(!current.equals("H")) {
+			resArray.get(resArrayCounter).setNTerm(true);
+			resArray.get(resArrayCounter - 1).setCTerm(true);
+		    }
+		    current = "H";
 		    ++resArrayCounter;
 		}
 		else if(charsAtEqual(dsspFile, i, 16, turnArray)) {
 		    resArray.get(resArrayCounter).setSSType("T");
+		    if(!current.equals("T")) {
+			resArray.get(resArrayCounter).setNTerm(true);
+			resArray.get(resArrayCounter - 1).setCTerm(true);
+		    }
+		    current = "T";
 		    ++resArrayCounter;
 		}
 	    }

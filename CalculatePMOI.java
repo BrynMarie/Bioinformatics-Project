@@ -136,8 +136,8 @@ public class CalculatePMOI {
 		//end calculate PMoI
 		//need xyz coordinates to calculate geometries
 		
-		System.out.println("CP ln 139: " + pdbNum);
-		System.out.println(principalMomentsOfInertia.toString());
+		//System.out.println("CP ln 139: " + pdbNum);
+		//System.out.println(principalMomentsOfInertia.toString());
 		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia));
 	    }// end if
 	}// end for

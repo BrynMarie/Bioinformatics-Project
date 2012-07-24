@@ -20,7 +20,7 @@ public class ResidueToSS {
 	System.out.println("Size of secondary Structure list: " + ssList.size());    	
 	CalcGeo f5 = new CalcGeo(pmoiArray);
     	this.geometries = f5.calculate(pmoiArray);
-
+	System.out.println("Geo size : " + geometries.size());
     	// pass geometries to SSToSmotif
     	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
     	SSToSmotif f6 = new SSToSmotif(ssList, geometries);
