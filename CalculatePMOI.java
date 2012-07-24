@@ -140,7 +140,8 @@ public class CalculatePMOI {
 		
 		//System.out.println("CP ln 139: " + pdbNum);
 		//System.out.println(principalMomentsOfInertia.toString());
-		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia));
+		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia, 
+					    currentAtomListOfResidue));
 	    }// end if
 	}// end for
 	System.out.println("Bryn's counter = " + bc);

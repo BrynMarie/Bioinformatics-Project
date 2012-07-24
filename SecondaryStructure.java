@@ -24,6 +24,7 @@ public class SecondaryStructure {
     	this.sstype = sstype;
     	this.length = length;
     	this.resArray = resArray;
+	this.exists = true;
     }
     
     public SecondaryStructure(String sstype, boolean exists) {

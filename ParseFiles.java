@@ -14,7 +14,6 @@ public class ParseFiles {
 	double meanBFactor = (Double)retMe.get(1);
         double std = (Double)retMe.get(2);
 	System.out.println("Mean BFactor " + meanBFactor + "\nSTD: " + std);
-        
         // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
         // a double bFactorMean and a double bFactorSTD
 	AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);

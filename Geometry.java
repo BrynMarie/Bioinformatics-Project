@@ -3,12 +3,12 @@ import java.util.*;
 
 public class Geometry {
 
-    public static String distance;
-    public static String delta;
-    public static String theta;
-    public static String rho;
-    public static String stRes;
-    public static String endRes;
+    String distance;
+    String delta;
+    String theta;
+    String rho;
+    String stRes;
+    String endRes;
 
     public Geometry (String stRes, String endRes,
 		     String distance, String delta, String theta, String rho) {

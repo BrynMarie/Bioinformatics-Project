@@ -19,21 +19,41 @@ public class CalcGeo {
 
     public CalcGeo(ArrayList<Residue> pmoiList) { // takes pmoi
 	this.geoList = calculate(pmoiList);
+
+	/*for(int i=0; i<geoList.size(); ++i) {
+	    System.out.println("st : " + geoList.get(i).getStart());
+	    }*/
+
     }
     
     public ArrayList<Geometry> calculate(ArrayList<Residue> residueList) {
-	double magnitudeOfX = 0;
+	/*double magnitudeOfX = 0;
 	double distance;
 	double delta;
 	double theta;
 	double rho;
-	CartesianCoord p0, p1, p2, p3, e1, l, e2;
+	CartesianCoord p0, p1, p2, p3, e1, l, e2;*/
 		
 	ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
 
 	System.out.println("residue list in calcgeo size : " + residueList.size());
 	for (int i = 0; i<residueList.size() - 3; i+=2) {
+	    /** I know this looks insane but it's seriously the only way 
+		to get this to work. Don't judge, alright?
+		
+		Also if you waste more time on it I ask that you increment
+		the following counter:
+		
+		time_wasted_here = 5 hrs
+	    */
 
+	    double magnitudeOfX = 0;
+	    double distance;
+	    double delta;
+	    double theta;
+	    double rho;
+	    CartesianCoord p0, p1, p2, p3, e1, l, e2;
+	    
 	    p0 = (residueList.get(i).getPMOI()); 
 	    p1 = (residueList.get(i+1).getPMOI());
 	    p2 = (residueList.get(i+2).getPMOI());
@@ -86,11 +106,10 @@ public class CalcGeo {
 	    //String distance, String delta, String theta, String rho
 	    String stRes = residueList.get(i).getResNum();
 	    String endRes = residueList.get(i+3).getResNum();
-	    
+	    //everything with st/end res is fine here
 	    geoArray.add(new Geometry(stRes, endRes, "" + distance + "", "" + delta + "",  
 				      "" + theta + "", "" + rho + ""));
 	}
-	
 	return geoArray;
     }
     

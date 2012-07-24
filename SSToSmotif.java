@@ -23,14 +23,14 @@ public class SSToSmotif {
 	if(ss1.getSSType().equals("H")) { type += "A"; }
 	if(ss1.getSSType().equals("T")) { type += "T"; }
 	
-	type = cutToSize(type, 19);
+	type = cutToSize(type, 18);
 	String d = cutToSize(gg.getD(), 8);
 	String delta = cutToSize(gg.getDelta(), 8);
 	String theta = cutToSize(gg.getTheta(), 8);
 	String rho = cutToSize(gg.getRho(), 8);
 
-	return "" + stRes + "" + endRes + "" + type + "" + d + 
-	    "" + delta + "" + theta + "" + rho + "";
+	return "             " + stRes + "" + endRes + "" + type + " " + d + 
+	    "  " + delta + "  " + theta + "  " + rho + "";
     }
 
     public String cutToSize(String o, int limit) {
@@ -58,7 +58,7 @@ public class SSToSmotif {
 	    out.println("" + 
 			"Bryn Reinstadler and Jennifer Van, 2012.\n" + 
 			"Ran with _________ DSSP/PDB files on ___________(date). \n\n" + 
-			"PDB/DSSP     StartRes    EndRes    (aa/ab/ba/bb)      d       delta   theta   rho     ");
+			"PDB/DSSP     StartRes    EndRes    (aa/ab/ba/bb)      d         delta     theta     rho       ");
 	    // start res starts at 12
 	    // endres starts at 24
 	    // type information starts at 34
@@ -73,11 +73,9 @@ public class SSToSmotif {
 		if(ssArray.get(i).exists() && ssArray.get(i+1).exists() 
 		   && ssArray.get(i+1).getSSType().equals("T") && 
 		   ssArray.get(i+2).exists()) { 
-		    System.out.println("ss first" + ssArray.get(i).firstResidue().getResNum());  
 		    for(int k=0; k<geoArray.size(); ++k){
-			System.out.println(geoArray.get(k).getStart());
-		
 			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
+			    System.out.print("yay");
 			    String printMe = parseToString(ssArray.get(i), 
 							   ssArray.get(i+2), geoArray.get(i));
 			    out.println(printMe);

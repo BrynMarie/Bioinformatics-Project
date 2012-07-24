@@ -59,6 +59,7 @@ public class ResidueToSS {
 		if(i == resArray.size() - 1) {
 		    if(nextNotExist) {
 			ssArray.add(parseSS(currentInSS, false));
+			nextNotExist = false;
 		    }
 		    else {
 			ssArray.add(parseSS(currentInSS, true));
@@ -69,6 +70,7 @@ public class ResidueToSS {
 		if(currentRes.getCTerm()) {
 		    if(nextNotExist) {
 			ssArray.add(parseSS(currentInSS, false));
+			nextNotExist = false;
 		    }
 		    else {
 			ssArray.add(parseSS(currentInSS, true));
@@ -79,6 +81,7 @@ public class ResidueToSS {
 		currentInSS.add(currentRes);
 		if(nextNotExist) {
 		    ssArray.add(parseSS(currentInSS, false));
+		    nextNotExist = false;
 		}
 		else {
 		    ssArray.add(parseSS(currentInSS, true));
