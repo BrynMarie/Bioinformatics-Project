@@ -20,55 +20,62 @@ public class AtomToResidue {
     public ArrayList<Residue> turnIntoResidueArray(ArrayList<Atom> atomList, 
 						   ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
 		
-	int residueAtoms=0, newResNum;
+	int residueAtoms=1, curResNum, oldResNum;
 	double currentResidueBFactor=0, meanOfCurrentResidue, zScore;
-	long countResidues = 0;
 	boolean cTerm = false, nTerm = false;
-	int currentResNum = Integer.parseInt(atomList.get(0).getResNum());
-	Atom curAtom = atomList.get(0); 
-	Atom newAtom;
+	Atom curAtom, oldAtom;
 	ArrayList<Residue> resArray = new ArrayList<Residue>();
 	ArrayList<Atom> currentlyInResidue = new ArrayList<Atom>();
 		
-	currentlyInResidue.add(curAtom);
+	oldAtom = atomList.get(0);
+	oldResNum = Integer.parseInt(oldAtom.getResNum());
+	currentlyInResidue.add(oldAtom);
+	currentResidueBFactor += oldAtom.getBFactor();
 		
-	for (int i = 0; i<atomList.size(); ++i) {
-	    newAtom = atomList.get(i);
-	    newResNum = Integer.parseInt(newAtom.getResNum());
-			
+	for (int i = 1; i<atomList.size(); ++i) {
+	    curAtom = atomList.get(i);
+	    curResNum = Integer.parseInt(curAtom.getResNum());
 	    //if we're still on the same residue as before...
-	    if (newResNum == currentResNum) {
+	    if (curResNum == oldResNum) {
 		++residueAtoms;
-		currentResidueBFactor += newAtom.getBFactor();
-		currentlyInResidue.add(newAtom);
-		if(newAtom.getNTerm()) { nTerm = true; }
-		else if(newAtom.getCTerm()) { cTerm = true; }
+		currentResidueBFactor += curAtom.getBFactor();
+		currentlyInResidue.add(curAtom);
+		if(curAtom.getNTerm()) { nTerm = true; }
+		else if(curAtom.getCTerm()) { cTerm = true; }
+		if(i == atomList.size() - 1) {
+		    meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
+		    zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
+		    //String pdbResNum, double bFactor, String ssType, 
+		    //boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
+		    resArray.add(new Residue("" + oldResNum + "" , zScore, "", nTerm, cTerm, 
+					     currentlyInResidue, new CartesianCoord(0,0,0)));  
+		    
+		    
+		}
 	    }
 
 	    //if we've moved on to the next residue
 	    else {
 		meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 		zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
-
 		//String pdbResNum, double bFactor, String ssType, 
 		//boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
-		resArray.add(new Residue("" + currentResNum + "" , zScore, "", nTerm, cTerm, currentlyInResidue, new CartesianCoord(0,0,0)));
+		resArray.add(new Residue("" + oldResNum + "" , zScore, "", nTerm, cTerm, 
+					 currentlyInResidue, new CartesianCoord(0,0,0)));
 
-		currentlyInResidue.clear();
-		currentResNum = newResNum;
-		residueAtoms = 0;
-		currentResidueBFactor = atomList.get(i).getBFactor();
-		cTerm = atomList.get(i).getCTerm();
-		nTerm = atomList.get(i).getNTerm();
+		currentlyInResidue = new ArrayList<Atom>();
+		currentlyInResidue.add(curAtom);
+		residueAtoms = 1;
+		currentResidueBFactor = curAtom.getBFactor();
+		cTerm = curAtom.getCTerm();
+		nTerm = curAtom.getNTerm();
 	    }
-	}
+	    oldResNum = curResNum;
+	    oldAtom = curAtom;
+	} // end for going through atom array
 	resArray.get(0).setNTerm(true);
 	resArray.get(resArray.size() - 1).setCTerm(true);
 	extractSS(dsspFile, resArray);
-
-	for(int i=0; i<resArray.size(); ++i) {
-	    System.out.println(resArray.get(i).toString());
-	}
 
 	return resArray;
     }
