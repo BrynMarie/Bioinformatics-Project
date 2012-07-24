@@ -7,6 +7,12 @@ public class SSToSmotif {
     // prints out final information
     public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
 	System.out.println("Got to sstosmotif");
+
+	for(int i=0; i<geometries.size(); ++i){
+	    //	    System.out.println("St: " + geometries.get(i).getStart());
+	    //System.out.println("St ss: " + ssList.get(i).firstResidue().getResNum());
+	}
+
 	printOutInformation(ssList, geometries);
     }
 
