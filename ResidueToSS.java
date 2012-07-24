@@ -17,7 +17,11 @@ public class ResidueToSS {
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
 	this.ssList = resToSS(resArray);
-	System.out.println("Size of secondary Structure list: " + ssList.size());    	
+	System.out.println("Size of secondary Structure list: " + ssList.size());    
+	for(int i=0; i< ssList.size(); ++i) {
+	    //System.out.println(ssList.get(i).firstResidue().getSS() + " " + ssList.get(i).lastResidue().getSS());
+	}
+	// the ss list is also fine
 	CalcGeo f5 = new CalcGeo(pmoiArray);
     	this.geometries = f5.calculate(pmoiArray);
 	System.out.println("Geo size : " + geometries.size());
@@ -49,13 +53,14 @@ public class ResidueToSS {
 	    currentRes = resArray.get(i);
 	    currentResNum = Integer.parseInt(currentRes.getResNum());
 	    
-	    if(!currentRes.getCTerm()) { // same secondary structure
+	    if(!currentRes.getNTerm()) { // same secondary structure
 		if(turn) {
 		    ++loopCounter;
 		    if(loopCounter == 13) { nextNotExist = true; ++nec; }
 		    if(oldResNum + 1 != currentResNum) { nextNotExist = true; ++nec; }
 		}
 		currentInSS.add(currentRes);
+		// end behavior
 		if(i == resArray.size() - 1) {
 		    if(nextNotExist) {
 			ssArray.add(parseSS(currentInSS, false));
@@ -67,29 +72,18 @@ public class ResidueToSS {
 		}
 	    }
 	    if(currentRes.getNTerm()) { // different secondary structure 
-		if(currentRes.getCTerm()) {
-		    if(nextNotExist) {
-			ssArray.add(parseSS(currentInSS, false));
-			nextNotExist = false;
-		    }
-		    else {
-			ssArray.add(parseSS(currentInSS, true));
-		    }
-		    if(!currentRes.getSS().equals("T")) { turn = false; }
-		    currentInSS = new ArrayList<Residue>();
-		}
-		currentInSS.add(currentRes);
-		if(nextNotExist) {
+		if(nextNotExist) { 
 		    ssArray.add(parseSS(currentInSS, false));
 		    nextNotExist = false;
 		}
 		else {
 		    ssArray.add(parseSS(currentInSS, true));
 		}
+		currentInSS = new ArrayList<Residue>();
+		currentInSS.add(currentRes);
 		if(!currentRes.getSS().equals("T")) {
 		    turn = false;
 		}
-		currentInSS = new ArrayList<Residue>();
 	    }
 	    oldResNum = currentResNum;
 	    oldRes = currentRes;

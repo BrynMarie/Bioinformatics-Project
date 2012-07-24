@@ -27,8 +27,15 @@ public class CalculatePMOI {
 	newResArray = new ArrayList<Residue>();
 	// END PMoI variable declaration
 	int bc = 0;
+	int newC = 0;
+	boolean nt, ct;
 	for (int i = 0; i<residueList.size(); ++i) {
-	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm()) {
+	    ct = residueList.get(i).getCTerm();
+	    nt = residueList.get(i).getNTerm();
+	    if(ct) { ++newC; }
+	    if(nt) { ++newC; }
+	    while(newC > 0) {
+		--newC;
 		++bc;
 		// if C-terminus or N-terminus => calculate PMOI
 		//set up calculations for Ixx term by term
@@ -36,6 +43,7 @@ public class CalculatePMOI {
 		//this also ideally will be in a helper method. 
 		ArrayList<Atom> currentAtomListOfResidue = residueList.get(i).getAtomList();
 		String pdbNum = residueList.get(i).getResNum();
+		String sstype = residueList.get(i).getSS();
 		
 		for(int j = 0; j<currentAtomListOfResidue.size(); j++){
 			Atom currentAtom = currentAtomListOfResidue.get(j);
@@ -141,10 +149,9 @@ public class CalculatePMOI {
 		//System.out.println("CP ln 139: " + pdbNum);
 		//System.out.println(principalMomentsOfInertia.toString());
 		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia, 
-					    currentAtomListOfResidue));
+					    currentAtomListOfResidue, sstype, nt, ct));
 	    }// end if
 	}// end for
-	System.out.println("Bryn's counter = " + bc);
 	return newResArray;
     }// end method
 

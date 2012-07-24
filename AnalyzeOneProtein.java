@@ -21,9 +21,9 @@ public class AnalyzeOneProtein {
     	*/
     public AnalyzeOneProtein(){
 	//read in single file
-	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
-	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/a0/pdb1a00.ent");
-
+	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1gyz.dssp");
+	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/gy/pdb1gyz.ent");
+	//printOut(pdbFile);
 	//Opens parsefiles and gives it the arguments of the dsspFile and the pdbFile
 	ParseFiles f2 = new ParseFiles(dsspFile, pdbFile);
     }
@@ -36,9 +36,9 @@ public class AnalyzeOneProtein {
 		try {
 		    //BufferedReader to scan in the file
 		    BufferedReader buffy = new BufferedReader(new FileReader(arg));
-		    while((thisLine = buffy.readLine()) != null) { //while there are still lines in the document
+		    while((thisLine = buffy.readLine()) != null && !thisLine.substring(0,7).trim().equals("ENDMDL")) { //while there are still lines in the document
 				fileToRead.add(thisLine);
-	    	} //end while
+		    } //end while
 		} // end try
 		catch (IOException ioe) {
 		    System.err.println("Error: " + ioe);

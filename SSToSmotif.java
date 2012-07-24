@@ -74,18 +74,14 @@ public class SSToSmotif {
 	    // rho at 76
 	    System.out.println("ssarray size : " + ssArray.size());
 	    System.out.println("geoarrays size : " + geoArray.size());
-	    for (int i=0; i<ssArray.size() - 3; i+= 2) {
-		
-		if(ssArray.get(i).exists() && ssArray.get(i+1).exists() 
-		   && ssArray.get(i+1).getSSType().equals("T") && 
-		   ssArray.get(i+2).exists()) { 
-		    for(int k=0; k<geoArray.size(); ++k){
-			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
-			    System.out.print("yay");
-			    String printMe = parseToString(ssArray.get(i), 
-							   ssArray.get(i+2), geoArray.get(i));
-			    out.println(printMe);
-			}
+	
+	    for (int i=0; i<ssArray.size() - 2; ++i) {
+		for(int k=0; k<geoArray.size(); ++k){
+		    if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
+			System.out.println("yay");
+			String printMe = parseToString(ssArray.get(i), 
+						       ssArray.get(i+2), geoArray.get(k));
+			out.println(printMe);
 		    }
 		}
 	    }

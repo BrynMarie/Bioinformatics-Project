@@ -29,10 +29,13 @@ public class Residue {
 	this.exists = exists;
     }
 
-    public Residue(String pdbResNum, CartesianCoord pmoi, ArrayList<Atom> atomList) {
+    public Residue(String pdbResNum, CartesianCoord pmoi, ArrayList<Atom> atomList, String sstype, boolean nt, boolean ct) {
     	this.pdbResNum = pdbResNum;
 	this.pmoi = pmoi;
 	this.atomList = atomList;
+	this.ssType = sstype;
+	this.nTerm = nt;
+	this.cTerm = ct;
     }
 
     public Residue(String pdbResNum, String ss) {

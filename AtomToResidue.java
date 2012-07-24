@@ -12,16 +12,20 @@ public class AtomToResidue {
 	atomList = al;
 	ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
 	int myC = 0;
+	//the residue array is beautiful and perfect, don't change it
 	for(int i = 0; i<resArray.size(); ++i) {
-	    if(resArray.get(i).getCTerm() && resArray.get(i).getNTerm()) {
-		++myC;
-	    }
+	    //System.out.println(resArray.get(i).getSS() + " n: " + resArray.get(i).getNTerm() + " c: " + resArray.get(i).getCTerm());
+	    /*	    if(resArray.get(i).getCTerm() || resArray.get(i).getNTerm()) {
+		System.out.println(resArray.get(i).getResNum() + ": cterm: " + resArray.get(i).getCTerm() + " / nterm: " + resArray.get(i).getNTerm());
+		}*/
 	}
-	System.out.println("My c = " + myC);
-
+	
 	CalculatePMOI f5 = new CalculatePMOI(resArray);
 	ArrayList<Residue> pmoiArray = CalculatePMOI.newResArray;
 	System.out.println("PMOI Size: " + pmoiArray.size());
+	for(int j=0; j<pmoiArray.size(); ++j) {
+	    //System.out.println("PMOI sstype: " + pmoiArray.get(j).getSS());
+	}
 	ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
     }
     
@@ -82,11 +86,12 @@ public class AtomToResidue {
 	    oldResNum = curResNum;
 	    oldAtom = curAtom;
 	} // end for going through atom array
+	for (int i =0; i<resArray.size(); ++i) {
+	    
+	}
 	extractSS(dsspFile, resArray);
 
-	for (int i =0; i<resArray.size(); ++i) {
-	    //System.out.println("CTerm / NTerm : " + resArray.get(i).getCTerm() + "/" + resArray.get(i).getNTerm());
-	}
+
 	return resArray;
     }
     
@@ -100,9 +105,11 @@ public class AtomToResidue {
 
 	int resArrayCounter = 0;
 	String current = "T";
+	String old = "T";
 	String[] sheetArray = {"E","B"};
 	String[] helixArray = {"G","H","I"};
 	String[] turnArray = {"","S","T"," "};
+	int nis = 1; // this counter keeps track of the number of residues in a given secondary structure
 
 	for (int i = 0; i<dsspFile.size(); ++i) {
 	    try {
@@ -111,6 +118,7 @@ public class AtomToResidue {
 
 		if(charsAtEqual(dsspFile, i, 16, sheetArray)) {
 		    resArray.get(resArrayCounter).setSSType("S");
+		    //the one before was not of the same type
 		    if(!current.equals("S")) {
 			resArray.get(resArrayCounter).setNTerm(true);
 			resArray.get(resArrayCounter - 1).setCTerm(true);
