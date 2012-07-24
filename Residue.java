@@ -38,6 +38,18 @@ public class Residue {
 	this.pdbResNum = pdbResNum;
 	this.ssType = ss;
     }
+
+    //to String
+    public String toString() {
+	/* double bFactor;
+	String pdbResNum;
+	String ssType;
+	boolean nTerm, cTerm, exists;
+	ArrayList<Atom> atomList = new ArrayList<Atom>();
+	CartesianCoord pmoi;*/ 
+	return "Residue " + pdbResNum + ": " + ssType + " " + bFactor + " " + atomList.size();
+    
+    }
     
     //accessor methods
     public boolean exists() {
