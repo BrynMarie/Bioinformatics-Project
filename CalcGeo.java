@@ -17,9 +17,8 @@ public class CalcGeo {
 	
     public static ArrayList<Geometry> geoList;
 
-    public CalcGeo(ArrayList<Residue> residueList) {
-	System.out.println(residueList.size());
-	this.geoList = calculate(residueList);
+    public CalcGeo(ArrayList<Residue> pmoiList) { // takes pmoi
+	this.geoList = calculate(pmoiList);
     }
     
     public ArrayList<Geometry> calculate(ArrayList<Residue> residueList) {
@@ -32,7 +31,8 @@ public class CalcGeo {
 		
 	ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
 
-	for (int i = 0; i<residueList.size(); i+=2) {
+	for (int i = 0; i<residueList.size() - 3; i+=2) {
+
 	    p0 = (residueList.get(i).getAtomList().get(i).getCoords()); 
 	    p1 = (residueList.get(i+1).getAtomList().get(i).getCoords());
 	    p2 = (residueList.get(i+2).getAtomList().get(i).getCoords());

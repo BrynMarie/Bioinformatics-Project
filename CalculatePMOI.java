@@ -26,8 +26,10 @@ public class CalculatePMOI {
     public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList) {
 	newResArray = new ArrayList<Residue>();
 	// END PMoI variable declaration
+	int bc = 0;
 	for (int i = 0; i<residueList.size(); ++i) {
-	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm() == true) { 
+	    if (residueList.get(i).getCTerm() || residueList.get(i).getNTerm()) {
+		++bc;
 		// if C-terminus or N-terminus => calculate PMOI
 		//set up calculations for Ixx term by term
 		//Has been abstracted to a pretty clear point
@@ -141,6 +143,7 @@ public class CalculatePMOI {
 		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia));
 	    }// end if
 	}// end for
+	System.out.println("Bryn's counter = " + bc);
 	return newResArray;
     }// end method
 

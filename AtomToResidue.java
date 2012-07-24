@@ -11,6 +11,14 @@ public class AtomToResidue {
     public AtomToResidue(ArrayList<Atom> al, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
 	atomList = al;
 	ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
+	int myC = 0;
+	for(int i = 0; i<resArray.size(); ++i) {
+	    if(resArray.get(i).getCTerm() && resArray.get(i).getNTerm()) {
+		++myC;
+	    }
+	}
+	System.out.println("My c = " + myC);
+
 	CalculatePMOI f5 = new CalculatePMOI(resArray);
 	ArrayList<Residue> pmoiArray = CalculatePMOI.newResArray;
 	System.out.println("PMOI Size: " + pmoiArray.size());
@@ -50,7 +58,8 @@ public class AtomToResidue {
 		    resArray.add(new Residue("" + oldResNum + "" , zScore, "", nTerm, cTerm, 
 					     currentlyInResidue, new CartesianCoord(0,0,0)));  
 		    
-		    
+		    cTerm = false;
+		    nTerm = false;
 		}
 	    }
 
@@ -74,8 +83,7 @@ public class AtomToResidue {
 	    oldAtom = curAtom;
 	} // end for going through atom array
 	extractSS(dsspFile, resArray);
-	resArray.get(0).setNTerm(true);
-	resArray.get(resArray.size() - 1).setCTerm(true);
+
 	for (int i =0; i<resArray.size(); ++i) {
 	    //System.out.println("CTerm / NTerm : " + resArray.get(i).getCTerm() + "/" + resArray.get(i).getNTerm());
 	}

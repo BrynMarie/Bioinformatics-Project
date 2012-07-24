@@ -42,26 +42,26 @@ public class Residue {
     //to String
     public String toString() {
 	/* double bFactor;
-	String pdbResNum;
-	String ssType;
-	boolean nTerm, cTerm, exists;
-	ArrayList<Atom> atomList = new ArrayList<Atom>();
-	CartesianCoord pmoi;*/ 
+	   String pdbResNum;
+	   String ssType;
+	   boolean nTerm, cTerm, exists;
+	   ArrayList<Atom> atomList = new ArrayList<Atom>();
+	   CartesianCoord pmoi;*/ 
 	return "Residue " + pdbResNum + ": " + ssType + " " + bFactor + " " + atomList.size();
-    
+	    
     }
     
-    //accessor methods
-    public boolean exists() {
-	return exists;
+     //accessor methods
+     public boolean exists() {
+     	return exists;
     }
 
-    public double getBFactor() {
+     public double getBFactor() {
     	return bFactor;
     }
     
     public String getResNum() {
-    	return pdbResNum;
+     	return pdbResNum;
     }
     
     public String getSS() {

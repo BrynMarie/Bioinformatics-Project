@@ -32,108 +32,74 @@ public class ResidueToSS {
         ArrayList<Residue> currentInSS = new ArrayList<Residue>();
         // array to hold ss's
         ArrayList<SecondaryStructure> ssArray = new ArrayList<SecondaryStructure>();
-        int tempC = 0;
-	while (resArray.get(tempC).getSS() == null) {
-	    ++tempC;
-	}
-        Residue oldRes = resArray.get(tempC);
+        Residue oldRes = resArray.get(0);
 	Residue currentRes;
         currentInSS.add(oldRes);
         boolean turn = false;
-        String nextNotExist= "";
-        String ss;
+        boolean nextNotExist = false;
 	int loopCounter = 0;
+	int oldResNum = Integer.parseInt(oldRes.getResNum()), currentResNum;
+	int nec = 0;
 
-	/*
-	for(int i=0; i<resArray.size(); ++i) {
-	    System.out.println("" + resArray.get(i).getResNum() + ": " + resArray.get(i).getSS());
-	    }*/
-	System.out.println("Got to tricky if");
-        if(oldRes.getSS() != null && oldRes.getSS().equals("T")) {
+	if(oldRes.getSS().equals("T")) {
             turn = true;
         }
         
-        loopCounter = 0;
-        
-        for (int i=1; i<resArray.size(); ++i) {
-            currentRes = resArray.get(i);
-            
-            //the old and current res are in the same ss, and current res exists
-            if(currentRes.getSS() != null && currentRes.getSS().equals(oldRes.getSS()) && currentRes.exists()) {
-                ss = currentRes.getSS();
-                
-                // if you are supposed to add this ss you can.
-                if(!(nextNotExist.equals(ss))) { 
-                    if (turn) { ++loopCounter; }
-                    if (turn && loopCounter == 13) { 
-                        currentInSS.clear();
-                        ssArray.add(new SecondaryStructure(currentRes.getSS(), false));
-                        nextNotExist = currentRes.getSS();
-                    }
-                    currentInSS.add(currentRes);
-                    nextNotExist = "";
-                }
-            }
-            
-            //the old and current res are in different ss's
-            else if(currentRes.getSS() != null && !currentRes.getSS().equals(oldRes.getSS())) {
-                //add currentInSS to the ssArray
-                // turn behavior
-                ss = currentRes.getSS();
-                if(ss.equals("T")) {
-                    turn = true;
-                    loopCounter = 1;
-                }
-                else {
-                    turn = false;
-                    loopCounter = 0;
-                }
-                
-                ////////////////////////////////////////////
-                
-                //add currentInSS to ssArray
-                ssArray.add(parseSS(currentInSS));
-                currentInSS.clear();
-                
-                // if it's missing don't let anything happen
-                if(!currentRes.exists() && turn) {
-                    ssArray.add(new SecondaryStructure(ss, false));
-                    nextNotExist = ss;
-                }
-                else {
-                    currentInSS.add(currentRes);
-                    nextNotExist = "";
-                }
-            }
-            // they are in the same ss and the current res is missing
-            else if(currentRes.getSS() != null && currentRes.getSS().equals(oldRes.getSS())){
-                ss = currentRes.getSS();
-                
-                if(ss.equals("T")) {
-                    currentInSS.clear();
-                    ssArray.add(new SecondaryStructure(currentRes.getSS(),false)); 
-                    nextNotExist = ss;
-                }
-                else {
-                    currentInSS.add(currentRes);
-                }
-            } // end of same ss current missing
+        for (int i=1; i<resArray.size(); ++i) { 
+	    currentRes = resArray.get(i);
+	    currentResNum = Integer.parseInt(currentRes.getResNum());
+	    
+	    if(!currentRes.getCTerm()) { // same secondary structure
+		if(turn) {
+		    ++loopCounter;
+		    if(loopCounter == 13) { nextNotExist = true; ++nec; }
+		    if(oldResNum + 1 != currentResNum) { nextNotExist = true; ++nec; }
+		}
+		currentInSS.add(currentRes);
+		if(i == resArray.size() - 1) {
+		    if(nextNotExist) {
+			ssArray.add(parseSS(currentInSS, false));
+		    }
+		    else {
+			ssArray.add(parseSS(currentInSS, true));
+		    }
+		}
+	    }
+	    if(currentRes.getNTerm()) { // different secondary structure 
+		if(currentRes.getCTerm()) {
+		    if(nextNotExist) {
+			ssArray.add(parseSS(currentInSS, false));
+		    }
+		    else {
+			ssArray.add(parseSS(currentInSS, true));
+		    }
+		    if(!currentRes.getSS().equals("T")) { turn = false; }
+		    currentInSS = new ArrayList<Residue>();
+		}
+		currentInSS.add(currentRes);
+		if(nextNotExist) {
+		    ssArray.add(parseSS(currentInSS, false));
+		}
+		else {
+		    ssArray.add(parseSS(currentInSS, true));
+		}
+		if(!currentRes.getSS().equals("T")) {
+		    turn = false;
+		}
+		currentInSS = new ArrayList<Residue>();
+	    }
+	    oldResNum = currentResNum;
+	    oldRes = currentRes;
+	    
         } // end of for
         return ssArray;
     } // end of method
     
     // merge resList into a secondary structure with all necessary information
-    public SecondaryStructure parseSS(ArrayList<Residue> resList) {
-        if(resList.size() > 0) {
-	    //String ss, int length, ArrayList<Residue> resArray
-	    int tempCO = 0;
-	    while(resList.get(tempCO).getSS() == null ) {
-		++tempCO;
-	    }
-	    return new SecondaryStructure(resList.get(tempCO).getSS(), resList.size() - 1, resList);
+    public SecondaryStructure parseSS(ArrayList<Residue> resList, boolean exists) {
+	if(exists) {
+	    return new SecondaryStructure(resList.get(0).getSS(), resList.size() - 1, resList);
 	}
-	
 	return new SecondaryStructure("T", false);
-	
     }
 }
