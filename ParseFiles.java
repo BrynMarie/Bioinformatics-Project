@@ -7,8 +7,6 @@
  * arraylists of type String.
  * */
 
-
-
 import java.io.*;
 import java.util.*;
 import java.lang.*;
@@ -18,18 +16,18 @@ public class ParseFiles {
 	public static ArrayList<Atom> atomList;
 
     //takes dsspFile and pdbFile as arguments
-    public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
-        
-        ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
-        atomList = (ArrayList<Atom>)retMe.get(0);
-	double meanBFactor = (Double)retMe.get(1);
-        double std = (Double)retMe.get(2);
+	public ParseFiles (ArrayList<String> dsspFile, ArrayList<String> pdbFile) {
+		
+		ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
+		atomList = (ArrayList<Atom>)retMe.get(0);
+		double meanBFactor = (Double)retMe.get(1);
+		double std = (Double)retMe.get(2);
+		
+		// Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
+		// a double bFactorMean and a double bFactorSTD
+		AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
+	}
 
-        // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
-        // a double bFactorMean and a double bFactorSTD
-	AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
-    }
-    
     public ArrayList<Object> getInfoFromPDB(ArrayList<String> pdbFile) {
     	//empty at beginning
     	ArrayList<Atom> atomList = new ArrayList<Atom>();
