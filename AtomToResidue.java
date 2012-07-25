@@ -1,3 +1,13 @@
+/** 
+ * Programmer: Bryn Reinstadler and Jennifer Van
+ * Date: July 25th 2012
+ * Filename: AtomToResidue.java
+ * 
+ * Purpose: The purpose of this class is to take an array of atoms, the dssp file, 
+ * and various information about bFactor (temperature factor) in order to form 
+ * an array of the residues in the protein.
+ * */
+
 import java.io.*;
 import java.util.*;
 import java.lang.*;
@@ -7,25 +17,13 @@ public class AtomToResidue {
     public static ArrayList<Atom> atomList;
     public static ArrayList<Residue> pmoiArray;
 
-    //takes as input an unsorted arraylist of atoms
+    /* Takes as input an arraylist of atoms, an arraylist of strings representing the dssp file, 
+    the mean bF of the set of atoms, and the STD of the bF of the set */
     public AtomToResidue(ArrayList<Atom> al, ArrayList<String> dsspFile, double bFactorMean, double bFactorSTD) {
-	atomList = al;
-	ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);
-	int myC = 0;
-	//the residue array is beautiful and perfect, don't change it
-	for(int i = 0; i<resArray.size(); ++i) {
-	    //System.out.println(resArray.get(i).getSS() + " n: " + resArray.get(i).getNTerm() + " c: " + resArray.get(i).getCTerm());
-	    /*	    if(resArray.get(i).getCTerm() || resArray.get(i).getNTerm()) {
-		System.out.println(resArray.get(i).getResNum() + ": cterm: " + resArray.get(i).getCTerm() + " / nterm: " + resArray.get(i).getNTerm());
-		}*/
-	}
-	
+	this.atomList = al;
+	ArrayList<Residue> resArray = turnIntoResidueArray(atomList, dsspFile, bFactorMean, bFactorSTD);	
 	CalculatePMOI f5 = new CalculatePMOI(resArray);
-	ArrayList<Residue> pmoiArray = CalculatePMOI.newResArray;
-	System.out.println("PMOI Size: " + pmoiArray.size());
-	for(int j=0; j<pmoiArray.size(); ++j) {
-	    //System.out.println("PMOI sstype: " + pmoiArray.get(j).getSS());
-	}
+	this.pmoiArray = CalculatePMOI.newResArray;
 	ResidueToSS f4 = new ResidueToSS(resArray, pmoiArray);
     }
     
@@ -47,6 +45,7 @@ public class AtomToResidue {
 	for (int i = 1; i<atomList.size(); ++i) {
 	    curAtom = atomList.get(i);
 	    curResNum = Integer.parseInt(curAtom.getResNum());
+	    
 	    //if we're still on the same residue as before...
 	    if (curResNum == oldResNum) {
 		++residueAtoms;
@@ -57,6 +56,8 @@ public class AtomToResidue {
 		if(i == atomList.size() - 1) {
 		    meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 		    zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
+		    
+		    //the Residue constructor takes the following information:
 		    //String pdbResNum, double bFactor, String ssType, 
 		    //boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
 		    resArray.add(new Residue("" + oldResNum + "" , zScore, "", nTerm, cTerm, 
@@ -71,6 +72,8 @@ public class AtomToResidue {
 	    else {
 		meanOfCurrentResidue = currentResidueBFactor / residueAtoms;
 		zScore = zScore(meanOfCurrentResidue, bFactorMean, bFactorSTD);
+		
+		//The constructor takes the following information:
 		//String pdbResNum, double bFactor, String ssType, 
 		//boolean nTerm, boolean cTerm, ArrayList<Atom> atomList, CartesianCoord pmoi
 		resArray.add(new Residue("" + oldResNum + "" , zScore, "", nTerm, cTerm, 
@@ -86,12 +89,7 @@ public class AtomToResidue {
 	    oldResNum = curResNum;
 	    oldAtom = curAtom;
 	} // end for going through atom array
-	for (int i =0; i<resArray.size(); ++i) {
-	    
-	}
 	extractSS(dsspFile, resArray);
-
-
 	return resArray;
     }
     
