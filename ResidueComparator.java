@@ -1,3 +1,11 @@
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th, 2012
+ * Filename: ResidueComparator.java
+ * 
+ * Purpose: Compares residues based on residue number
+ * */
+
 import java.util.*;
 import java.io.*;
 
