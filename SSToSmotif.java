@@ -8,10 +8,11 @@ public class SSToSmotif {
     public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
 	System.out.println("Got to sstosmotif");
 
-	for(int i=0; i<geometries.size(); ++i){
-	    //	    System.out.println("St: " + geometries.get(i).getStart());
-	    //System.out.println("St ss: " + ssList.get(i).firstResidue().getResNum());
-	}
+	/*for(int i=0; i<ssList.size(); ++i){
+	    if(ssList.get(i).length() == 0) {
+		System.out.println("We have a zero :( ");
+	    }
+	    }*/
 
 	printOutInformation(ssList, geometries);
     }
@@ -25,9 +26,9 @@ public class SSToSmotif {
 	if(ss1.getSSType().equals("S")) { type += "B"; }
 	if(ss1.getSSType().equals("H")) { type += "A"; }
 	if(ss1.getSSType().equals("T")) { type += "T"; }
-	if(ss1.getSSType().equals("S")) { type += "B"; }
-	if(ss1.getSSType().equals("H")) { type += "A"; }
-	if(ss1.getSSType().equals("T")) { type += "T"; }
+	if(ss2.getSSType().equals("S")) { type += "B"; }
+	if(ss2.getSSType().equals("H")) { type += "A"; }
+	if(ss2.getSSType().equals("T")) { type += "T"; }
 	
 	type = cutToSize(type, 18);
 	String d = cutToSize(gg.getD(), 8);
@@ -77,11 +78,14 @@ public class SSToSmotif {
 	
 	    for (int i=0; i<ssArray.size() - 2; ++i) {
 		for(int k=0; k<geoArray.size(); ++k){
-		    if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
-			System.out.println("yay");
-			String printMe = parseToString(ssArray.get(i), 
-						       ssArray.get(i+2), geoArray.get(k));
-			out.println(printMe);
+		    if(ssArray.get(i).exists() && ssArray.get(i+1).exists() && ssArray.get(i+2).exists()) {
+			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
+			    System.out.println("yay");
+			    String printMe = parseToString(ssArray.get(i), 
+							   ssArray.get(i+2), geoArray.get(k));
+			    out.println(printMe);
+			    k = geoArray.size();
+			}
 		    }
 		}
 	    }
