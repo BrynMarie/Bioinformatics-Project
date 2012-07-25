@@ -1,3 +1,12 @@
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th, 2012
+ * Filename: Geometry.java
+ * 
+ * Purpose: Provides an object that stores information
+ * about an Smotif's geometry.
+ * */
+
 import java.io.*;
 import java.util.*;
 
