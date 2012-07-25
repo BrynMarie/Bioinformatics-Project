@@ -1,8 +1,7 @@
 import java.util.*;
 
 public class Atom {
-    //change constructors
-   
+
     CartesianCoord coords;
     String atomType, resNum;
     double bFactor;
