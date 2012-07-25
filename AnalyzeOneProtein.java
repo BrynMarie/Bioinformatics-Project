@@ -1,6 +1,6 @@
 /**
  * Programmers: Bryn Reinstadler and Jennifer Van
- * Date: July 18th, 2012
+ * Date: July 25th, 2012
  * Filename: AnalyzeOneProtein.java
  * 
  * Purpose: Read one pdb file and one dssp file to string arrays,
@@ -23,7 +23,7 @@ public class AnalyzeOneProtein {
 	//read in single file
 	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/2k8e.dssp");
 	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/k8/pdb2k8e.ent");
-	//printOut(pdbFile);
+
 	//Opens parsefiles and gives it the arguments of the dsspFile and the pdbFile
 	ParseFiles f2 = new ParseFiles(dsspFile, pdbFile);
     }
