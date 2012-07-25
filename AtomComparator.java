@@ -21,7 +21,7 @@ public class AtomComparator implements Comparator<Atom> {
     }
     
     /* Returns true only if both objects point are identical */
-    public boolean equals(Object obj){
+    public boolean equals(Object obj) {
 	return this.equals(obj);
     }
 }
