@@ -1,12 +1,10 @@
 /**
+ * Programmer: Jennifer Van and Bryn Reinstadler
+ * Date: July 25th, 2012
+ * Filename: CalcGeo.java
  * 
- * 
- * You should probably make an array of distances/delta/theta/rho angles and the like, 
- * that way we can have one 'geometries' file for each secondary structure. Each of these does correspond 
- * to a secondary structure so hopefully that should work out. I would also like to see stored the 
- * first and last residue pdbResNum in the data structure of the geometry.
- * 
- * I'll see about putting together the geometries data structure if you'll see how it works out...
+ * Purpose: Uses an array of residues that mark the beginning and ends of secondary structure
+ * in order to calculate the geometry of each secondary structure.
  * */
 
 
@@ -19,21 +17,10 @@ public class CalcGeo {
 
     public CalcGeo(ArrayList<Residue> pmoiList) { // takes pmoi
 	this.geoList = calculate(pmoiList);
-
-	for(int i=0; i<geoList.size(); ++i) {
-	    System.out.println("st : " + geoList.get(i).getStart());
-	}
-
     }
     
     public ArrayList<Geometry> calculate(ArrayList<Residue> residueList) {
-	/*double magnitudeOfX = 0;
-	double distance;
-	double delta;
-	double theta;
-	double rho;
-	CartesianCoord p0, p1, p2, p3, e1, l, e2;*/
-		
+	
 	ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
 
 	System.out.println("residue list in calcgeo size : " + residueList.size());
@@ -103,11 +90,12 @@ public class CalcGeo {
 		    rho = (2*Math.PI)-Math.acos(calcDotProd(vectorXDividedByLength, n));
 		}
 		
-		//(String stRes, String endRes,
-		//String distance, String delta, String theta, String rho
 		String stRes = residueList.get(i).getResNum();
 		String endRes = residueList.get(i+5).getResNum();
-		//everything with st/end res is fine here
+		
+		// Constructor takes info:
+		//(String stRes, String endRes,
+		//String distance, String delta, String theta, String rho
 		geoArray.add(new Geometry(stRes, endRes, "" + distance + "", "" + delta + "",  
 					  "" + theta + "", "" + rho + ""));
 	    }
