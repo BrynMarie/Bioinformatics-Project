@@ -135,9 +135,9 @@ public class CalcGeo {
 	double a1 = first.getX();
 	double a2 = first.getY();
 	double a3 = first.getZ();
-	double b1 = first.getX();
-	double b2 = first.getY();
-	double b3 = first.getZ();
+	double b1 = second.getX();
+	double b2 = second.getY();
+	double b3 = second.getZ();
 	double firstTerm=(a2*b3)-(a3*b2);
 	double secondTerm = (a3*b1)-(a1*b3);
 	double thirdTerm = (a1*b2)-(a2*b1);
