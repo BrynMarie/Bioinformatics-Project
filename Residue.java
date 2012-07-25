@@ -1,15 +1,22 @@
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th, 2012
+ * Filename: Residue.java
+ * 
+ * Purpose: Provides a custom object that stores necessary
+ * information about each residue.
+ * */
+
 import java.io.*;
 import java.util.*;
 
 public class Residue {
     
     double bFactor;
-    String pdbResNum;
-    String ssType;
+    String pdbResNum, ssType;
     boolean nTerm, cTerm, exists;
     ArrayList<Atom> atomList;
     CartesianCoord pmoi;
-    // other state
     
     //constructors
     public Residue(String pdbResNum, double bFactor, String ssType, 
@@ -43,16 +50,10 @@ public class Residue {
 	this.ssType = ss;
     }
 
-    //to String
+    /* a toString method that returns information on res num, ss type, b factor,
+    and the size of the atom list */
     public String toString() {
-	/* double bFactor;
-	   String pdbResNum;
-	   String ssType;
-	   boolean nTerm, cTerm, exists;
-	   ArrayList<Atom> atomList = new ArrayList<Atom>();
-	   CartesianCoord pmoi;*/ 
-	return "Residue " + pdbResNum + ": " + ssType + " " + bFactor + " " + atomList.size();
-	    
+	return "Residue " + pdbResNum + ": " + ssType + " " + bFactor + " " + atomList.size();	    
     }
     
      //accessor methods
@@ -89,7 +90,11 @@ public class Residue {
     }
 
     //mutator methods
-    public void setBF(double newBF){
+    public void setExists(boolean ex) {
+    	exists = ex;
+    }
+    
+    public void setBFactor(double newBF){
     	bFactor = newBF;
     }
     
@@ -101,16 +106,16 @@ public class Residue {
 	ssType = newSsType;
     }
     
-    public void setNTerm(boolean newNTerm) {
-    	nTerm = newNTerm;
-    }
-    
     public void setCTerm(boolean newCTerm) {
     	cTerm = newCTerm;
     }
     
-    public void setExists(boolean ex) {
-    	exists = ex;
+    public void setNTerm(boolean newNTerm) {
+    	nTerm = newNTerm;
+    }
+    
+    public void setAtomList(ArrayList<Atom> al) {
+    	atomList = al;
     }
     
     public void setPMOI(CartesianCoord pmoi) {
