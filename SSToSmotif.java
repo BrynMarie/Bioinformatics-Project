@@ -1,19 +1,19 @@
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th, 2012
+ * Filename: SSToSmotif.java
+ * 
+ * Purpose: This file takes in an arraylist of secondary structures
+ * and uses them as well as their geometries as derived by the array of
+ * Geometrys to finalize information about a single protein's Smotifs.
+ * */
+
 import java.io.*;
 import java.util.*;
 
 public class SSToSmotif {
     
-    // takes an arraylist of secondary structures
-    // prints out final information
     public SSToSmotif(ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries) {
-	System.out.println("Got to sstosmotif");
-
-	/*for(int i=0; i<ssList.size(); ++i){
-	    if(ssList.get(i).length() == 0) {
-		System.out.println("We have a zero :( ");
-	    }
-	    }*/
-
 	printOutInformation(ssList, geometries);
     }
 
@@ -54,7 +54,6 @@ public class SSToSmotif {
 	return o;
     }
 
-    // will be replaced by a print to file eventually
     public void printOutInformation(ArrayList<SecondaryStructure> ssArray, ArrayList<Geometry> geoArray) {
 	System.out.println("Got to poi");
 	try {
@@ -70,17 +69,15 @@ public class SSToSmotif {
 	    // endres starts at 24
 	    // type information starts at 34
 	    // d at 53
-	    // delta at 61
-	    // theta at 69
-	    // rho at 76
-	    System.out.println("ssarray size : " + ssArray.size());
-	    System.out.println("geoarrays size : " + geoArray.size());
-	
+	    // delta at 63
+	    // theta at 73
+	    // rho at 80
+
 	    for (int i=0; i<ssArray.size() - 2; ++i) {
 		for(int k=0; k<geoArray.size(); ++k){
 		    if(ssArray.get(i).exists() && ssArray.get(i+1).exists() && ssArray.get(i+2).exists()) {
 			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
-			    System.out.println("yay");
+			    System.out.print("yay");
 			    String printMe = parseToString(ssArray.get(i), 
 							   ssArray.get(i+2), geoArray.get(k));
 			    out.println(printMe);
