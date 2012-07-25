@@ -1,3 +1,14 @@
+/** 
+ * Programmer: Jennifer Van and Bryn Reinstadler
+ * Date: July 25th 2012
+ * Filename: CalculatePMOI.java
+ * 
+ * Purpose: Takes the main residue array of all residues in the protein and uses
+ * nterm and cterm information to calculate the principal moment of inertia
+ * of each c and nterm in the protein.
+ * */
+
+
 import java.io.*;
 import java.util.*;
 import Jama.*;
@@ -8,10 +19,8 @@ public class CalculatePMOI {
     
     // NEW PMoI variable declarations
     int pastResidue = 0, currentResidue=0;
-    double firstTermOfIxx = 0, firstTermOfIyy = 0, firstTermOfIzz = 0, firstTermOfIxy = 0, firstTermOfIxz = 0, firstTermOfIzx = 0, firstTermOfIyx = 0, firstTermOfIyz = 0, firstTermOfIzy = 0;
-    
+    double firstTermOfIxx = 0, firstTermOfIyy = 0, firstTermOfIzz = 0, firstTermOfIxy = 0, firstTermOfIxz = 0, firstTermOfIzx = 0, firstTermOfIyx = 0, firstTermOfIyz = 0, firstTermOfIzy = 0;   
     double secondTermOfIxx = 0, secondTermOfIyy = 0, secondTermOfIzz = 0, secondTermOfIxy = 0, secondTermOfIxz = 0, secondTermOfIzx = 0, secondTermOfIyx = 0, secondTermOfIyz = 0, secondTermOfIzy = 0;
-    
     double thirdTermOfIxx = 0, thirdTermOfIyy = 0, thirdTermOfIzz = 0, thirdTermOfIxy = 0, thirdTermOfIxz = 0, thirdTermOfIzx = 0, thirdTermOfIyx = 0, thirdTermOfIyz = 0, thirdTermOfIzy = 0;
     
     double Ixx = 0, Iyy = 0, Izz = 0, Ixy = 0, Iyx = 0, Ixz = 0, Izx = 0, Iyz = 0, Izy = 0;
@@ -25,8 +34,6 @@ public class CalculatePMOI {
 
     public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList) {
 	newResArray = new ArrayList<Residue>();
-	// END PMoI variable declaration
-	int bc = 0;
 	int newC = 0;
 	boolean nt, ct;
 	for (int i = 0; i<residueList.size(); ++i) {
@@ -36,7 +43,6 @@ public class CalculatePMOI {
 	    if(nt) { ++newC; }
 	    while(newC > 0) {
 		--newC;
-		++bc;
 		// if C-terminus or N-terminus => calculate PMOI
 		//set up calculations for Ixx term by term
 		//Has been abstracted to a pretty clear point
@@ -145,9 +151,7 @@ public class CalculatePMOI {
 		totalAtomicWeight=0;
 		//end calculate PMoI
 		//need xyz coordinates to calculate geometries
-		
-		//System.out.println("CP ln 139: " + pdbNum);
-		//System.out.println(principalMomentsOfInertia.toString());
+
 		newResArray.add(new Residue(pdbNum, principalMomentsOfInertia, 
 					    currentAtomListOfResidue, sstype, nt, ct));
 	    }// end if
@@ -170,5 +174,4 @@ public class CalculatePMOI {
 	}	
 	return atomWeight;
     }
-
 }// end class
