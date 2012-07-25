@@ -1,9 +1,11 @@
 /**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th 2012
+ * Filename: ResidueToSS.java
  * 
- * this class will take an array of residues, some of which are missing in the dssp file or the pdb file. 
- * Filter out loops that are greater than 12 residues long w/ loopCounter
- * Discard loops with missing residues
- * 
+ * Purpose: This class will take an array of residues, some of which are missing in the 
+ * dssp file or the pdb file, and filter out loops that are greater than 12 residues long 
+ * as well as apply some other filters.
  * */ 
 
 
@@ -17,16 +19,8 @@ public class ResidueToSS {
 	
     public ResidueToSS(ArrayList<Residue> resArray, ArrayList<Residue> pmoiArray) {
 	this.ssList = resToSS(resArray);
-	System.out.println("Size of secondary Structure list: " + ssList.size());    
-	for(int i=0; i< ssList.size(); ++i) {
-	    //System.out.println(ssList.get(i).firstResidue().getSS() + " " + ssList.get(i).lastResidue().getSS());
-	}
-	// the ss list is also fine
 	CalcGeo f5 = new CalcGeo(pmoiArray);
     	this.geometries = f5.calculate(pmoiArray);
-	System.out.println("Geo size : " + geometries.size());
-    	// pass geometries to SSToSmotif
-    	//ArrayList<SecondaryStructure> ssList, ArrayList<Geometry> geometries
     	SSToSmotif f6 = new SSToSmotif(ssList, geometries);
     }
     
@@ -43,7 +37,6 @@ public class ResidueToSS {
         boolean nextNotExist = false;
 	int loopCounter = 0;
 	int oldResNum = Integer.parseInt(oldRes.getResNum()), currentResNum;
-	int nec = 0;
 
 	if(oldRes.getSS().equals("T")) {
             turn = true;
