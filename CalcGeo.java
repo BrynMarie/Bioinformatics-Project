@@ -22,8 +22,6 @@ public class CalcGeo {
     public ArrayList<Geometry> calculate(ArrayList<Residue> residueList) {
 	
 	ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
-
-	System.out.println("residue list in calcgeo size : " + residueList.size());
 	for (int i = 0; i<residueList.size() - 5; i+=2) {
 	    if(!residueList.get(i).getSS().equals("T")){
 		/** I know this looks insane but it's seriously the only way 

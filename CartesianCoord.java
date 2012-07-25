@@ -48,5 +48,5 @@ public class CartesianCoord {
     //other
     public String toString() {
 	return "(" + x + ", " + y + ", " + z + ")";
-    
+    }    
 }

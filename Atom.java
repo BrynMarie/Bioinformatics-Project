@@ -14,7 +14,7 @@ public class Atom {
 	this.cTerm = cTerm;
 	this.bFactor = bFactor;
 	this.atomType = atomType;
-	this.coords = cc;
+	this.coords = coords;
 	this.isBackbone = isBackbone;
     }
 

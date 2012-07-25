@@ -55,9 +55,7 @@ public class SSToSmotif {
     }
 
     public void printOutInformation(ArrayList<SecondaryStructure> ssArray, ArrayList<Geometry> geoArray) {
-	System.out.println("Got to poi");
 	try {
-	    System.out.println("Inside try");
 	    PrintWriter out = new PrintWriter(new FileWriter("OutputFile.txt"));
 
 	    // print header

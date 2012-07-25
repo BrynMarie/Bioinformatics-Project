@@ -49,8 +49,8 @@ public class ResidueToSS {
 	    if(!currentRes.getNTerm()) { // same secondary structure
 		if(turn) {
 		    ++loopCounter;
-		    if(loopCounter == 13) { nextNotExist = true; ++nec; }
-		    if(oldResNum + 1 != currentResNum) { nextNotExist = true; ++nec; }
+		    if(loopCounter == 13) { nextNotExist = true; }
+		    if(oldResNum + 1 != currentResNum) { nextNotExist = true; }
 		}
 		currentInSS.add(currentRes);
 		// end behavior
