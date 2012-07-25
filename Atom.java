@@ -4,28 +4,28 @@ public class Atom {
     //change constructors
    
     CartesianCoord coords;
-    String atomType;
-    String resNum;
+    String atomType, resNum;
     double bFactor;
     boolean isBackbone, nTerm, cTerm;
     
-    public Atom(String atom, String resNum, boolean isBB, boolean nTerm, boolean cTerm, double tempFactor, CartesianCoord cc) {
+    public Atom(String atomType, String resNum, boolean isBackbone, boolean nTerm, boolean cTerm, double bFactor, 
+    	CartesianCoord coords) {
 	this.resNum = resNum;
 	this.nTerm = nTerm;
 	this.cTerm = cTerm;
-	bFactor = tempFactor;
-	atomType = atom;
-	coords = cc;
-	isBackbone = isBB;
+	this.bFactor = bFactor;
+	this.atomType = atomType;
+	this.coords = cc;
+	this.isBackbone = isBackbone;
     }
 
-    public Atom(String atom, String resNum, boolean isBB) {
-	atomType = atom;
-	isBackbone = isBB;
+    public Atom(String atomType, String resNum, boolean isBackbone) {
+	this.atomType = atomType;
+	this.isBackbone = isBackbone;
 	this.resNum = resNum;
     }
 
-    //constructor template
+    /* A toString method that returns the atom type, the res num, and the coordinates */
     public String toString() {	
 	return "" + atomType + " " + resNum + " " + coords.toString();
     }
@@ -67,10 +67,6 @@ public class Atom {
     //mutator methods
     public void setAtomType(String AtomType) {
 	atomType = AtomType;
-    }
-
-    public void setCoords(double x, double y, double z) {
-	coords = new CartesianCoord(x, y, z);
     }
 
     public void setCoords(CartesianCoord newCoord) {
