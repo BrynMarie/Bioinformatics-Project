@@ -1,3 +1,14 @@
+/**
+ * Programmer: Bryn Reinstadler and Jennifer Van
+ * Date: July 25th, 2012
+ * Filename: ParseFiles.java
+ * 
+ * Purpose: Gets the files that are needed and parses them into 
+ * arraylists of type String.
+ * */
+
+
+
 import java.io.*;
 import java.util.*;
 import java.lang.*;
@@ -12,15 +23,8 @@ public class ParseFiles {
         ArrayList<Object> retMe = getInfoFromPDB(pdbFile);
         atomList = (ArrayList<Atom>)retMe.get(0);
 	double meanBFactor = (Double)retMe.get(1);
-
-	/*for(int i=1; i<atomList.size(); ++i) {
-	    if(atomList.get(i).getResNum() != atomList.get(i-1).getResNum()) {
-		System.out.println(atomList.get(i).getResNum());
-	    }
-	    }*/
-
         double std = (Double)retMe.get(2);
-	System.out.println("Mean BFactor " + meanBFactor + "\nSTD: " + std);
+
         // Takes an ArrayList of Atoms, an ArrayList of String (dssp File) 
         // a double bFactorMean and a double bFactorSTD
 	AtomToResidue f3 = new AtomToResidue(atomList, dsspFile, meanBFactor, std);
