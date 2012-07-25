@@ -1,11 +1,15 @@
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th 2012
+ * Filename: Smotifs.java
+ * 
+ * Purpose: A custom object to store information about each
+ * smotif.
+ * */
+
 import java.io.*;
 import java.util.*;
 
-/**
-
-A data structure class for storing Smotifs and their geometries
-
- */
 public class Smotifs {
     double hoist, meridian, packing;
     int designator;
