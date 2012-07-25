@@ -1,8 +1,10 @@
-////////////////////////////////////////////
- 
-// This file is in completed form //
- 
-///////////////////////////////////////////
+/**
+ * Programmer: Bryn Reinstadler
+ * Date: July 25th, 2012
+ * Filename: CartesianCoord.java
+ * 
+ * Purpose: Provide an object that stores Cartesian Coordinates.
+ * */
 
 
 import java.util.*;
@@ -46,6 +48,5 @@ public class CartesianCoord {
     //other
     public String toString() {
 	return "(" + x + ", " + y + ", " + z + ")";
-    }
-
+    
 }
