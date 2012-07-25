@@ -37,6 +37,10 @@ public class SecondaryStructure {
 		return sstype;
     }
     
+    public boolean exists() {
+		return exists;
+    }
+    
     public int length() {
 		return length;
     }
@@ -45,11 +49,6 @@ public class SecondaryStructure {
     	return resArray.get(0);
     }
 
-    public boolean exists() {
-		return exists;
-    }
-
-	// is this ever used?
     public Residue lastResidue() {
     	return resArray.get(resArray.size() - 1);
     }
