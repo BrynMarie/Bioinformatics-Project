@@ -11,10 +11,18 @@ import java.io.*;
 import java.util.*;
 
 public class Smotifs {
-    double hoist, meridian, packing;
+
+    // (delta) the 'hoist'  which is the angle between L and M1
+    // (theta) the 'packing' which is the angle between M1 and M2
+    // (rho) the 'meridian' which is the angle between M2 and upside-down L
+
+    String bin;
+    double hoist, meridian, packing, distance;
     int designator;
 
-    public Smotifs(double hoist, double meridian, double packing, int des){
+    public Smotifs(String bin, double distance, double hoist, double packing, double meridian, int des){
+	this.bin = bin;
+	this.distance = distance;
 	this.hoist = hoist;
 	this.meridian = meridian;
 	this.packing = packing;
@@ -23,6 +31,10 @@ public class Smotifs {
 
     public Smotifs(int des) {
 	this.designator = des;
+    }
+
+    public String toString() {
+	return "Bin: " + bin + " " + distance + " " + hoist + " " + packing + " " + meridian;
     }
 
     //accessor methods
