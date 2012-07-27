@@ -17,11 +17,12 @@ public class Smotifs {
     // (theta) the 'packing' which is the angle between M1 and M2
     // (rho) the 'meridian' which is the angle between M2 and upside-down L
 
-    String bin;
+    String bin, pdbID;
     double hoist, meridian, packing, distance;
-    int designator;
+    int designator, startRes, endRes;
 
-    public Smotifs(String bin, double distance, double hoist, double packing, double meridian, int des){
+    public Smotifs(String bin, double distance, double hoist, double packing, double meridian, 
+		   int des, String pdbID, int startRes, int endRes){
 	this.bin = bin;
 	this.distance = distance;
 	this.hoist = hoist;

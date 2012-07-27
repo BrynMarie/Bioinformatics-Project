@@ -41,9 +41,9 @@ public class SSToSmotif {
 	String theta = cutToSize(gg.getTheta(), 8);
 	String rho = cutToSize(gg.getRho(), 8);
 
-	String bin = binMe(type, d, delta, theta, rho);
-	return "             " + bin + "  " + stRes + "" + endRes + "" + type + " " + d + 
-	    "  " + delta + "  " + theta + "  " + rho + "";
+	String bin = binMe(type, d, delta, theta, rho, Integer.parseInt(ss1.firstResidue().getResNum()), Integer.parseInt(ss2.lastResidue().getResNum()));
+	return AnalyzeOneProtein.pdbID + "         " + bin + "  " + stRes + "" + endRes + 
+	    "" + type + " " + d + "  " + delta + "  " + theta + "  " + rho + "";
     }
 
     public String cutToSize(String o, int limit) {
@@ -83,7 +83,7 @@ public class SSToSmotif {
 		    if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T") && ssArray.get(i+1).exists() && 
 		       ssArray.get(i+2).exists() && !ssArray.get(i+2).getSSType().equals("T")) {
 			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
-			    //System.out.print("yay");
+			    System.out.print("yay");
 			    String printMe = parseToString(ssArray.get(i), 
 							   ssArray.get(i+2), geoArray.get(k));
 			    out.println(printMe);
@@ -97,7 +97,8 @@ public class SSToSmotif {
 	catch (IOException ioe) { ioe.printStackTrace(); }		
     }
     
-    public String binMe(String type, String d, String delta, String theta, String rho) {
+    public String binMe(String type, String d, String delta, String theta, String rho,
+			int startRes, int endRes) {
 	String bin = "";
 
 	if(d.trim().equals("NaN") || delta.trim().equals("NaN") || theta.trim().equals("NaN") || rho.trim().equals("NaN")) {
@@ -131,7 +132,7 @@ public class SSToSmotif {
 	if (rhoInt < 30) { rhoInt = 30; }
 	bin += "" + (int)Math.floor(rhoInt/60) + "";
 
-	smotifArray.add(new Smotifs(bin, dInt, deltaInt, thetaInt, rhoInt, Integer.parseInt(bin.substring(0,1))));
+	smotifArray.add(new Smotifs(bin, dInt, deltaInt, thetaInt, rhoInt, Integer.parseInt(bin.substring(0,1)), AnalyzeOneProtein.pdbID, startRes, endRes));
 
 	return bin;
     }

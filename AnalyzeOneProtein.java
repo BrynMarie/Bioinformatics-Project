@@ -15,14 +15,17 @@ public class AnalyzeOneProtein {
 
     public static ArrayList<String> dsspFile;
     public static ArrayList<String> pdbFile;
+    public static String pdbID;
     
     /* The constructor method of AnalyzeOneProtein reads in a dssp file and a pdb file 
     	and then sends them both to be parsed. Right now the files are hard-coded in.
     	*/
-    public AnalyzeOneProtein(){
+    public AnalyzeOneProtein(String pdbID){
 	//read in single file
-	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
-	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/a0/pdb1a00.ent");
+	this.pdbID = pdbID;
+	String core = pdbID.substring(1,3);
+	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/" + pdbID + ".dssp");
+	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/" + core + "/pdb" + pdbID + ".ent");
 	//Opens parsefiles and gives it the arguments of the dsspFile and the pdbFile
 	ParseFiles f2 = new ParseFiles(dsspFile, pdbFile);
     }
@@ -54,7 +57,7 @@ public class AnalyzeOneProtein {
     }
 	
 	/* Main method */
-    public static void main(String[] args){
+    /*public static void main(String[] args){
 		AnalyzeOneProtein ap1 = new AnalyzeOneProtein();
-    }
+		}*/
 }
