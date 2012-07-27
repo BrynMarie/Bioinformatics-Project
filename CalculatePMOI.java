@@ -11,16 +11,26 @@ public class CalculatePMOI {
 		this.newResArray = calcPMOI(residueList);
 	}
 
-	//calculate principal moment of inertia
+	// calculate principal moment of inertia
 	public ArrayList<Residue> calcPMOI(ArrayList<Residue> residueList) {
 		newResArray = new ArrayList<Residue>();
 		int bc = 0;
 		int newC = 0;
 		boolean nt, ct;
+		
 		for (int i = 0; i < residueList.size(); ++i) {
+			// get relevant info for residue construction
 			ArrayList<Atom> atomList = residueList.get(i).getAtomList();
-			ct = residueList.get(i).getCTerm();
-			nt = residueList.get(i).getNTerm();
+			Residue currentResidue = residueList.get(i);
+			String pdbNum = currentResidue.getResNum();
+			String sstype = currentResidue.getSS();
+
+			// check if bfactor score is too high for a residue--if so, discard
+			// residue
+			countHighBFactor(residueList);
+
+			ct = currentResidue.getCTerm();
+			nt = currentResidue.getNTerm();
 			if (ct) {
 				++newC;
 			}
@@ -31,39 +41,41 @@ public class CalculatePMOI {
 				--newC;
 				++bc;
 				// if C-terminus or N-terminus => calculate PMOI
-				//get relevant info for residue construction
-				ArrayList<Atom> currentAtomListOfResidue = residueList.get(i).getAtomList();
-				String pdbNum = residueList.get(i).getResNum();
-				String sstype = residueList.get(i).getSS();
-				
-				//calculate total mass of residue
+
+				// calculate total mass of residue
 				double totalMassOfResidue = calcMassResidue(atomList);
-				
-				//calc geo center of protein
-				CartesianCoord centroid = calcCentroid(atomList, totalMassOfResidue);
-				
-				//calc inertia tensor matrix
+
+				// calc geo center of protein
+				CartesianCoord centroid = calcCentroid(atomList,
+						totalMassOfResidue);
+
+				// calc inertia tensor matrix
 				double[][] it = calcInertiaTensor(atomList, centroid);
-				
-				//get principal moments of inertia from it matrix
+
+				// get principal moments of inertia from it matrix
 				double xCoordPMOI = it[0][0];
 				double yCoordPMOI = it[1][1];
 				double zCoordPMOI = it[2][2];
-				
-				//create principal moment of inertia cartesian coord object
-				CartesianCoord principalMomentsOfInertia = new CartesianCoord(xCoordPMOI, yCoordPMOI, zCoordPMOI);
 
-				//create residue list
-				newResArray.add(new Residue(pdbNum, principalMomentsOfInertia,
-						currentAtomListOfResidue, sstype, nt, ct));
+				// create principal moment of inertia cartesian coord object
+				CartesianCoord principalMomentsOfInertia = new CartesianCoord(
+						xCoordPMOI, yCoordPMOI, zCoordPMOI);
+
+				// create residue list only if b factor score of residue is in acceptable range
+				if (discardBFactor == false) {
+					newResArray
+							.add(new Residue(pdbNum, principalMomentsOfInertia,
+									atomList, sstype, nt, ct));
+				}
 			}
 		}
 		return newResArray;
 	}// end method
 
-	public static double getAtomicWeight(Atom currentAtom) { // NEW PMoI method to get
-								// atomic weight given
-								// atom type
+	public static double getAtomicWeight(Atom currentAtom) { // NEW PMoI method
+																// to get
+		// atomic weight given
+		// atom type
 
 		double atomWeight = 0;
 		String atomType = Character.toString(currentAtom.getAtomType()
@@ -79,68 +91,87 @@ public class CalculatePMOI {
 		return atomWeight;
 	}
 
+	// calculate if a residue's bfactor score is too high
+	public boolean countHighBFactor(ArrayList<Residue> residueList) {
+		int countBFactorGreaterThanOne = 0;
+		for (int i = 0; i < residueList.size(); i++) {
+			Residue currentResidue = residueList.get(i);
+			if (currentResidue.getBFactor() > 1.0) {
+				countBFactorGreaterThanOne++;
+			}
+		}
+		int halfOfResidueListSize = (residueList.size()) / 2;
+		if (countBFactorGreaterThanOne > halfOfResidueListSize) {
+			discardBFactor = true;
+			System.out.println("Discard residue due to high residue B-factor z score.");
+		}
+		return discardBFactor;
+	}
+
 	// calc centroid for calc pmoi
-	public static CartesianCoord calcCentroid(ArrayList<Atom> atomList, double totalMass) {
+	public static CartesianCoord calcCentroid(ArrayList<Atom> atomList,
+			double totalMass) {
 		int n = atomList.size();
 		double xCoord = 0;
 		double yCoord = 0;
 		double zCoord = 0;
 		for (int i = 0; i < n; i++) {
 			Atom currentAtom = atomList.get(i);
-				xCoord += currentAtom.getX();
-				yCoord += currentAtom.getY();
-				zCoord += currentAtom.getZ();
+			xCoord += currentAtom.getX();
+			yCoord += currentAtom.getY();
+			zCoord += currentAtom.getZ();
 		}
-		xCoord = xCoord/n;
-		yCoord = yCoord/n;
-		zCoord = zCoord/n;
-		CartesianCoord centroidCoord = new CartesianCoord(xCoord, yCoord, zCoord);
+		xCoord = xCoord / n;
+		yCoord = yCoord / n;
+		zCoord = zCoord / n;
+		CartesianCoord centroidCoord = new CartesianCoord(xCoord, yCoord,
+				zCoord);
 		return centroidCoord;
 	}
-	
+
 	public static double calcMassResidue(ArrayList<Atom> atomList) {
-		double aw=0;
+		double aw = 0;
 		for (int i = 0; i < atomList.size(); i++) {
 			Atom currentAtom = atomList.get(i);
 			aw += getAtomicWeight(currentAtom);
 		}
 		return aw;
 	}
-	
-	//calc inertia tensor
-	 public static double[][] calcInertiaTensor(ArrayList<Atom> atomList, CartesianCoord com) {
-	        //initialize current atom coordinates
-		 	double x = 0;
-	        double y = 0;
-	        double z = 0;
-	        //initialize centroid coordinates
-	        double xOfCentroid = com.getX();
-	        double yOfCentroid = com.getY();
-	        double zOfCentroid = com.getZ();
-	        //initialize inertia tensor matrix
-	        double[][] it = new double[3][3];
-	        
-	        for(int i = 0; i<atomList.size(); i++){
-	            //subtract the centroid from coordinates
-	        	Atom currentAtom = atomList.get(i);
-	            x = currentAtom.getX() - xOfCentroid;
-	            y = currentAtom.getY() - yOfCentroid;
-	            z = currentAtom.getZ() - zOfCentroid;
-	            
-	            //populate matrix
-	            it[0][0] = it[0][0] + (y*y + z*z);
-	            it[1][1] = it[1][1] + (x*x + z*z);
-	            it[2][2] = it[2][2] + (x*x + y*y);
-	            
-	            it[0][1] = it[0][1] - (x * y);
-	            it[0][2] = it[0][2] - (x * z);
-	            it[1][2] = it[1][2] - (y * z);
-	        }
-	        it[1][0] = it[0][1];
-	        it[2][1] = it[1][2];
-	        it[2][0] = it[0][2];
-	        return it;
-	    }
 
+	// calc inertia tensor
+	public static double[][] calcInertiaTensor(ArrayList<Atom> atomList,
+			CartesianCoord com) {
+		// initialize current atom coordinates
+		double x = 0;
+		double y = 0;
+		double z = 0;
+		// initialize centroid coordinates
+		double xOfCentroid = com.getX();
+		double yOfCentroid = com.getY();
+		double zOfCentroid = com.getZ();
+		// initialize inertia tensor matrix
+		double[][] it = new double[3][3];
+
+		for (int i = 0; i < atomList.size(); i++) {
+			// subtract the centroid from coordinates
+			Atom currentAtom = atomList.get(i);
+			x = currentAtom.getX() - xOfCentroid;
+			y = currentAtom.getY() - yOfCentroid;
+			z = currentAtom.getZ() - zOfCentroid;
+
+			// populate matrix
+			it[0][0] = it[0][0] + (y * y + z * z);
+			it[1][1] = it[1][1] + (x * x + z * z);
+			it[2][2] = it[2][2] + (x * x + y * y);
+
+			it[0][1] = it[0][1] - (x * y);
+			it[0][2] = it[0][2] - (x * z);
+			it[1][2] = it[1][2] - (y * z);
+		}
+		it[1][0] = it[0][1];
+		it[2][1] = it[1][2];
+		it[2][0] = it[0][2];
+		return it;
+	}
 
 }// end class
