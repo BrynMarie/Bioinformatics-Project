@@ -62,38 +62,63 @@ public class SSToSmotif {
 
     public void printOutInformation(ArrayList<SecondaryStructure> ssArray, ArrayList<Geometry> geoArray) {
 	try {
-	    PrintWriter out = new PrintWriter(new FileWriter("OutputFile.txt"));
+	    File file = new File("OutputFile.txt");   
+	    boolean exists = file.exists();
 
-	    // print header
-	    out.println("" + 
-			"Bryn Reinstadler and Jennifer Van, 2012.\n" + 
-			"Ran with _________ DSSP/PDB files on ___________(date). \n\n" + 
-			"PDB/DSSP     bin    StartRes    EndRes    (a/b)      d         delta     theta     rho       ");
-	    // bin starts at 13 
-	    // startres starts at 20
-	    // endres starts at 32
-	    // type information starts at 42
-	    // d at 53
-	    // delta at 63
-	    // theta at 73
-	    // rho at 80
+	    if(!exists) {
+		PrintWriter out = new PrintWriter(new FileWriter("OutputFile.txt"));
 
-	    for (int i=0; i<ssArray.size() - 2; ++i) {
-		for(int k=0; k<geoArray.size(); ++k){
-		    if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T") && ssArray.get(i+1).exists() && 
-		       ssArray.get(i+2).exists() && !ssArray.get(i+2).getSSType().equals("T")) {
-			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
-			    System.out.print("yay");
-			    String printMe = parseToString(ssArray.get(i), 
-							   ssArray.get(i+2), geoArray.get(k));
-			    out.println(printMe);
-			    k = geoArray.size();
+		// print header
+		out.println("" + 
+			    "Bryn Reinstadler and Jennifer Van, 2012.\n" + 
+			    "Ran with _________ DSSP/PDB files on ___________(date). \n\n" + 
+			    "PDB/DSSP     bin    StartRes    EndRes    (a/b)      d         delta     theta     rho       ");
+		// bin starts at 13 
+		// startres starts at 20
+		// endres starts at 32
+		// type information starts at 42
+		// d at 53
+		// delta at 63
+		// theta at 73
+		// rho at 80
+		
+		for (int i=0; i<ssArray.size() - 2; ++i) {
+		    for(int k=0; k<geoArray.size(); ++k){
+			if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T") && ssArray.get(i+1).exists() && 
+			   ssArray.get(i+2).exists() && !ssArray.get(i+2).getSSType().equals("T")) {
+			    if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
+				System.out.print("yay");
+				String printMe = parseToString(ssArray.get(i), 
+							       ssArray.get(i+2), geoArray.get(k));
+				out.println(printMe);
+				k = geoArray.size();
+			    }
 			}
 		    }
 		}
+		out.close();
 	    }
-	    out.close();
-	}
+	    else { // the file exists already
+		BufferedWriter buffy = new BufferedWriter(new FileWriter("OutputFile.txt", true));
+		
+		for (int i=0; i<ssArray.size() - 2; ++i) {
+		    for(int k=0; k<geoArray.size(); ++k){
+			if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T") && ssArray.get(i+1).exists() && 
+			   ssArray.get(i+2).exists() && !ssArray.get(i+2).getSSType().equals("T")) {
+			    if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
+				System.out.print("yay");
+				String printMe = parseToString(ssArray.get(i), 
+							       ssArray.get(i+2), geoArray.get(k));
+				buffy.write(printMe);
+				buffy.newLine();
+				k = geoArray.size();
+			    }//end of if
+			}// end of if
+		    }// end of geo for
+		}// end of ssarray for
+		buffy.close();
+	    }// end of exists else
+	}// end of try
 	catch (IOException ioe) { ioe.printStackTrace(); }		
     }
     
