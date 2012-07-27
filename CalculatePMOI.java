@@ -72,10 +72,9 @@ public class CalculatePMOI {
 		return newResArray;
 	}// end method
 
-	public static double getAtomicWeight(Atom currentAtom) { // NEW PMoI method
-																// to get
-		// atomic weight given
-		// atom type
+																	// to get
+	//return atomic weight given atom type
+	public static double getAtomicWeight(Atom currentAtom) {
 
 		double atomWeight = 0;
 		String atomType = Character.toString(currentAtom.getAtomType()
