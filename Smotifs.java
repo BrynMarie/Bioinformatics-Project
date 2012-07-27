@@ -5,6 +5,7 @@
  * 
  * Purpose: A custom object to store information about each
  * smotif.
+ * Also needs information on dssp/pdb, start res and end res.
  * */
 
 import java.io.*;
@@ -34,7 +35,7 @@ public class Smotifs {
     }
 
     public String toString() {
-	return "Bin: " + bin + " " + distance + " " + hoist + " " + packing + " " + meridian;
+	return "" + bin + " " + distance + " " + hoist + " " + packing + " " + meridian;
     }
 
     //accessor methods
@@ -54,6 +55,10 @@ public class Smotifs {
 	return designator;
     }
 
+    public String getBin() {
+	return bin;
+    }
+
     //mutator methods
     public void setHoist(double newHoist){
 	hoist = newHoist;
@@ -69,5 +74,9 @@ public class Smotifs {
 
     public void setAB(int newDes) {
 	designator = newDes; 
+    }
+
+    public void setBin(String newBin) {
+	bin = newBin;
     }
 }
