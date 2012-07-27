@@ -1,8 +1,6 @@
 import java.io.*;
 import java.util.*;
 
-import Jama.*;
-
 public class CalculatePMOI {
 
 	static ArrayList<Residue> newResArray;
