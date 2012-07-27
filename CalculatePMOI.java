@@ -25,10 +25,6 @@ public class CalculatePMOI {
 			String pdbNum = currentResidue.getResNum();
 			String sstype = currentResidue.getSS();
 
-			// check if bfactor score is too high for a residue--if so, discard
-			// residue
-			countHighBFactor(residueList);
-
 			ct = currentResidue.getCTerm();
 			nt = currentResidue.getNTerm();
 			if (ct) {
