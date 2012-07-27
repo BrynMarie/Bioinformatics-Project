@@ -32,6 +32,10 @@ public class SecondaryStructure {
     	this.exists = exists;
     }
 
+    public String toString() {
+	return "" + sstype + ": length of " + length + " and first residue # " + this.firstResidue().getResNum();
+    }
+
     //Accessor fields
     public String getSSType() {
 		return sstype;

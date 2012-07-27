@@ -80,9 +80,10 @@ public class SSToSmotif {
 
 	    for (int i=0; i<ssArray.size() - 2; ++i) {
 		for(int k=0; k<geoArray.size(); ++k){
-		    if(ssArray.get(i).exists() && ssArray.get(i+1).exists() && ssArray.get(i+2).exists()) {
+		    if(ssArray.get(i).exists() && !ssArray.get(i).getSSType().equals("T") && ssArray.get(i+1).exists() && 
+		       ssArray.get(i+2).exists() && !ssArray.get(i+2).getSSType().equals("T")) {
 			if(geoArray.get(k).getStart().equals(ssArray.get(i).firstResidue().getResNum())) {
-			    System.out.print("yay");
+			    //System.out.print("yay");
 			    String printMe = parseToString(ssArray.get(i), 
 							   ssArray.get(i+2), geoArray.get(k));
 			    out.println(printMe);

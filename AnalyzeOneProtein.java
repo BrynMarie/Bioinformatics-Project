@@ -21,9 +21,8 @@ public class AnalyzeOneProtein {
     	*/
     public AnalyzeOneProtein(){
 	//read in single file
-	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/2k8e.dssp");
-	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/k8/pdb2k8e.ent");
-
+	dsspFile = readFile("C:/Users/Bryn/Documents/CodingProjects/dssp/1a00.dssp");
+	pdbFile = readFile("C:/Users/Bryn/Documents/CodingProjects/pdb/a0/pdb1a00.ent");
 	//Opens parsefiles and gives it the arguments of the dsspFile and the pdbFile
 	ParseFiles f2 = new ParseFiles(dsspFile, pdbFile);
     }

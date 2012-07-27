@@ -22,7 +22,8 @@ public class CalcGeo {
 
 		ArrayList<Geometry> geoArray = new ArrayList<Geometry>();
 		for (int i = 0; i < residueList.size() - 5; i += 2) {
-			if (!residueList.get(i).getSS().equals("T")) {
+		    if (!residueList.get(i).getSS().equals("T") && !residueList.get(i+4).getSS().equals("T")
+			&& !residueList.get(i+1).getSS().equals("T") && !residueList.get(i+5).getSS().equals("T")) {
 				/**
 				 * I know this looks insane but it's seriously the only way to
 				 * get this to work. Don't judge, alright?
@@ -107,6 +108,10 @@ public class CalcGeo {
 				// Constructor takes info:
 				// (String stRes, String endRes,
 				// String distance, String delta, String theta, String rho
+
+				delta = delta * (180/Math.PI);
+				theta = theta * (180/Math.PI);
+				rho = rho * (180/Math.PI);
 
 				//don't create a residue if rho does not exist
 				if (isRhoReal) {
