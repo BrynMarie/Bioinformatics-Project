@@ -63,8 +63,7 @@ public class CalculatePMOI {
 
 				// create residue list only if b factor score of residue is in acceptable range
 				if (discardBFactor == false) {
-					newResArray
-							.add(new Residue(pdbNum, principalMomentsOfInertia,
+					newResArray.add(new Residue(pdbNum, principalMomentsOfInertia,
 									atomList, sstype, nt, ct));
 				}
 			}
@@ -72,7 +71,6 @@ public class CalculatePMOI {
 		return newResArray;
 	}// end method
 
-																	// to get
 	//return atomic weight given atom type
 	public static double getAtomicWeight(Atom currentAtom) {
 
